@@ -7,33 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		24661D7E419047F9C9DD76F7 /* libPods-Devil's AgendaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B317EE3F00BD19D0E195C3 /* libPods-Devil's AgendaTests.a */; };
-		2792B325901AFDE928F58770 /* libPods-Devil's AgendaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E8EB201345A44B139A588B /* libPods-Devil's AgendaUITests.a */; };
-		6534B600A3A57DC11D69812B /* libPods-Devil's Agenda.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70801D266B705C52A1FF250E /* libPods-Devil's Agenda.a */; };
+		523339DC303E502D7AFBF317 /* libPods-Devil's Agenda.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 124118F4A1DE6F18B016EC99 /* libPods-Devil's Agenda.a */; };
+		6A55374BD447F1356A6F87FE /* libPods-Devil's AgendaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C54D1B31C5F184BD063AF7BE /* libPods-Devil's AgendaUITests.a */; };
 		820760801F6B065100F3BB6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8207607F1F6B065100F3BB6A /* GoogleService-Info.plist */; };
-		820760821F6B0EAF00F3BB6A /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820760811F6B0EAF00F3BB6A /* AddTaskViewController.swift */; };
-		820760851F6B5D5F00F3BB6A /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820760841F6B5D5F00F3BB6A /* Class.swift */; };
-		820760871F6B5E1B00F3BB6A /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820760861F6B5E1B00F3BB6A /* Task.swift */; };
-		8207608A1F6B718800F3BB6A /* PickerViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820760891F6B718800F3BB6A /* PickerViewTableViewCell.swift */; };
-		8207608C1F6B71A100F3BB6A /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8207608B1F6B71A100F3BB6A /* ButtonTableViewCell.swift */; };
-		8207608E1F6B73CF00F3BB6A /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8207608D1F6B73CF00F3BB6A /* TextFieldTableViewCell.swift */; };
 		820E029D1F5BE2A100EA07FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820E029C1F5BE2A100EA07FF /* AppDelegate.swift */; };
 		820E02A21F5BE2A100EA07FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820E02A01F5BE2A100EA07FF /* Main.storyboard */; };
 		820E02A41F5BE2A100EA07FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 820E02A31F5BE2A100EA07FF /* Assets.xcassets */; };
 		820E02A71F5BE2A100EA07FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820E02A51F5BE2A100EA07FF /* LaunchScreen.storyboard */; };
 		820E02B21F5BE2A100EA07FF /* Devil_s_AgendaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820E02B11F5BE2A100EA07FF /* Devil_s_AgendaTests.swift */; };
 		820E02BD1F5BE2A100EA07FF /* Devil_s_AgendaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820E02BC1F5BE2A100EA07FF /* Devil_s_AgendaUITests.swift */; };
-		821501101F737A2F001B4EC4 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8215010F1F737A2F001B4EC4 /* TaskTableViewCell.swift */; };
-		8220E2171F6A369E00D70464 /* AgendaTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E2161F6A369E00D70464 /* AgendaTableViewController.swift */; };
-		8220E2191F6A36AF00D70464 /* ClassesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E2181F6A36AF00D70464 /* ClassesTableViewController.swift */; };
-		8220E21B1F6A36C500D70464 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E21A1F6A36C500D70464 /* SettingsTableViewController.swift */; };
-		8220E21D1F6A39E600D70464 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E21C1F6A39E600D70464 /* LogInViewController.swift */; };
-		8220E21F1F6A441200D70464 /* AddClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E21E1F6A441200D70464 /* AddClassViewController.swift */; };
-		8220E2221F6A517500D70464 /* Class_OLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E2211F6A517500D70464 /* Class_OLD.swift */; };
-		8220E2241F6A51CE00D70464 /* Task_OLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E2231F6A51CE00D70464 /* Task_OLD.swift */; };
-		8220E2261F6A527500D70464 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8220E2251F6A527500D70464 /* Reminder.swift */; };
+		820F08591F85E62B004D9179 /* Agenda in Resources */ = {isa = PBXBuildFile; fileRef = 820F084F1F85E62B004D9179 /* Agenda */; };
+		820F085B1F85E62B004D9179 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 820F08511F85E62B004D9179 /* Base.lproj */; };
+		820F085C1F85E62B004D9179 /* Calendar in Resources */ = {isa = PBXBuildFile; fileRef = 820F08521F85E62B004D9179 /* Calendar */; };
+		820F085D1F85E62B004D9179 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 820F08531F85E62B004D9179 /* Classes */; };
+		820F085F1F85E62B004D9179 /* Login in Resources */ = {isa = PBXBuildFile; fileRef = 820F08551F85E62B004D9179 /* Login */; };
+		820F08601F85E62B004D9179 /* Settings in Resources */ = {isa = PBXBuildFile; fileRef = 820F08561F85E62B004D9179 /* Settings */; };
+		820F08611F85E62B004D9179 /* TableViewCells in Resources */ = {isa = PBXBuildFile; fileRef = 820F08571F85E62B004D9179 /* TableViewCells */; };
+		820F08621F85E62B004D9179 /* TODOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F08581F85E62B004D9179 /* TODOs.swift */; };
+		820F086C1F85E780004D9179 /* Class_OLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F08671F85E780004D9179 /* Class_OLD.swift */; };
+		820F086D1F85E780004D9179 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F08681F85E780004D9179 /* Class.swift */; };
+		820F086E1F85E780004D9179 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F08691F85E780004D9179 /* Reminder.swift */; };
+		820F086F1F85E780004D9179 /* Task_OLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F086A1F85E780004D9179 /* Task_OLD.swift */; };
+		820F08701F85E780004D9179 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F086B1F85E780004D9179 /* Task.swift */; };
 		825E06B31F6A256C0045BE28 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825E06B21F6A256C0045BE28 /* Constants.swift */; };
 		82D8B1EA1F6CF36600C27C2E /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B1E91F6CF36600C27C2E /* DatabaseManager.swift */; };
+		B226F852F989B4D15D1BCB3C /* libPods-Devil's AgendaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C24229E5F5A0911FA1561F17 /* libPods-Devil's AgendaTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,16 +53,9 @@
 
 /* Begin PBXFileReference section */
 		0AA3E935E9453E7413D2AFB1 /* Pods-Devil's AgendaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Devil's AgendaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Devil's AgendaUITests/Pods-Devil's AgendaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		124118F4A1DE6F18B016EC99 /* libPods-Devil's Agenda.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Devil's Agenda.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D5FF9C7FDF30884519B9852 /* Pods-Devil's AgendaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Devil's AgendaUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Devil's AgendaUITests/Pods-Devil's AgendaUITests.release.xcconfig"; sourceTree = "<group>"; };
-		23E8EB201345A44B139A588B /* libPods-Devil's AgendaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Devil's AgendaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		70801D266B705C52A1FF250E /* libPods-Devil's Agenda.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Devil's Agenda.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8207607F1F6B065100F3BB6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		820760811F6B0EAF00F3BB6A /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
-		820760841F6B5D5F00F3BB6A /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
-		820760861F6B5E1B00F3BB6A /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		820760891F6B718800F3BB6A /* PickerViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewTableViewCell.swift; sourceTree = "<group>"; };
-		8207608B1F6B71A100F3BB6A /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
-		8207608D1F6B73CF00F3BB6A /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		820E02991F5BE2A100EA07FF /* Devil's Agenda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Devil's Agenda.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		820E029C1F5BE2A100EA07FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		820E02A11F5BE2A100EA07FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -77,20 +68,25 @@
 		820E02B81F5BE2A100EA07FF /* Devil's AgendaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Devil's AgendaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		820E02BC1F5BE2A100EA07FF /* Devil_s_AgendaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Devil_s_AgendaUITests.swift; sourceTree = "<group>"; };
 		820E02BE1F5BE2A100EA07FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8215010F1F737A2F001B4EC4 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
-		8220E2161F6A369E00D70464 /* AgendaTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewController.swift; sourceTree = "<group>"; };
-		8220E2181F6A36AF00D70464 /* ClassesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassesTableViewController.swift; sourceTree = "<group>"; };
-		8220E21A1F6A36C500D70464 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
-		8220E21C1F6A39E600D70464 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
-		8220E21E1F6A441200D70464 /* AddClassViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddClassViewController.swift; sourceTree = "<group>"; };
-		8220E2211F6A517500D70464 /* Class_OLD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class_OLD.swift; sourceTree = "<group>"; };
-		8220E2231F6A51CE00D70464 /* Task_OLD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task_OLD.swift; sourceTree = "<group>"; };
-		8220E2251F6A527500D70464 /* Reminder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		820F084F1F85E62B004D9179 /* Agenda */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Agenda; sourceTree = "<group>"; };
+		820F08511F85E62B004D9179 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
+		820F08521F85E62B004D9179 /* Calendar */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Calendar; sourceTree = "<group>"; };
+		820F08531F85E62B004D9179 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
+		820F08551F85E62B004D9179 /* Login */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Login; sourceTree = "<group>"; };
+		820F08561F85E62B004D9179 /* Settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Settings; sourceTree = "<group>"; };
+		820F08571F85E62B004D9179 /* TableViewCells */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TableViewCells; sourceTree = "<group>"; };
+		820F08581F85E62B004D9179 /* TODOs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODOs.swift; sourceTree = "<group>"; };
+		820F08671F85E780004D9179 /* Class_OLD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Class_OLD.swift; path = DataStructures/Class_OLD.swift; sourceTree = "<group>"; };
+		820F08681F85E780004D9179 /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Class.swift; path = DataStructures/Class.swift; sourceTree = "<group>"; };
+		820F08691F85E780004D9179 /* Reminder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reminder.swift; path = DataStructures/Reminder.swift; sourceTree = "<group>"; };
+		820F086A1F85E780004D9179 /* Task_OLD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Task_OLD.swift; path = DataStructures/Task_OLD.swift; sourceTree = "<group>"; };
+		820F086B1F85E780004D9179 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Task.swift; path = DataStructures/Task.swift; sourceTree = "<group>"; };
 		825E06B21F6A256C0045BE28 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		82D8B1E91F6CF36600C27C2E /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		88B317EE3F00BD19D0E195C3 /* libPods-Devil's AgendaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Devil's AgendaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE5264D632B064BD38DE8CF /* Pods-Devil's Agenda.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Devil's Agenda.release.xcconfig"; path = "Pods/Target Support Files/Pods-Devil's Agenda/Pods-Devil's Agenda.release.xcconfig"; sourceTree = "<group>"; };
 		B49CFAA53111B77889188D57 /* Pods-Devil's Agenda.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Devil's Agenda.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Devil's Agenda/Pods-Devil's Agenda.debug.xcconfig"; sourceTree = "<group>"; };
+		C24229E5F5A0911FA1561F17 /* libPods-Devil's AgendaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Devil's AgendaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C54D1B31C5F184BD063AF7BE /* libPods-Devil's AgendaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Devil's AgendaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9FCB810710FA0C3C30BF539 /* Pods-Devil's AgendaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Devil's AgendaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Devil's AgendaTests/Pods-Devil's AgendaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DFD9D66C78FAF99C51E7F82B /* Pods-Devil's AgendaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Devil's AgendaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Devil's AgendaTests/Pods-Devil's AgendaTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6534B600A3A57DC11D69812B /* libPods-Devil's Agenda.a in Frameworks */,
+				523339DC303E502D7AFBF317 /* libPods-Devil's Agenda.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24661D7E419047F9C9DD76F7 /* libPods-Devil's AgendaTests.a in Frameworks */,
+				B226F852F989B4D15D1BCB3C /* libPods-Devil's AgendaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2792B325901AFDE928F58770 /* libPods-Devil's AgendaUITests.a in Frameworks */,
+				6A55374BD447F1356A6F87FE /* libPods-Devil's AgendaUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,44 +122,11 @@
 		7386B9CC1E88FD63C072B966 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				70801D266B705C52A1FF250E /* libPods-Devil's Agenda.a */,
-				88B317EE3F00BD19D0E195C3 /* libPods-Devil's AgendaTests.a */,
-				23E8EB201345A44B139A588B /* libPods-Devil's AgendaUITests.a */,
+				124118F4A1DE6F18B016EC99 /* libPods-Devil's Agenda.a */,
+				C24229E5F5A0911FA1561F17 /* libPods-Devil's AgendaTests.a */,
+				C54D1B31C5F184BD063AF7BE /* libPods-Devil's AgendaUITests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		8207607E1F6AF77200F3BB6A /* Data Objects */ = {
-			isa = PBXGroup;
-			children = (
-				8220E2211F6A517500D70464 /* Class_OLD.swift */,
-				8220E2231F6A51CE00D70464 /* Task_OLD.swift */,
-				8220E2251F6A527500D70464 /* Reminder.swift */,
-				820760841F6B5D5F00F3BB6A /* Class.swift */,
-				820760861F6B5E1B00F3BB6A /* Task.swift */,
-			);
-			name = "Data Objects";
-			sourceTree = "<group>";
-		};
-		820760831F6B0EB900F3BB6A /* Agenda */ = {
-			isa = PBXGroup;
-			children = (
-				8220E2161F6A369E00D70464 /* AgendaTableViewController.swift */,
-				820760811F6B0EAF00F3BB6A /* AddTaskViewController.swift */,
-				8215010F1F737A2F001B4EC4 /* TaskTableViewCell.swift */,
-			);
-			name = Agenda;
-			sourceTree = "<group>";
-		};
-		820760881F6B716600F3BB6A /* Table View Custom Cells */ = {
-			isa = PBXGroup;
-			children = (
-				820760891F6B718800F3BB6A /* PickerViewTableViewCell.swift */,
-				8207608B1F6B71A100F3BB6A /* ButtonTableViewCell.swift */,
-				8207608D1F6B73CF00F3BB6A /* TextFieldTableViewCell.swift */,
-				8207607E1F6AF77200F3BB6A /* Data Objects */,
-			);
-			name = "Table View Custom Cells";
 			sourceTree = "<group>";
 		};
 		820E02901F5BE2A100EA07FF = {
@@ -192,18 +155,22 @@
 		820E029B1F5BE2A100EA07FF /* Devil's Agenda */ = {
 			isa = PBXGroup;
 			children = (
-				820760881F6B716600F3BB6A /* Table View Custom Cells */,
-				820760831F6B0EB900F3BB6A /* Agenda */,
-				8220E2201F6A515C00D70464 /* Classes */,
+				820F084F1F85E62B004D9179 /* Agenda */,
+				820F08511F85E62B004D9179 /* Base.lproj */,
+				820F08521F85E62B004D9179 /* Calendar */,
+				820F08531F85E62B004D9179 /* Classes */,
+				820F08711F85E785004D9179 /* DataStructures */,
+				820F08551F85E62B004D9179 /* Login */,
+				820F08561F85E62B004D9179 /* Settings */,
+				820F08571F85E62B004D9179 /* TableViewCells */,
 				820E029C1F5BE2A100EA07FF /* AppDelegate.swift */,
-				8220E21C1F6A39E600D70464 /* LogInViewController.swift */,
 				820E02A01F5BE2A100EA07FF /* Main.storyboard */,
 				820E02A31F5BE2A100EA07FF /* Assets.xcassets */,
 				820E02A51F5BE2A100EA07FF /* LaunchScreen.storyboard */,
 				820E02A81F5BE2A100EA07FF /* Info.plist */,
 				825E06B21F6A256C0045BE28 /* Constants.swift */,
-				8220E21A1F6A36C500D70464 /* SettingsTableViewController.swift */,
 				82D8B1E91F6CF36600C27C2E /* DatabaseManager.swift */,
+				820F08581F85E62B004D9179 /* TODOs.swift */,
 			);
 			path = "Devil's Agenda";
 			sourceTree = "<group>";
@@ -226,13 +193,16 @@
 			path = "Devil's AgendaUITests";
 			sourceTree = "<group>";
 		};
-		8220E2201F6A515C00D70464 /* Classes */ = {
+		820F08711F85E785004D9179 /* DataStructures */ = {
 			isa = PBXGroup;
 			children = (
-				8220E2181F6A36AF00D70464 /* ClassesTableViewController.swift */,
-				8220E21E1F6A441200D70464 /* AddClassViewController.swift */,
+				820F08671F85E780004D9179 /* Class_OLD.swift */,
+				820F08681F85E780004D9179 /* Class.swift */,
+				820F08691F85E780004D9179 /* Reminder.swift */,
+				820F086A1F85E780004D9179 /* Task_OLD.swift */,
+				820F086B1F85E780004D9179 /* Task.swift */,
 			);
-			name = Classes;
+			name = DataStructures;
 			sourceTree = "<group>";
 		};
 		DF619CAF349CE2EBF35A64AB /* Pods */ = {
@@ -325,6 +295,7 @@
 				TargetAttributes = {
 					820E02981F5BE2A100EA07FF = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 8NY9PHSY65;
 						ProvisioningStyle = Automatic;
 					};
 					820E02AC1F5BE2A100EA07FF = {
@@ -364,9 +335,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				820F08611F85E62B004D9179 /* TableViewCells in Resources */,
 				820E02A71F5BE2A100EA07FF /* LaunchScreen.storyboard in Resources */,
+				820F085B1F85E62B004D9179 /* Base.lproj in Resources */,
+				820F08601F85E62B004D9179 /* Settings in Resources */,
 				820760801F6B065100F3BB6A /* GoogleService-Info.plist in Resources */,
 				820E02A41F5BE2A100EA07FF /* Assets.xcassets in Resources */,
+				820F085F1F85E62B004D9179 /* Login in Resources */,
+				820F08591F85E62B004D9179 /* Agenda in Resources */,
+				820F085D1F85E62B004D9179 /* Classes in Resources */,
+				820F085C1F85E62B004D9179 /* Calendar in Resources */,
 				820E02A21F5BE2A100EA07FF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,6 +446,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -475,6 +454,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,24 +532,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				820760851F6B5D5F00F3BB6A /* Class.swift in Sources */,
-				820760821F6B0EAF00F3BB6A /* AddTaskViewController.swift in Sources */,
-				821501101F737A2F001B4EC4 /* TaskTableViewCell.swift in Sources */,
-				8220E21F1F6A441200D70464 /* AddClassViewController.swift in Sources */,
-				8207608E1F6B73CF00F3BB6A /* TextFieldTableViewCell.swift in Sources */,
+				820F086D1F85E780004D9179 /* Class.swift in Sources */,
+				820F086E1F85E780004D9179 /* Reminder.swift in Sources */,
+				820F086F1F85E780004D9179 /* Task_OLD.swift in Sources */,
+				820F08621F85E62B004D9179 /* TODOs.swift in Sources */,
+				820F086C1F85E780004D9179 /* Class_OLD.swift in Sources */,
 				82D8B1EA1F6CF36600C27C2E /* DatabaseManager.swift in Sources */,
-				8220E2191F6A36AF00D70464 /* ClassesTableViewController.swift in Sources */,
-				8220E21B1F6A36C500D70464 /* SettingsTableViewController.swift in Sources */,
-				8220E21D1F6A39E600D70464 /* LogInViewController.swift in Sources */,
-				8220E2221F6A517500D70464 /* Class_OLD.swift in Sources */,
-				8220E2171F6A369E00D70464 /* AgendaTableViewController.swift in Sources */,
-				820760871F6B5E1B00F3BB6A /* Task.swift in Sources */,
 				820E029D1F5BE2A100EA07FF /* AppDelegate.swift in Sources */,
-				8220E2241F6A51CE00D70464 /* Task_OLD.swift in Sources */,
+				820F08701F85E780004D9179 /* Task.swift in Sources */,
 				825E06B31F6A256C0045BE28 /* Constants.swift in Sources */,
-				8207608C1F6B71A100F3BB6A /* ButtonTableViewCell.swift in Sources */,
-				8207608A1F6B718800F3BB6A /* PickerViewTableViewCell.swift in Sources */,
-				8220E2261F6A527500D70464 /* Reminder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,6 +693,7 @@
 			baseConfigurationReference = B49CFAA53111B77889188D57 /* Pods-Devil's Agenda.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 8NY9PHSY65;
 				INFOPLIST_FILE = "Devil's Agenda/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -736,6 +708,7 @@
 			baseConfigurationReference = 8EE5264D632B064BD38DE8CF /* Pods-Devil's Agenda.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 8NY9PHSY65;
 				INFOPLIST_FILE = "Devil's Agenda/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

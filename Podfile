@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-#platform :ios, ’9.0’
+platform :ios, ’9.0’
 
 
 target 'Devil\'s Agenda' do
@@ -11,6 +11,7 @@ target 'Devil\'s Agenda' do
   pod 'Firebase/Auth'
   pod 'GoogleSignIn'
   pod 'Firebase/Database'
+  #pod 'SwiftDate', '~> 4.3.0'
   #pod 'GTMOAuth2', '~> 1.1.4'
   
   target 'Devil\'s AgendaTests' do

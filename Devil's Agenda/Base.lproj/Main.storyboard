@@ -329,28 +329,66 @@
                                             <outlet property="title" destination="KG2-fr-Edh" id="ciI-Yl-qSJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="E22-x8-CMe">
-                                        <rect key="frame" x="0.0" y="316" width="414" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="200" id="E22-x8-CMe" customClass="DatePickerTableViewCell" customModule="Devil_s_Agenda" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="316" width="414" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E22-x8-CMe" id="fKf-FF-oww">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="199.66666666666666"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsE-RX-X1m">
-                                                    <rect key="frame" x="23" y="11" width="72" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ti7-G2-Vmu" userLabel="TitleView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Due Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AMS-rC-h9r">
+                                                            <rect key="frame" x="15" y="12" width="72" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01/01" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTy-xU-gmb">
+                                                            <rect key="frame" x="92" y="12" width="229" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="AMS-rC-h9r" firstAttribute="leading" secondItem="ti7-G2-Vmu" secondAttribute="leading" constant="15" id="5rE-lU-hNX"/>
+                                                        <constraint firstItem="AMS-rC-h9r" firstAttribute="centerY" secondItem="ti7-G2-Vmu" secondAttribute="centerY" id="DrA-ly-OV9"/>
+                                                        <constraint firstItem="eTy-xU-gmb" firstAttribute="leading" secondItem="AMS-rC-h9r" secondAttribute="trailing" constant="5" id="JjV-qc-VqJ"/>
+                                                        <constraint firstItem="eTy-xU-gmb" firstAttribute="baseline" secondItem="AMS-rC-h9r" secondAttribute="baseline" id="ODw-re-KUG"/>
+                                                        <constraint firstAttribute="height" constant="44" id="oNt-iK-z8v"/>
+                                                        <constraint firstItem="eTy-xU-gmb" firstAttribute="centerX" secondItem="ti7-G2-Vmu" secondAttribute="centerX" id="yyp-pz-MKo"/>
+                                                    </constraints>
+                                                </view>
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="N4e-th-9cP" userLabel="DatePicker">
+                                                    <rect key="frame" x="0.0" y="44" width="414" height="0.0"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" id="SeV-9y-4K1"/>
+                                                    </constraints>
+                                                    <date key="date" timeIntervalSinceReferenceDate="528596263.38591599">
+                                                        <!--2017-10-02 00:17:43 +0000-->
+                                                    </date>
+                                                </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="VsE-RX-X1m" firstAttribute="leading" secondItem="fKf-FF-oww" secondAttribute="leadingMargin" constant="15" id="aFL-Lz-E6t"/>
-                                                <constraint firstItem="VsE-RX-X1m" firstAttribute="centerY" secondItem="fKf-FF-oww" secondAttribute="centerY" id="gpI-G4-itW"/>
+                                                <constraint firstAttribute="trailing" secondItem="N4e-th-9cP" secondAttribute="trailing" id="DLH-so-ZIY"/>
+                                                <constraint firstAttribute="trailing" secondItem="ti7-G2-Vmu" secondAttribute="trailing" id="LYr-io-fyP"/>
+                                                <constraint firstItem="N4e-th-9cP" firstAttribute="top" secondItem="ti7-G2-Vmu" secondAttribute="bottom" id="TSp-vm-KIP"/>
+                                                <constraint firstItem="ti7-G2-Vmu" firstAttribute="leading" secondItem="fKf-FF-oww" secondAttribute="leading" id="cmL-wz-fNW"/>
+                                                <constraint firstItem="N4e-th-9cP" firstAttribute="leading" secondItem="fKf-FF-oww" secondAttribute="leading" id="jhw-YM-78g"/>
+                                                <constraint firstItem="ti7-G2-Vmu" firstAttribute="top" secondItem="fKf-FF-oww" secondAttribute="top" id="mtl-Qz-65n"/>
+                                                <constraint firstAttribute="bottom" secondItem="N4e-th-9cP" secondAttribute="bottom" priority="998" id="rii-Jf-ngg"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="eTy-xU-gmb" id="yQW-So-AH3"/>
+                                            <outlet property="datePicker" destination="N4e-th-9cP" id="UIa-iX-1sp"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mVd-cR-aOy">
-                                        <rect key="frame" x="0.0" y="360" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="516" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mVd-cR-aOy" id="j4l-YE-X33">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -370,7 +408,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonTableViewCell" id="NRD-hM-ycP" customClass="ButtonTableViewCell" customModule="Devil_s_Agenda" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="404" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="560" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NRD-hM-ycP" id="VSG-gA-nM8">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
