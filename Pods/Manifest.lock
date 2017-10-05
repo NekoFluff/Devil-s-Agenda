@@ -53,12 +53,14 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - SwiftDate (4.3.0)
 
 DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - GoogleSignIn
+  - SwiftDate (~> 4.3.0)
 
 SPEC CHECKSUMS:
   Firebase: 83283761a1ef6dc9846e03d08059f51421afbd65
@@ -73,7 +75,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  SwiftDate: 64e2312711c5c506f7b51794308ce91f19eb494a
 
-PODFILE CHECKSUM: 2500b1a90cd646e2650073ce2a94e4a5c0fedf6c
+PODFILE CHECKSUM: 8fd12e092075e7fc74f9dca1925627b7d7586deb
 
 COCOAPODS: 1.3.1

@@ -19,17 +19,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Devil's Agenda.xcscheme</key>
+		<key>Pods-DevilsAgenda.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Devil's AgendaTests.xcscheme</key>
+		<key>Pods-DevilsAgendaTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Devil's AgendaUITests.xcscheme</key>
+		<key>Pods-DevilsAgendaUITests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SwiftDate.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,42 +52,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0C3DF69CD734C793AAE8AB59E84D78B3</key>
+		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>58885A79D8F2FE6A57DF1D65A1A33E7E</key>
+		<key>266AE1506DAD13D34C0725E909C0C476</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>58E7450DB13C5ECCE92D3C0DF7CF0903</key>
+		<key>4E6BB53F6A3B23AF78362EB7B939E77C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6114F7C8E932C8FB4D8F8B320ABA8873</key>
+		<key>681BE6E3D02A43F9BA63777AC435C8FD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>741030B1AA76DA39E612013406622511</key>
+		<key>8A8694F9A64BD57346B6E3A3B837D3FE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>872B931A6DB5101BD2089585287F16A3</key>
+		<key>AE39DBD9B6F76EDA1231941BBDE69D00</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CF4B35B9FC819386EB09219BC91827D7</key>
+		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EAE45C123C22F83F258F201FDFBA835E</key>
+		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F09046478BA3A974F4F1194D6423FEE4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

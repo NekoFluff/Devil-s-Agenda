@@ -1,0 +1,6 @@
+framework module Pods_DevilsAgendaTests {
+  umbrella header "Pods-DevilsAgendaTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
