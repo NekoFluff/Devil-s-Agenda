@@ -42,6 +42,17 @@ class LogInViewController : UIViewController, GIDSignInUIDelegate {
             }
             
         }, withCancel: nil)
+        
+
+        self.logUser(user: user)
+
+    }
+    
+    func logUser(user : User) {
+        // You can call any combination of these three methods
+        Crashlytics.sharedInstance().setUserEmail(user.email)
+        Crashlytics.sharedInstance().setUserIdentifier(user.uid)
+        Crashlytics.sharedInstance().setUserName(user.displayName)
     }
 
     
