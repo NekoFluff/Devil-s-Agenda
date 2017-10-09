@@ -14,7 +14,8 @@ protocol DatabaseManagerClassDelegate {
 }
 
 protocol DatabaseManagerTaskDelegate {
-    func addedTask();
+    func addedTask(_ task: Task);
+    func updatedTask(_ task: Task);
 }
 
 class DatabaseManager {
@@ -67,12 +68,12 @@ class DatabaseManager {
             self.classes.append(newClass)
             print("Added Class '\(newClass.name)' to global 'classes'")
             
-            
+            //Tasks
             if let newTasksData = classData[Constants.ClassFields.tasks] as? Dictionary<String, [String : String]> {
-                for (_, taskData) in newTasksData {
-                    let newTask = Task(newClass, data: taskData)
+                for (taskKey, taskData) in newTasksData {
+                    let newTask = Task(newClass, data: taskData, databaseKey: taskKey)
                     tasks.append(newTask)
-                    taskDelegate?.addedTask()
+                    taskDelegate?.addedTask(newTask)
                 }
             }
             return newClass
@@ -97,9 +98,13 @@ class DatabaseManager {
     }
     
     func removeClassListener() {
-        if let handle = _classRefHandle {
-            self.ref.child("users").child(Auth.auth().currentUser!.uid).child("classes").removeObserver(withHandle: handle)
+        if let handle = _classRefHandle, let uid = Auth.auth().currentUser?.uid {
+            self.ref.child("users").child(uid).child("classes").removeObserver(withHandle: handle)
         }
+    }
+    
+    func removeAllListeners() {
+        self.ref.removeAllObservers()
     }
     /*
     func addTaskListener() {
@@ -121,7 +126,7 @@ class DatabaseManager {
     }*/
     
     func saveClass( _ c: Class) {
-        var c = c
+
         var classPath = self.ref.child("users").child(Auth.auth().currentUser!.uid).child("classes")
         if c.databaseKey == nil {
             classPath = classPath.childByAutoId()
@@ -133,15 +138,66 @@ class DatabaseManager {
         classPath.setValue(c.toDict())
     }
     
-    func saveTask(forClass classKey: String, withData data: [String : String], andTaskKey taskKey: String? = nil) {
-        let path = "users/\(Auth.auth().currentUser!.uid)/classes/\(classKey)/\(Constants.ClassFields.tasks)"
-        
-        if let task = taskKey { //Update a task
-            self.ref.updateChildValues([path+"/"+task : data])
-        } else { //Create a new task
-            self.ref.child(path).childByAutoId().setValue(data)
+    func saveTask( _ t: inout Task) {
+
+        if let path = getTasksPath(t.rClass) {
+            let data = t.toDict()
+            
+            if let taskKey = t.databaseKey { //Update a task
+                self.ref.updateChildValues([path+"/"+taskKey : data])
+                
+                self.taskDelegate?.updatedTask(t)
+                
+            } else { //Create a new task
+                let taskPath = self.ref.child(path).childByAutoId()
+                let taskKey = taskPath.key
+                
+                taskPath.setValue(data)
+                t.databaseKey = taskKey
+                self.tasks.append(t)
+                
+                self.taskDelegate?.addedTask(t)
+            }
         }
-        self.taskDelegate?.addedTask()
+        
+    }
+    
+    func deleteTask(_ t: Task, atIndexPath indexPath: IndexPath?) {
+
+        if let path = getPathForTask(t) {
+
+            self.ref.child(path).removeValue()
+            if indexPath != nil {
+                self.tasks.remove(at: indexPath!.row)
+            }
+            
+        }
+    }
+    
+    func completeTask(_ t: Task) {
+        
+    }
+    
+    private func getTasksPath(_ c: Class) -> String? {
+        if let classKey = c.databaseKey {
+            
+            return "users/\(Auth.auth().currentUser!.uid)/classes/\(classKey)/\(Constants.ClassFields.tasks)"
+        } else {
+            print("ERROR: saveTask(_ t: Task) FAILED. Class key missing!")
+            return nil
+        }
+    }
+    
+    private func getPathForTask(_ t: Task) -> String? {
+        if let tasksPath = getTasksPath(t.rClass) {
+            if let taskKey = t.databaseKey {
+                return tasksPath + "/" + taskKey
+            } else {
+                print("ERROR: No corresponding task in Firebase Database for \(t.desc)")
+            }
+        }
+        
+        return nil
     }
 
     func refresh() {

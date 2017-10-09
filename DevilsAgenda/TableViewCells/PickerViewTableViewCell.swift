@@ -21,6 +21,7 @@ class PickerViewTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var pickerHeight: NSLayoutConstraint!
     
     var delegate : PickerViewTableCellDelegate?
+    var editingDisabled = false
     var pickerData = [""] {
         didSet {
             if pickerData.count > 0 {
@@ -33,8 +34,10 @@ class PickerViewTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
     
     var showsDetails = false {
         didSet {
-            pickerHeight.priority = showsDetails ? 250 : 999
-            picker.isHidden = !showsDetails
+            if !editingDisabled {
+                pickerHeight.priority = showsDetails ? 250 : 999
+                picker.isHidden = !showsDetails
+            }
         }
     }
     
@@ -53,6 +56,14 @@ class PickerViewTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
         // Configure the view for the selected state
     }
     
+    func configure(title: String, data: [String], selectedRow: Int) {
+        self.title.text = title
+        self.pickerData = data
+        self.result.text = data[selectedRow]
+        self.picker.selectRow(selectedRow, inComponent: 0, animated: false)
+    }
+    
+    //MARK: PickerView Delegate Methods
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

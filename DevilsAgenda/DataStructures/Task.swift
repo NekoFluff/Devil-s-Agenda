@@ -12,27 +12,26 @@ enum taskCategory : String {
     case Assignment = "Assignment", Quiz = "Quiz", Test = "Test", Project = "Project", Other = "Other"
 }
 
-struct Task {
+class Task {
     
-    let rClass : Class
+    var rClass : Class
     var category : taskCategory?
-    var desc : String
+    var desc : String = ""
     var dueDate : Date?
     var todoDate : Date?
+    var databaseKey : String?
     
     init(_ rClass: Class, category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
         self.rClass = rClass
-        self.category = category
-        self.desc = desc
-        self.dueDate = dueDate
-        self.todoDate = todoDate
+        reconfigure(rClass, category: category, desc: desc, dueDate: dueDate, todoDate: todoDate)
     }
     
-    init(_ rClass: Class, data: [String : String]) {
+    init(_ rClass: Class, data: [String : String], databaseKey: String) {
         self.rClass = rClass
         
-        self.category = taskCategory(rawValue: data[Constants.TaskFields.category] ?? "Assignment")
-        self.desc = (data[Constants.TaskFields.description]) ?? "ERROR_DESC"
+        reconfigure(rClass,
+                    category: taskCategory(rawValue: data[Constants.TaskFields.category] ?? "Assignment")!,
+                    desc: (data[Constants.TaskFields.description]) ?? "ERROR_DESC")
         
         let df = DateFormatter()
         df.dateFormat = "MM-dd-yyyy HH:mm:ss"
@@ -45,6 +44,16 @@ struct Task {
             self.todoDate = df.date(from : date)
         }
         
+        self.databaseKey = databaseKey
+    }
+    
+    func reconfigure(_ rClass: Class, category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
+        
+        self.rClass = rClass
+        self.category = category
+        self.desc = desc
+        self.dueDate = dueDate
+        self.todoDate = todoDate
     }
     
     func toDict() -> [String : String] {

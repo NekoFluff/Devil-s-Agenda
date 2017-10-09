@@ -12,8 +12,12 @@ import GoogleSignIn
 
 class SettingsTableViewController: UITableViewController {
 
+    let database = DatabaseManager.defaultManager
+    
     @IBAction func signOut(_ sender: UIButton) {
         do {
+            database.removeAllListeners()
+            
             try Auth.auth().signOut();
             GIDSignIn.sharedInstance().signOut();
             
@@ -22,6 +26,7 @@ class SettingsTableViewController: UITableViewController {
             print ("Error signing out: \(signOutError.localizedDescription)")
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

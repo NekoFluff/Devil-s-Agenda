@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Class {
+class Class : Equatable {
     var name : String
     var color : String
     var databaseKey : String?
@@ -33,5 +33,9 @@ struct Class {
         }
         
         return data
+    }
+    
+    static func ==(left: Class, right: Class) -> Bool {
+        return left.name == right.name && left.databaseKey == right.databaseKey && left.color == right.color
     }
 }

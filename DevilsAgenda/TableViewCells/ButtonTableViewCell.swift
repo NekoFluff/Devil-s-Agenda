@@ -11,6 +11,13 @@ import UIKit
 class ButtonTableViewCell: UITableViewCell {
 
     @IBOutlet weak var button: UIButton!
+    
+    var editingDisabled = false {
+        didSet {
+            self.button.isEnabled = !editingDisabled
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

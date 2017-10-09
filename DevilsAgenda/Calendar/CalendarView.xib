@@ -4,47 +4,101 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalendarView" customModule="Devil_s_Agenda" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalendarView" customModule="DevilsAgenda" customModuleProvider="target">
             <connections>
-                <outlet property="collectionView" destination="Kkb-yt-RVP" id="XQP-oV-xNc"/>
+                <outlet property="collectionView" destination="Kkb-yt-RVP" id="auR-mD-sTR"/>
+                <outlet property="datePicker" destination="JEc-T4-NDL" id="rWO-dN-JX1"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Nd3-yo-MOV"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="280" height="320"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Kkb-yt-RVP">
-                    <rect key="frame" x="0.0" y="0.0" width="280" height="320"/>
+                <view alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fYe-pc-Jg5" userLabel="background">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T9d-Tq-mpq" userLabel="main">
+                    <rect key="frame" x="0.0" y="63" width="375" height="604"/>
+                    <subviews>
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pHc-mO-taV">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <color key="backgroundColor" red="1" green="0.3431733776" blue="0.31818271339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="dbP-SB-tJ7"/>
+                            </constraints>
+                            <items>
+                                <barButtonItem systemItem="cancel" id="KAh-JY-AbX">
+                                    <connections>
+                                        <action selector="cancelPressed:" destination="-1" id="47N-Re-0hs"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="0bD-OZ-qlv"/>
+                                <barButtonItem systemItem="done" id="RZe-Fd-LCI">
+                                    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <connections>
+                                        <action selector="donePressed:" destination="-1" id="Mwb-Wf-MLb"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="JEc-T4-NDL">
+                            <rect key="frame" x="0.0" y="364" width="375" height="240"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="998" constant="240" id="Tiz-Zb-s28"/>
+                            </constraints>
+                            <date key="date" timeIntervalSinceReferenceDate="529098522.18080699">
+                                <!--2017-10-07 19:48:42 +0000-->
+                            </date>
+                        </datePicker>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Kkb-yt-RVP" userLabel="collectionView">
+                            <rect key="frame" x="48" y="44" width="280" height="320"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="280" id="gdP-ef-uGw"/>
+                                <constraint firstAttribute="height" constant="320" id="nOl-yZ-HBx"/>
+                            </constraints>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="W1x-YT-zjX">
+                                <size key="itemSize" width="280" height="50"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="SH3-f1-j2Y"/>
+                                <outlet property="delegate" destination="-1" id="KdE-vK-Jjc"/>
+                            </connections>
+                        </collectionView>
+                    </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="W1x-YT-zjX">
-                        <size key="itemSize" width="280" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="SH3-f1-j2Y"/>
-                        <outlet property="delegate" destination="-1" id="KdE-vK-Jjc"/>
-                    </connections>
-                </collectionView>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="JEc-T4-NDL" secondAttribute="bottom" id="3X0-Ie-CbO"/>
+                        <constraint firstItem="Kkb-yt-RVP" firstAttribute="top" secondItem="pHc-mO-taV" secondAttribute="bottom" id="Mai-HY-xCf"/>
+                        <constraint firstItem="Kkb-yt-RVP" firstAttribute="centerX" secondItem="T9d-Tq-mpq" secondAttribute="centerX" id="YbN-sw-qBx"/>
+                        <constraint firstItem="JEc-T4-NDL" firstAttribute="leading" secondItem="T9d-Tq-mpq" secondAttribute="leading" id="bbO-Sc-qBh"/>
+                        <constraint firstItem="pHc-mO-taV" firstAttribute="top" secondItem="T9d-Tq-mpq" secondAttribute="top" id="fYg-Ea-wed"/>
+                        <constraint firstItem="pHc-mO-taV" firstAttribute="leading" secondItem="T9d-Tq-mpq" secondAttribute="leading" id="o6N-NT-FQN"/>
+                        <constraint firstAttribute="trailing" secondItem="pHc-mO-taV" secondAttribute="trailing" id="oBr-Lr-AkB"/>
+                        <constraint firstItem="JEc-T4-NDL" firstAttribute="top" secondItem="Kkb-yt-RVP" secondAttribute="bottom" id="oz9-CG-ES0"/>
+                        <constraint firstAttribute="trailing" secondItem="JEc-T4-NDL" secondAttribute="trailing" id="qk7-pQ-Hnn"/>
+                    </constraints>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Kkb-yt-RVP" secondAttribute="trailing" id="Bu5-7l-6xJ"/>
-                <constraint firstItem="Kkb-yt-RVP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="R3v-jG-9Oi"/>
-                <constraint firstItem="Kkb-yt-RVP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Rph-bb-jlJ"/>
-                <constraint firstAttribute="bottom" secondItem="Kkb-yt-RVP" secondAttribute="bottom" id="lR0-95-GKb"/>
+                <constraint firstAttribute="bottom" secondItem="T9d-Tq-mpq" secondAttribute="bottom" id="92y-rE-gh2"/>
+                <constraint firstItem="T9d-Tq-mpq" firstAttribute="height" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="height" id="Ebv-iX-JXf"/>
+                <constraint firstItem="T9d-Tq-mpq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="JzW-Ex-JFI"/>
+                <constraint firstAttribute="trailing" secondItem="T9d-Tq-mpq" secondAttribute="trailing" id="fn0-OY-46a"/>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <nil key="simulatedTopBarMetrics"/>
-            <nil key="simulatedBottomBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="42.5" y="59.5"/>
         </view>
     </objects>
 </document>

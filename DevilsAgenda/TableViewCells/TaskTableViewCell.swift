@@ -25,5 +25,41 @@ class TaskTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func configure(task: Task) {
+        // Configure the cell...
+        self.colorView.backgroundColor = uicolorForString(str: task.rClass.color)
+        self.titleLabel.text = task.desc
+        self.subtitleLabel.text = task.rClass.name
+        
+        var dateString = ""
+        if let dueDate = task.dueDate {
+            let df = DateFormatter()
+            df.locale = Locale(identifier: "en_US")
+            df.dateFormat = "E  M/d"
+            dateString = df.string(from: dueDate)
+        }
+        
+        self.dateLabel.text = dateString
+    }
+    
+    private func uicolorForString(str: String) -> UIColor {
+        switch (str) {
+        case "Red":
+            return UIColor.red
+        case "Green":
+            return UIColor.green
+        case "Blue":
+            return UIColor.blue
+        case "Orange":
+            return UIColor.orange
+        case "Yellow":
+            return UIColor.yellow
+        case "Black":
+            return UIColor.black
+        default:
+            return UIColor.black
+        }
+    }
 
 }

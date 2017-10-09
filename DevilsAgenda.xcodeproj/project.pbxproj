@@ -10,6 +10,7 @@
 		44CB952906FE1125DC7A8CCE /* Pods_DevilsAgendaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4CDD620EB07058750E74F3 /* Pods_DevilsAgendaTests.framework */; };
 		5E4A564F0E87B2AA230402D5 /* Pods_DevilsAgendaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45CDD369483F37EC805C973D /* Pods_DevilsAgendaUITests.framework */; };
 		731429644A3259B9E70C561E /* Pods_DevilsAgenda.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4CF2DE15388AF4707AA7494 /* Pods_DevilsAgenda.framework */; };
+		820D52311F89C9C300274DFE /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820D52301F89C9C300274DFE /* LabelTableViewCell.swift */; };
 		820F08E71F85F3C4004D9179 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F08E61F85F3C4004D9179 /* AppDelegate.swift */; };
 		820F08E91F85F3C4004D9179 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F08E81F85F3C4004D9179 /* ViewController.swift */; };
 		820F08EC1F85F3C4004D9179 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820F08EA1F85F3C4004D9179 /* Main.storyboard */; };
@@ -32,7 +33,6 @@
 		820F097C1F85F5E4004D9179 /* WeekCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820F09731F85F5E4004D9179 /* WeekCell.xib */; };
 		820F098A1F85F607004D9179 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09891F85F607004D9179 /* LogInViewController.swift */; };
 		820F099C1F85F6C5004D9179 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09981F85F6C5004D9179 /* ButtonTableViewCell.swift */; };
-		820F099D1F85F6C5004D9179 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09991F85F6C5004D9179 /* DatePickerTableViewCell.swift */; };
 		820F099E1F85F6C5004D9179 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F099A1F85F6C5004D9179 /* TaskTableViewCell.swift */; };
 		820F099F1F85F6C5004D9179 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F099B1F85F6C5004D9179 /* TextFieldTableViewCell.swift */; };
 		820F09A11F85F6DC004D9179 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09A01F85F6DC004D9179 /* SettingsTableViewController.swift */; };
@@ -46,6 +46,7 @@
 		820F09B11F85F744004D9179 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09B01F85F744004D9179 /* AddTaskViewController.swift */; };
 		820F09B31F85F78E004D9179 /* PickerViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */; };
 		820F09B51F85F810004D9179 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 820F09B41F85F810004D9179 /* GoogleService-Info.plist */; };
+		8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		247B5ED851E7D21A2E2C4898 /* Pods-DevilsAgendaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaTests/Pods-DevilsAgendaTests.release.xcconfig"; sourceTree = "<group>"; };
 		45CDD369483F37EC805C973D /* Pods_DevilsAgendaUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevilsAgendaUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4859DA0B732E9C1B536650A1 /* Pods-DevilsAgenda.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgenda.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgenda/Pods-DevilsAgenda.debug.xcconfig"; sourceTree = "<group>"; };
+		820D52301F89C9C300274DFE /* LabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LabelTableViewCell.swift; path = TableViewCells/LabelTableViewCell.swift; sourceTree = "<group>"; };
 		820F08E31F85F3C4004D9179 /* DevilsAgenda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DevilsAgenda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		820F08E61F85F3C4004D9179 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		820F08E81F85F3C4004D9179 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,7 +99,6 @@
 		820F09731F85F5E4004D9179 /* WeekCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WeekCell.xib; path = Calendar/WeekCell.xib; sourceTree = "<group>"; };
 		820F09891F85F607004D9179 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogInViewController.swift; path = Login/LogInViewController.swift; sourceTree = "<group>"; };
 		820F09981F85F6C5004D9179 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ButtonTableViewCell.swift; path = TableViewCells/ButtonTableViewCell.swift; sourceTree = "<group>"; };
-		820F09991F85F6C5004D9179 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerTableViewCell.swift; path = TableViewCells/DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		820F099A1F85F6C5004D9179 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskTableViewCell.swift; path = TableViewCells/TaskTableViewCell.swift; sourceTree = "<group>"; };
 		820F099B1F85F6C5004D9179 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextFieldTableViewCell.swift; path = TableViewCells/TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		820F09A01F85F6DC004D9179 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsTableViewController.swift; path = Settings/SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +112,7 @@
 		820F09B01F85F744004D9179 /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddTaskViewController.swift; path = Agenda/AddTaskViewController.swift; sourceTree = "<group>"; };
 		820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PickerViewTableViewCell.swift; path = TableViewCells/PickerViewTableViewCell.swift; sourceTree = "<group>"; };
 		820F09B41F85F810004D9179 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskOrganizer.swift; path = Agenda/TaskOrganizer.swift; sourceTree = "<group>"; };
 		851317DC6E019E559341DFC5 /* Pods-DevilsAgendaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaTests/Pods-DevilsAgendaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8CEA69B96AC6F1696E445929 /* Pods-DevilsAgendaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaUITests/Pods-DevilsAgendaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B4CF2DE15388AF4707AA7494 /* Pods_DevilsAgenda.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevilsAgenda.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,10 +181,10 @@
 				820F09881F85F5FC004D9179 /* DataStructures */,
 				820F097D1F85F5EA004D9179 /* Calendar */,
 				820F096A1F85F5D9004D9179 /* Classes */,
+				820F09531F85F57E004D9179 /* Agenda */,
 				820F09561F85F5B7004D9179 /* Constants.swift */,
 				820F09571F85F5B7004D9179 /* DatabaseManager.swift */,
 				820F095C1F85F5B7004D9179 /* TODOs.swift */,
-				820F09531F85F57E004D9179 /* Agenda */,
 				820F08E61F85F3C4004D9179 /* AppDelegate.swift */,
 				820F08E81F85F3C4004D9179 /* ViewController.swift */,
 				820F08EA1F85F3C4004D9179 /* Main.storyboard */,
@@ -216,6 +218,7 @@
 			children = (
 				820F09511F85F576004D9179 /* AgendaTableViewController.swift */,
 				820F09B01F85F744004D9179 /* AddTaskViewController.swift */,
+				8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */,
 			);
 			name = Agenda;
 			sourceTree = "<group>";
@@ -278,9 +281,9 @@
 			children = (
 				820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */,
 				820F09981F85F6C5004D9179 /* ButtonTableViewCell.swift */,
-				820F09991F85F6C5004D9179 /* DatePickerTableViewCell.swift */,
 				820F099A1F85F6C5004D9179 /* TaskTableViewCell.swift */,
 				820F099B1F85F6C5004D9179 /* TextFieldTableViewCell.swift */,
+				820D52301F89C9C300274DFE /* LabelTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -622,15 +625,16 @@
 			files = (
 				820F099C1F85F6C5004D9179 /* ButtonTableViewCell.swift in Sources */,
 				820F09741F85F5E4004D9179 /* CalendarView.swift in Sources */,
+				8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */,
 				820F095F1F85F5B7004D9179 /* Constants.swift in Sources */,
 				820F09A91F85F6F1004D9179 /* Reminder.swift in Sources */,
 				820F09B11F85F744004D9179 /* AddTaskViewController.swift in Sources */,
 				820F099F1F85F6C5004D9179 /* TextFieldTableViewCell.swift in Sources */,
 				820F08E91F85F3C4004D9179 /* ViewController.swift in Sources */,
-				820F099D1F85F6C5004D9179 /* DatePickerTableViewCell.swift in Sources */,
 				820F097B1F85F5E4004D9179 /* WeekCell.swift in Sources */,
 				820F099E1F85F6C5004D9179 /* TaskTableViewCell.swift in Sources */,
 				820F09601F85F5B7004D9179 /* DatabaseManager.swift in Sources */,
+				820D52311F89C9C300274DFE /* LabelTableViewCell.swift in Sources */,
 				820F09AA1F85F6F1004D9179 /* Task_OLD.swift in Sources */,
 				820F09A11F85F6DC004D9179 /* SettingsTableViewController.swift in Sources */,
 				820F09AB1F85F6F1004D9179 /* Task.swift in Sources */,

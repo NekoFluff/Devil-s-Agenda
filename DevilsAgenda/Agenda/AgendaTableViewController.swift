@@ -12,6 +12,7 @@ import Firebase
 class AgendaTableViewController: UITableViewController {
 
     let database = DatabaseManager.defaultManager
+    let taskOrganizer = TaskOrganizer.defaultOrganizer
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,9 +21,9 @@ class AgendaTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        database.taskDelegate = self
+        //self.navigationItem.leftBarButtonItem = self.editButtonItem
+        taskOrganizer.delegate = self
+        tableView.allowsSelectionDuringEditing = true
     }
     
     deinit {
@@ -39,12 +40,27 @@ class AgendaTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 10
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return database.tasks.count
+        switch(section) {
+        case 0:
+            return taskOrganizer.countForSection(taskSection.overdue)
+        case 1, 2, 3, 4, 5, 6, 7:
+            if let taskSection = taskSectionForIndexPath(IndexPath(row: 0, section: section)) {
+                return taskOrganizer.countForSection(taskSection)
+            } else {
+                return 0
+            }
+        case 8:
+            return taskOrganizer.countForSection(taskSection.later)
+        case 9:
+            return taskOrganizer.countForSection(taskSection.tbd)
+        default:
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -54,53 +70,71 @@ class AgendaTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskTableViewCell", for: indexPath) as! TaskTableViewCell
 
-        let myTask = database.tasks[indexPath.row]
-        // Configure the cell...
-        cell.colorView.backgroundColor = uicolorForString(str: myTask.rClass.color)
-        cell.titleLabel.text = myTask.desc
-        cell.subtitleLabel.text = myTask.rClass.name
-        cell.dateLabel.text = "1/1/11"
+        if let myTask = taskForIndexPath(indexPath) {
+            cell.configure(task: myTask)
+        }
         
         return cell
     }
     
-    private func uicolorForString(str: String) -> UIColor{
-        switch (str) {
-        case "Red":
-            return UIColor.red
-        case "Green":
-            return UIColor.green
-        case "Blue":
-            return UIColor.blue
-        case "Orange":
-            return UIColor.orange
-        case "Yellow":
-            return UIColor.yellow
-        case "Black":
-            return UIColor.black
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let taskSection = taskSectionForIndexPath(IndexPath(row: 0, section: section)) {
+            if taskOrganizer.countForSection(taskSection) == 0 {return nil}
+        }
+        
+        switch(section) {
+        case 0:
+            return taskSection.overdue.rawValue
+        case 1:
+            return "Today"
+        case 2:
+            return "Tomorrow"
+        case 3, 4, 5, 6, 7:
+            return taskSectionForIndexPath(IndexPath(row: 0, section: section))?.rawValue ?? nil
+        case 8:
+            return taskSection.later.rawValue
+        case 9:
+            return taskSection.tbd.rawValue
         default:
-            return UIColor.black
+            return nil
         }
     }
-    /*
+
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            database.deleteTask(database.tasks[indexPath.row], atIndexPath: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+ 
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // delete item at indexPath
+        }
+        
+        let complete = UITableViewRowAction(style: .normal, title: "Complete") { (action, indexPath) in
+            // share item at indexPath
+            self.database.deleteTask(self.database.tasks[indexPath.row], atIndexPath: indexPath)
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        }
+        
+        complete.backgroundColor = UIColor.green
+        
+        return [complete]
+    }
 
     /*
     // Override to support rearranging the table view.
@@ -129,16 +163,88 @@ class AgendaTableViewController: UITableViewController {
 //        }
 //    }
     
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let taskVC = storyboard?.instantiateViewController(withIdentifier: "addTaskViewController") as? AddTaskViewController {
+            
+            if let task = taskForIndexPath(indexPath) {
+                taskVC.configure(withTask: task)
+                
+                if !tableView.isEditing {
+                    taskVC.disableEditing()
+                }
+                
+                self.present(taskVC, animated: true, completion: {
+                    print("Presented taskVC")
+                })
+            }
+        }
+    }
+    
+    private func taskForIndexPath(_ indexPath: IndexPath) -> Task? {
+        if let section = taskSectionForIndexPath(indexPath)?.rawValue, let tasks = taskOrganizer.organizedTasks[section] {
+            return tasks[indexPath.row]
+        }
+        return nil
+    }
+    
+    private func taskSectionForIndexPath(_ indexPath: IndexPath) -> taskSection? {
+        switch(indexPath.section) {
+        case 0: //Overdue
+            return taskSection.overdue
+        case 1: //Today
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date)
+        case 2: //Tomorrow
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date.add(components: [.day : 1]))
+        case 3: //Tomorrow + 1
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date.add(components: [.day : 2]))
+        case 4: //Tomorrow + 2
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date.add(components: [.day : 3]))
+        case 5: //Tomorrow + 3
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date.add(components: [.day : 4]))
+        case 6: //Tomorrow + 4
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date.add(components: [.day : 5]))
+        case 7: //Tomorrow + 5
+            return taskOrganizer.getTaskSectionForDate(taskOrganizer.date.add(components: [.day : 6]))
+        case 8: //Later
+            return taskSection.later
+        case 9: //To be determined
+            return taskSection.tbd
+        default:
+            return nil
+        }
+    }
+    
 }
 
-extension AgendaTableViewController : DatabaseManagerTaskDelegate {
-    func addedTask() {
+extension AgendaTableViewController : TaskOrganizerDelegate {
+    func addedTask(_ task: Task, toSection section: taskSection) {
         tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: database.tasks.count-1, section: 0)], with: UITableViewRowAnimation.automatic)
+        tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
         tableView.endUpdates()
     }
+    
+    private func sectionForTaskSection(_ ts: taskSection) -> Int {
+        switch(ts) {
+        case .overdue:
+            return 0
+        case .monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday:
+            if let weekday = taskOrganizer.weekdayForTaskSection(ts) {
+                for (i) in 0 ..< 7 {
+                    if (taskOrganizer.date.add(components: [.day : i]).weekday == weekday.rawValue) {
+                        print("i+1: \(i+1)")
+                        return i+1
+                    }
+                }
+            }
+            return 0
+        case .later:
+            return 8
+        case .tbd:
+            return 9
+        }
+        
+    }
 }
-
 
 

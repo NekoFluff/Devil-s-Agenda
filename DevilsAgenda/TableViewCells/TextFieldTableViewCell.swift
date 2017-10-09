@@ -10,6 +10,7 @@ import UIKit
 
 protocol TextFieldTableCellDelegate {
     func textFieldCell(cell: UITableViewCell, changedText text: String);
+    func textFieldCellBeganEditing(cell: UITableViewCell)
 }
 
 class TextFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
@@ -17,7 +18,14 @@ class TextFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
     var delegate : TextFieldTableCellDelegate?
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var textField: UITextField!
-    
+    var editingDisabled = false {
+        didSet {
+            textField.isEnabled = !editingDisabled
+            if editingDisabled && textField.canResignFirstResponder {
+                textField.resignFirstResponder()
+            }
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         textField.delegate = self
@@ -31,6 +39,17 @@ class TextFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
         // Configure the view for the selected state
     }
     
+    func configure(title: String, textFieldText: String, textFieldPlaceholder: String) {
+        self.title.text = title
+        self.textField.placeholder = textFieldPlaceholder
+        self.textField.text = textFieldText
+    }
+    
+    //MARK: TextField Delegate Methods
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        delegate?.textFieldCellBeganEditing(cell: self)
+        return true
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
         delegate?.textFieldCell(cell: self, changedText: textField.text ?? "")
     }

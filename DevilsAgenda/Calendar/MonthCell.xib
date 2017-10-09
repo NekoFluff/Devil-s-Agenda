@@ -4,14 +4,15 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MonthCell" customModule="Devil_s_Agenda" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MonthCell" customModule="DevilsAgenda" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MonthCell" customModule="Devil_s_Agenda" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MonthCell" customModule="DevilsAgenda" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="280" height="50"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -21,19 +22,45 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Cj-Mg-ZXD">
+                    <rect key="frame" x="0.0" y="9" width="30" height="33"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="&lt;">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="beforeButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="HHe-GD-m6Y"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QZh-2P-pMG">
+                    <rect key="frame" x="250" y="9" width="30" height="33"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="&gt;">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="afterActionPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="OvC-J0-c9m"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="6SA-Ya-CMT" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="2Te-Ug-IGw"/>
                 <constraint firstItem="6SA-Ya-CMT" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="G4s-yp-5gI"/>
+                <constraint firstAttribute="trailing" secondItem="QZh-2P-pMG" secondAttribute="trailing" id="GKY-cl-Yzj"/>
                 <constraint firstItem="6SA-Ya-CMT" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ScT-iU-DjN"/>
                 <constraint firstItem="6SA-Ya-CMT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="Zha-xJ-LnC"/>
+                <constraint firstItem="9Cj-Mg-ZXD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="acG-gr-Fxy"/>
+                <constraint firstItem="9Cj-Mg-ZXD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jr3-WZ-dHc"/>
+                <constraint firstItem="QZh-2P-pMG" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="t3p-o2-zgq"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="afterButton" destination="QZh-2P-pMG" id="7Cj-CR-Bxs"/>
+                <outlet property="beforeButton" destination="9Cj-Mg-ZXD" id="va9-kp-jBH"/>
                 <outlet property="monthLabel" destination="6SA-Ya-CMT" id="WmV-sF-P6z"/>
             </connections>
         </view>

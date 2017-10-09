@@ -19,31 +19,57 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     let database = DatabaseManager.defaultManager
     var prevIndexPath : IndexPath?
     
+    var task : Task? = nil
     var selectedClassIndex : Int = 0
     var selectedCategoryIndex : Int = 0
     var descriptionText : String = ""
-    //var delegate : AddTaskViewControllerDelegate?
+    var dueDate : Date?
+    var whenToDoDate : Date?
     
+    private var editingDisabled = false
+    
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: UIBarButtonItem!
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil);
     }
     
     @IBAction func add(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil);
         
-        if let classKey = database.classes[selectedClassIndex].databaseKey {
-            let newTask = Task(database.classes[selectedClassIndex],
-                               category: taskCategory(rawValue: categories[selectedCategoryIndex]) ?? taskCategory(rawValue: "Assignment")!,
-                               desc: descriptionText)
-            database.tasks.append(newTask)
-            database.saveTask(forClass: classKey,
-                              withData: newTask.toDict())
+        if (!editingDisabled) {
+            self.view.endEditing(true)
             
+            if task != nil { //Edit the task passed in
+                task!.reconfigure(database.classes[selectedClassIndex],
+                                 category: taskCategory(rawValue: categories[selectedCategoryIndex])!,
+                                 desc: descriptionText,
+                                 dueDate: dueDate,
+                                 todoDate: whenToDoDate)
+                database.saveTask(&task!)
+                //editingDisabled = true
+                //addButton.title = "Edit"
+                //self.tableView.reloadData()
+                
+            } else { //Only make new tasks when you aren't editing a task
+                var newTask = Task(database.classes[selectedClassIndex],
+                                   category: taskCategory(rawValue: categories[selectedCategoryIndex])!,
+                                   desc: descriptionText,
+                                   dueDate: dueDate,
+                                   todoDate: whenToDoDate)
+                database.saveTask(&newTask)
+                
+            }
             
-            //self.delegate?.addedNewTask(task: newTask)
+            dismiss(animated: true, completion: nil);
+            
         } else {
-            print("ERROR: Class key missing!")
+            editingDisabled = false
+            addButton.title = "Done"
+            self.tableView.reloadData()
+
         }
+        
+        
     }
     
     override func viewDidLoad() {
@@ -57,6 +83,20 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 44; // Some average height of your cells
+        
+        setupButtons()
+    }
+    
+    private func setupButtons() {
+        if editingDisabled {
+            self.navigationItem.title = "Edit Task"
+            cancelButton.title = "Back"
+            addButton.title = "Edit"
+        } else {
+            if (task != nil) {
+                addButton.title = "Done"
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,10 +104,44 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
-
-
-    // MARK: - Table view data source
+    //MARK: Public Methods
+    func configure(withTask task: Task) {
+        self.task = task
+        selectedClassIndex = indexForClass(task.rClass)
+        selectedCategoryIndex = indexForCategory(task.category)
+        descriptionText = task.desc
+        dueDate = task.dueDate
+        whenToDoDate = task.todoDate
+    }
     
+    func disableEditing() {
+        editingDisabled = true
+    }
+    
+    private func indexForClass(_ rClass: Class) -> Int {
+        for (i,c) in database.classes.enumerated() {
+            if c == rClass {
+                return i
+            }
+        }
+        
+        return 0
+    }
+    
+    private func indexForCategory(_ category: taskCategory?) -> Int {
+        guard category != nil else {return 0}
+        
+        for (i,c) in categories.enumerated() {
+            if c == category!.rawValue {
+                return i
+            }
+        }
+        
+        return 0
+    }
+    
+
+    // MARK: - Table View Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 3
@@ -93,58 +167,79 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "pickerViewTableViewCell", for: indexPath) as! PickerViewTableViewCell
                 
-                cell.delegate = self
-                cell.title.text = section0[indexPath.row]
-                cell.pickerData = database.classes.map({ (myClass) -> String in
-                    return myClass.name
-                })
-                cell.picker.selectRow(selectedClassIndex, inComponent: 0, animated: false)
                 
+                cell.configure(title: section0[indexPath.row],
+                               data: database.classes.map({ (myClass) -> String in
+                                    return myClass.name}),
+                               selectedRow: selectedClassIndex)
+                cell.editingDisabled = editingDisabled
+                cell.delegate = self
+            
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "pickerViewTableViewCell", for: indexPath) as! PickerViewTableViewCell
+
                 
+                cell.configure(title: section0[indexPath.row],
+                               data: categories,
+                               selectedRow: selectedCategoryIndex)
+                cell.editingDisabled = editingDisabled
                 cell.delegate = self
-                cell.title.text = section0[indexPath.row]
-                cell.pickerData = categories
-                cell.picker.selectRow(selectedCategoryIndex, inComponent: 0, animated: false)
                 
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldTableViewCell", for: indexPath) as! TextFieldTableViewCell
                 
-                cell.title.text = section0[section0.count-1]
-                cell.textField.placeholder = "What do you have to do?"
-                cell.textField.text = descriptionText
+                cell.configure(title: section0[section0.count-1],
+                               textFieldText: descriptionText,
+                               textFieldPlaceholder: "What do you have to do?")
+                cell.editingDisabled = editingDisabled
                 cell.delegate = self
                 
                 return cell
 
             }
         } else if indexPath.section == 1 {
-            //TODO: Date Picker!!!
-            let cell = tableView.dequeueReusableCell(withIdentifier: "pickerViewTableViewCell", for: indexPath) as! PickerViewTableViewCell
-            cell.delegate = self
+            let cell = tableView.dequeueReusableCell(withIdentifier: "labelTableViewCell", for: indexPath) as! LabelTableViewCell
             
+            //Date Formatter
+            var dateString = "-"//"--/--/---- --:-- --"
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US")
+            dateFormatter.dateFormat = "MMMM dd,   h:mm a"
+            
+            //Customize Label Cell
             if indexPath.row == 0 {
-                cell.title.text = section1[indexPath.row]
-                cell.pickerData = ["a","b","c","d","e"]
+                if let dueDate = dueDate {
+                    dateString = dateFormatter.string(from: dueDate)
+                }
+                
+                cell.configure(titleText: section1[indexPath.row], labelText: dateString)
             } else {
-                cell.title.text = section1[indexPath.row]
-                cell.pickerData = ["a","b","c","d","e"]
+                if let whenToDoDate = whenToDoDate {
+                    dateString = dateFormatter.string(from: whenToDoDate)
+                }
+                
+                cell.configure(titleText: section1[indexPath.row], labelText: dateString)
             }
+            cell.editingDisabled = editingDisabled
+            
             return cell
+            
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonTableViewCell", for: indexPath) as! ButtonTableViewCell
             
             cell.button.setTitle(section2[0], for: UIControlState.normal)
+            cell.editingDisabled = editingDisabled
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "pickerViewTableViewCell", for: indexPath) as! PickerViewTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "labelTableViewCell", for: indexPath) as! LabelTableViewCell
+            
+            
+            cell.configure(titleText: "ERROR", labelText: "Invalid Section")
             cell.delegate = self
-            cell.title.text = "error"
-            cell.pickerData = ["a","b","c","d","e"]
+            cell.editingDisabled = editingDisabled
             
             return cell
         }
@@ -202,6 +297,10 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard !editingDisabled else {return}
+            
         if let prevI = prevIndexPath, let prevPickerCell = tableView.cellForRow(at: prevI) as? PickerViewTableViewCell {
             if (prevIndexPath != indexPath && prevPickerCell.showsDetails) {
                 prevPickerCell.showsDetails = !prevPickerCell.showsDetails
@@ -220,6 +319,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
                 pickerCell.contentView.layoutIfNeeded() // Or self.contentView if you're doing this from your own cell subclass
             }
             
+            self.view.endEditing(true)
         }
     
         tableView.beginUpdates()
@@ -228,9 +328,28 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         prevIndexPath = indexPath
         
-        self.present(CalendarView(), animated: true) {
-            print("Presented Calendar View")
+        
+        if !editingDisabled && indexPath.section == 1 {
+            let calendar = CalendarView(nibName: "CalendarView", bundle: Bundle(for: CalendarView.self))
+            calendar.delegate = self
+            calendar.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+            
+            if indexPath.row == 0 {
+                if let dueDate = dueDate {
+                    calendar.date = dueDate
+                }
+            } else if indexPath.row == 1 {
+                if let whenToDoDate = whenToDoDate {
+                    calendar.date = whenToDoDate
+                }
+            }
+
+            self.present(calendar, animated: true) {
+                print("Presented Calendar View")
+            }
+
         }
+
     }
     
 }
@@ -239,10 +358,10 @@ extension AddTaskViewController : PickerViewTableCellDelegate {
     
     func pickerCell(cell: UITableViewCell, selectedPickerIndex index: Int, inArray array: [String]) {
         if let indexPath = tableView.indexPath(for: cell) {
-            if indexPath.section == 1 && indexPath.row == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 selectedClassIndex = index
                 print("Changed class index to \(index)")
-            } else if indexPath.section == 1 && indexPath.row == 1 {
+            } else if indexPath.section == 0 && indexPath.row == 1 {
                 selectedCategoryIndex = index
                 print("Changed category index to \(index)")
             }
@@ -251,13 +370,35 @@ extension AddTaskViewController : PickerViewTableCellDelegate {
 }
 
 
-
-
-
-
 extension AddTaskViewController : TextFieldTableCellDelegate {
     func textFieldCell(cell: UITableViewCell, changedText text: String) {
         self.descriptionText = text;
         print("New description text: " + text)
+    }
+    
+    func textFieldCellBeganEditing(cell: UITableViewCell) {
+        if let indexPath = tableView.indexPath(for: cell) {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+            self.tableView(tableView, didSelectRowAt: indexPath)
+        }
+    }
+}
+
+extension AddTaskViewController : CalendarViewDelegate {
+    func selectedDate(_ date: Date) {
+        if (prevIndexPath?.section == 1) {
+            switch (prevIndexPath!.row) {
+            case 0:
+                print("Due Date: \(date)")
+                dueDate = date
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: UITableViewRowAnimation.automatic)
+            case 1:
+                print("When to do: \(date)")
+                whenToDoDate = date
+                tableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: UITableViewRowAnimation.automatic)
+            default:
+                print("Calendar responding to unknown row in section 1")
+            }
+        }
     }
 }
