@@ -47,6 +47,7 @@
 		820F09B31F85F78E004D9179 /* PickerViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */; };
 		820F09B51F85F810004D9179 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 820F09B41F85F810004D9179 /* GoogleService-Info.plist */; };
 		8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */; };
+		826F06961F8BFACA00805ED1 /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 826F06951F8BFACA00805ED1 /* Fastfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PickerViewTableViewCell.swift; path = TableViewCells/PickerViewTableViewCell.swift; sourceTree = "<group>"; };
 		820F09B41F85F810004D9179 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskOrganizer.swift; path = Agenda/TaskOrganizer.swift; sourceTree = "<group>"; };
+		826F06951F8BFACA00805ED1 /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
 		851317DC6E019E559341DFC5 /* Pods-DevilsAgendaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaTests/Pods-DevilsAgendaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8CEA69B96AC6F1696E445929 /* Pods-DevilsAgendaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaUITests/Pods-DevilsAgendaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B4CF2DE15388AF4707AA7494 /* Pods_DevilsAgenda.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevilsAgenda.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,6 +176,7 @@
 		820F08E51F85F3C4004D9179 /* DevilsAgenda */ = {
 			isa = PBXGroup;
 			children = (
+				826F06951F8BFACA00805ED1 /* Fastfile */,
 				820F09B41F85F810004D9179 /* GoogleService-Info.plist */,
 				820F09971F85F62E004D9179 /* TableViewCells */,
 				820F098E1F85F619004D9179 /* Settings */,
@@ -390,7 +393,7 @@
 					820F08E21F85F3C4004D9179 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 8NY9PHSY65;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					820F08F61F85F3C4004D9179 = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -429,6 +432,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				826F06961F8BFACA00805ED1 /* Fastfile in Resources */,
 				820F08F11F85F3C4004D9179 /* LaunchScreen.storyboard in Resources */,
 				820F09B51F85F810004D9179 /* GoogleService-Info.plist in Resources */,
 				820F09751F85F5E4004D9179 /* CalendarView.xib in Resources */,
@@ -818,12 +822,15 @@
 			baseConfigurationReference = 4859DA0B732E9C1B536650A1 /* Pods-DevilsAgenda.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 8NY9PHSY65;
 				INFOPLIST_FILE = DevilsAgenda/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.TeamPlanIt.DevilsAgenda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "b192cf34-464f-4670-aeeb-5b1e4ea1b544";
+				PROVISIONING_PROFILE_SPECIFIER = "DevilsAgenda Adhoc";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -833,12 +840,15 @@
 			baseConfigurationReference = C5415DD9FBA81B53D7829A9D /* Pods-DevilsAgenda.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 8NY9PHSY65;
 				INFOPLIST_FILE = DevilsAgenda/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.TeamPlanIt.DevilsAgenda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "863e216b-4ceb-4011-848f-a262394f4265";
+				PROVISIONING_PROFILE_SPECIFIER = "DevilsAgenda Adhoc";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
