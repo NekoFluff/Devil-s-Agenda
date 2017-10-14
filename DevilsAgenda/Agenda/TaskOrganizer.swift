@@ -11,6 +11,7 @@ import SwiftDate
 protocol TaskOrganizerDelegate {
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int)
     //func deletedTask(_ task: Task, inSection section: taskSection)
+    func updatedTask(_ task: Task, inSection section: taskSection)
 }
 
 enum taskSection : String {
@@ -183,6 +184,10 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
     
     func updatedTask(_ task: Task) {
         print("updated task. task organizer requires function implementation")
+        let section = getTaskSectionForTask(task)
+        
+        delegate?.updatedTask(task, inSection: section)
+        print("Used enumeration to delete task in organized list.")
     }
     
     func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
@@ -199,6 +204,7 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
             for (i,t) in organizedTasks[section]!.enumerated() {
                 if t === task {
                     organizedTasks[section]!.remove(at: i)
+                    break
                 }
             }
             print("Used enumeration to delete task in organized list.")

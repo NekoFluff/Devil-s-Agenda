@@ -236,15 +236,19 @@ class AgendaTableViewController: UITableViewController {
 }
 
 extension AgendaTableViewController : TaskOrganizerDelegate {
+
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int) {
         tableView.beginUpdates()
         //tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
         tableView.insertRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
         tableView.endUpdates()
     }
-
-    func addedTask(_ task: Task, toSection section: taskSection) {
-
+    
+    func updatedTask(_ task: Task, inSection section: taskSection) {
+        tableView.beginUpdates()
+        tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+        //tableView.reloadRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
+        tableView.endUpdates()
     }
     
     private func sectionForTaskSection(_ ts: taskSection) -> Int {
