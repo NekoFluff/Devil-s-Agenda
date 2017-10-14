@@ -14,6 +14,20 @@ class AgendaTableViewController: UITableViewController {
     let database = DatabaseManager.defaultManager
     let taskOrganizer = TaskOrganizer.defaultOrganizer
     
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        if database.classes.count == 0 {
+            let alert = UIAlertController(title: "No Classes", message: "Add a class in the Classes tab before adding a task!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: { _ in
+                NSLog("The \"OK\" alert occured.")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            self.performSegue(withIdentifier: Constants.Segues.AddTaskVC, sender: self)
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -110,15 +124,15 @@ class AgendaTableViewController: UITableViewController {
 
     
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            database.deleteTask(database.tasks[indexPath.row], atIndexPath: indexPath)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            // Delete the row from the data source
+//            database.deleteTask(database.tasks[indexPath.row], atIndexPath: indexPath)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        } else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }    
+//    }
  
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
@@ -127,8 +141,12 @@ class AgendaTableViewController: UITableViewController {
         
         let complete = UITableViewRowAction(style: .normal, title: "Complete") { (action, indexPath) in
             // share item at indexPath
-            self.database.deleteTask(self.database.tasks[indexPath.row], atIndexPath: indexPath)
-            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            
+            if let task = self.taskForIndexPath(indexPath) {
+                self.database.deleteTask(task , atIndexPath: indexPath)
+                
+                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            }
         }
         
         complete.backgroundColor = UIColor.green
@@ -154,11 +172,11 @@ class AgendaTableViewController: UITableViewController {
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    //In a storyboard-based application, you will often want to do a little preparation before navigation
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if segue.identifier == Constants.Segues.AddTaskVC {
 //            if let dest = segue.destination as? AddTaskViewController {
-//                dest.delegate = self
+//                
 //            }
 //        }
 //    }
@@ -218,10 +236,15 @@ class AgendaTableViewController: UITableViewController {
 }
 
 extension AgendaTableViewController : TaskOrganizerDelegate {
-    func addedTask(_ task: Task, toSection section: taskSection) {
+    func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int) {
         tableView.beginUpdates()
-        tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+        //tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+        tableView.insertRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
         tableView.endUpdates()
+    }
+
+    func addedTask(_ task: Task, toSection section: taskSection) {
+
     }
     
     private func sectionForTaskSection(_ ts: taskSection) -> Int {

@@ -12,7 +12,7 @@ enum taskCategory : String {
     case Assignment = "Assignment", Quiz = "Quiz", Test = "Test", Project = "Project", Other = "Other"
 }
 
-class Task {
+class Task : Equatable {
     
     var rClass : Class
     var category : taskCategory?
@@ -85,5 +85,8 @@ class Task {
         return dict
     }
     
+    static func ==(left: Task, right: Task) -> Bool {
+        return left.rClass == right.rClass && left.databaseKey == right.databaseKey && left.category == right.category
+    }
     
 }

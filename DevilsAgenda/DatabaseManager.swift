@@ -16,6 +16,7 @@ protocol DatabaseManagerClassDelegate {
 protocol DatabaseManagerTaskDelegate {
     func addedTask(_ task: Task);
     func updatedTask(_ task: Task);
+    func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?);
 }
 
 class DatabaseManager {
@@ -162,15 +163,19 @@ class DatabaseManager {
         
     }
     
-    func deleteTask(_ t: Task, atIndexPath indexPath: IndexPath?) {
+    func deleteTask(_ t: Task, atIndexPath indexPath: IndexPath) {
 
         if let path = getPathForTask(t) {
 
             self.ref.child(path).removeValue()
-            if indexPath != nil {
-                self.tasks.remove(at: indexPath!.row)
-            }
             
+                
+            for (i,task) in tasks.enumerated() {
+                if task === t {
+                    tasks.remove(at: i)
+                    self.taskDelegate?.deletedTask(task, withIndexPath: indexPath);
+                }
+            }
         }
     }
     

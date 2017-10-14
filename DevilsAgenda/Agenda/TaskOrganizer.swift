@@ -9,7 +9,8 @@
 import SwiftDate
 
 protocol TaskOrganizerDelegate {
-    func addedTask(_ task: Task, toSection section: taskSection)
+    func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int)
+    //func deletedTask(_ task: Task, inSection section: taskSection)
 }
 
 enum taskSection : String {
@@ -27,56 +28,95 @@ class TaskOrganizer {
     let date = Date()
     let database = DatabaseManager.defaultManager
     
+    
     var organizedTasks : [String : [Task]] = [:]
     var delegate : TaskOrganizerDelegate?
     
     init() {
-        sortTasks(database.tasks)
+        addAndSortTasks(database.tasks)
         database.taskDelegate = self
     }
     
-    func sortTasks(_ tasks: [Task]) {
+    private func addAndSortTasks(_ tasks: [Task]) {
         for (t) in tasks {
             addTask(t)
         }
     }
     
-    func addTask(_ t: Task) -> taskSection {
+    func addTask(_ t: Task) -> (section: taskSection, index: Int) {
+        let section = getTaskSectionForTask(t)
+        
+        return (section, addTask(t, toSection: section))
+    }
+    
+    private func addTask(_ t: Task, toSection section: taskSection) -> Int{
+        if organizedTasks[section.rawValue] != nil {
+            
+            
+            if t.dueDate != nil {
+                
+                return binarySearchInsert(t, intoSection: section)
+                
+            } else {
+                organizedTasks[section.rawValue]?.append(t)
+                return organizedTasks[section.rawValue]!.count - 1
+                
+            }
+        } else {
+            organizedTasks[section.rawValue] = [t]
+            return 0
+        }
+    }
+    
+    private func binarySearchInsert(_ t: Task, intoSection section: taskSection) -> Int {
+        guard let dueDate = t.dueDate else {return -1}
+        
+        let tasks = organizedTasks[section.rawValue]!
+        
+        var L = 0;
+        var R = organizedTasks[section.rawValue]!.count - 1
+    
+        while (L <= R) {
+            let M = (L+R)/2
+            
+            if let middleDueDate = tasks[M].dueDate {
+                if dueDate > middleDueDate {
+                    L = M + 1
+                } else {
+                    R = M - 1
+                }
+            }
+        }
+        
+        organizedTasks[section.rawValue]!.insert(t, at: L)
+        return L
+    }
+    
+    func getTaskSectionForTask(_ t: Task) -> taskSection {
         if let dueDate = t.dueDate {
             
-            //let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+            let calendar = Calendar.current
             
-            //var components = calendar.dateComponents([.month, .day, .year], from: dueDate)
-            //components.setValue(0, for: .hour)
-            //components.setValue(0, for: .second)
+            var components = calendar.dateComponents([.month, .day, .year, .hour, .second], from: date)
+            components.setValue(0, for: .hour)
+            components.setValue(0, for: .second)
             
-            //let oneWeekLater = calendar.date(from: components)!.add(components: [.day : 1])
+            let oneWeekLater = calendar.date(from: components)!.add(components: [.day : 7])
             
             //----------- Overdue or Past 1 Week
             if dueDate < date {
-                addTask(t, toSection: taskSection.overdue)
                 return taskSection.overdue
                 
-            } else if dueDate > date.add(components:[.day : 7]) {
-                addTask(t, toSection: taskSection.later)
+            } else if dueDate > oneWeekLater {
                 return taskSection.later
             }
             
             let section = getTaskSectionForDate(dueDate)
-            addTask(t, toSection: section)
             return section
             
         } else { //---------- No due date
-            addTask(t, toSection: taskSection.tbd)
+            
             return taskSection.tbd
-        }
-    }
-    
-    private func addTask(_ t: Task, toSection section: taskSection) {
-        if organizedTasks[section.rawValue] != nil {
-            organizedTasks[section.rawValue]!.append(t)
-        } else {
-            organizedTasks[section.rawValue] = [t]
         }
     }
     
@@ -84,6 +124,15 @@ class TaskOrganizer {
         return organizedTasks[section.rawValue]?.count ?? 0
     }
     
+    /**
+     A function that returns the taskSection (Mon-Sun) for a specific date
+     - parameters:
+     - date: The date
+     
+     - returns:
+     taskSection for the specified date
+     
+     */
     func getTaskSectionForDate(_ date: Date) -> taskSection {
         //------------ Mon/Tues/Wed/Thurs/Fri/Sat/Sun
         switch (weekdays(rawValue: date.weekday)!) {
@@ -128,11 +177,33 @@ class TaskOrganizer {
 
 extension TaskOrganizer : DatabaseManagerTaskDelegate {
     func addedTask(_ task: Task) {
-        let section = addTask(task)
-        delegate?.addedTask(task, toSection: section)
+        let (section, index) = addTask(task)
+        delegate?.addedTask(task, toSection: section, withIndex: index)
     }
     
     func updatedTask(_ task: Task) {
         print("updated task. task organizer requires function implementation")
     }
+    
+    func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
+        let section = getTaskSectionForTask(task).rawValue
+        
+        if let indexPath = indexPath, organizedTasks[section]!.count - 1 >= indexPath.row && organizedTasks[section]![indexPath.row] === task {
+            
+            organizedTasks[section]!.remove(at: indexPath.row)
+            print("Used indexPath to delete task in organized list.")
+            
+        } else {
+            
+            //Enumerate through array and attempt to delete it there.
+            for (i,t) in organizedTasks[section]!.enumerated() {
+                if t === task {
+                    organizedTasks[section]!.remove(at: i)
+                }
+            }
+            print("Used enumeration to delete task in organized list.")
+        }
+        
+    }
+    
 }
