@@ -236,7 +236,10 @@ class AgendaTableViewController: UITableViewController {
 }
 
 extension AgendaTableViewController : TaskOrganizerDelegate {
-
+    func deletedClass(_ class: Class) {
+        self.tableView.reloadData()
+    }
+    
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int) {
         tableView.beginUpdates()
         //tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)

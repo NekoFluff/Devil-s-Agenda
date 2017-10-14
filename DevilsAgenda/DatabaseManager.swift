@@ -11,12 +11,14 @@ import Firebase
 
 protocol DatabaseManagerClassDelegate {
     func addedClass(class: Class);
+    func deletedClass(_ c: Class);
 }
 
 protocol DatabaseManagerTaskDelegate {
     func addedTask(_ task: Task);
     func updatedTask(_ task: Task);
     func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?);
+    func deletedClass(_ c: Class);
 }
 
 class DatabaseManager {
@@ -126,6 +128,7 @@ class DatabaseManager {
         }
     }*/
     
+    //MARK: CLASS Methods
     func saveClass( _ c: Class) {
 
         var classPath = self.ref.child("users").child(Auth.auth().currentUser!.uid).child("classes")
@@ -139,6 +142,26 @@ class DatabaseManager {
         classPath.setValue(c.toDict())
     }
     
+    func deleteClass(atIndex index: Int) {
+        
+        if let path = getClassPath(classes[index]) {
+            self.ref.child(path).removeValue()
+
+            //Delete all tasks associated with that task
+            tasks = tasks.filter({ (task) -> Bool in
+                task.rClass != classes[index]
+            })
+            
+            //Delete the class
+            let deletedClass = classes.remove(at: index)
+            
+            self.taskDelegate?.deletedClass(deletedClass)
+            self.classDelegate?.deletedClass(deletedClass)
+        }
+        
+    }
+    
+    //MARK: TASK Methods
     func saveTask( _ t: inout Task) {
 
         if let path = getTasksPath(t.rClass) {
@@ -183,12 +206,23 @@ class DatabaseManager {
         
     }
     
-    private func getTasksPath(_ c: Class) -> String? {
+    //MARK: Get Paths
+    private func getClassPath(_ c: Class) -> String? {
         if let classKey = c.databaseKey {
             
-            return "users/\(Auth.auth().currentUser!.uid)/classes/\(classKey)/\(Constants.ClassFields.tasks)"
+            return "users/\(Auth.auth().currentUser!.uid)/classes/\(classKey)"
         } else {
-            print("ERROR: saveTask(_ t: Task) FAILED. Class key missing!")
+            print("ERROR: getClassPath(_ c: Class) FAILED. Class key missing!")
+            return nil
+        }
+    }
+    
+    private func getTasksPath(_ c: Class) -> String? {
+        if let classPath = getClassPath(c) {
+            
+            return classPath+"/\(Constants.ClassFields.tasks)"
+        } else {
+            print("ERROR: getTasksPath(_ c: Class) FAILED. Class key missing!")
             return nil
         }
     }

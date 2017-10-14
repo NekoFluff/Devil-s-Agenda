@@ -12,6 +12,7 @@ protocol TaskOrganizerDelegate {
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int)
     //func deletedTask(_ task: Task, inSection section: taskSection)
     func updatedTask(_ task: Task, inSection section: taskSection)
+    func deletedClass(_ class: Class)
 }
 
 enum taskSection : String {
@@ -34,11 +35,12 @@ class TaskOrganizer {
     var delegate : TaskOrganizerDelegate?
     
     init() {
-        addAndSortTasks(database.tasks)
+        sortTasks(database.tasks)
         database.taskDelegate = self
     }
     
-    private func addAndSortTasks(_ tasks: [Task]) {
+    func sortTasks(_ tasks: [Task]) {
+        organizedTasks = [:]
         for (t) in tasks {
             addTask(t)
         }
@@ -177,17 +179,19 @@ class TaskOrganizer {
 }
 
 extension TaskOrganizer : DatabaseManagerTaskDelegate {
+    func deletedClass(_ c: Class) {
+        self.sortTasks(database.tasks)
+        delegate?.deletedClass(c)
+    }
+
     func addedTask(_ task: Task) {
         let (section, index) = addTask(task)
         delegate?.addedTask(task, toSection: section, withIndex: index)
     }
     
     func updatedTask(_ task: Task) {
-        print("updated task. task organizer requires function implementation")
         let section = getTaskSectionForTask(task)
-        
         delegate?.updatedTask(task, inSection: section)
-        print("Used enumeration to delete task in organized list.")
     }
     
     func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
@@ -211,5 +215,4 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
         }
         
     }
-    
 }
