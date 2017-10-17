@@ -28,7 +28,7 @@ class TaskTableViewCell: UITableViewCell {
     
     func configure(task: Task) {
         // Configure the cell...
-        self.colorView.backgroundColor = uicolorForString(str: task.rClass.color)
+        self.colorView.backgroundColor = Constants.uicolorForString(str: task.rClass.color)
         self.titleLabel.text = task.desc
         self.subtitleLabel.text = task.rClass.name
         
@@ -43,23 +43,6 @@ class TaskTableViewCell: UITableViewCell {
         self.dateLabel.text = dateString
     }
     
-    private func uicolorForString(str: String) -> UIColor {
-        switch (str) {
-        case "Red":
-            return UIColor.red
-        case "Green":
-            return UIColor.green
-        case "Blue":
-            return UIColor.blue
-        case "Orange":
-            return UIColor.orange
-        case "Yellow":
-            return UIColor.yellow
-        case "Black":
-            return UIColor.black
-        default:
-            return UIColor.black
-        }
-    }
+
 
 }

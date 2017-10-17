@@ -13,6 +13,43 @@ class ClassesTableViewController: UITableViewController {
 
     let database = DatabaseManager.defaultManager
     
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        //Prsent an alert
+        let alert = UIAlertController(title: "Add a Class", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Create a New Class", comment: "Default action"), style: .default, handler: { _ in
+            NSLog("The \"New Class\" alert occured.")
+            
+            self.performSegue(withIdentifier: "AddClassVC", sender: self)
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Use a Class Code", comment: "Insert a class code"), style: .default, handler: { _ in
+            NSLog("The \"Class Code\" alert occured.")
+            
+            
+            //Present an input text field
+            let textFieldAlert = UIAlertController(title: "Insert Class Code", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            
+            textFieldAlert.addTextField(configurationHandler: { (textField) in
+                textField.text = nil
+            })
+                
+            textFieldAlert.addAction(UIAlertAction(title: NSLocalizedString("Add", comment: "Default action"), style: .default, handler: { _ in
+                NSLog("The \"Add\" alert occured.")
+                
+                if let code = textFieldAlert.textFields![0].text {
+                    self.database.addSharedClass(key: code)
+                    
+
+                }
+            }))
+            textFieldAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+            
+            self.present(textFieldAlert, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,6 +60,10 @@ class ClassesTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem = self.editButtonItem        
         database.addClassListener()
         database.classDelegate = self
+        
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
     }
     
     deinit {
@@ -45,20 +86,27 @@ class ClassesTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return database.classes.count
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55.0
+    }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "classCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "classTableViewCell", for: indexPath) as! ClassTableViewCell
 
         // Unpack class and configure the cell
-        let name = database.classes[indexPath.row].name
-        let color = database.classes[indexPath.row].color
-        cell.textLabel?.text = name + ": " + color
-
+        
+        cell.configure(database.classes[indexPath.row])
+       
         return cell
     }
     
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -125,4 +173,23 @@ extension ClassesTableViewController : DatabaseManagerClassDelegate {
     func deletedClass(_ c: Class) {
         print("Deleted class \(c.name)")
     }
+    
+    func addedSharedClass(code: String, newClass: Class?, customErrorMessage msg: String?) {
+        var text = "Failure"
+        var message = msg ?? "Unknown error occured"
+        
+        if let newClass = newClass {
+            text = "Success"
+            message = "You have successfully downloaded the shared class '\(newClass.name)'"
+        }
+        
+        let resultAlert = UIAlertController(title: text, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        resultAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            print("User accepted results")
+        }))
+        
+        self.present(resultAlert, animated: true, completion: nil)
+    }
+
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var classTextField: UITextField!
@@ -19,9 +20,11 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     @IBAction func done(_ sender: UIBarButtonItem) {        
-        database.saveClass(Class(name: classTextField.text ?? "", color: colorTextField.text ?? ""))
+        database.saveClass(Class(name: classTextField.text ?? "", color: colorTextField.text ?? "", owner: Auth.auth().currentUser!.uid, shared: shareSwitch.isOn))
         dismiss(animated: true, completion: nil);
     }
+
+    @IBOutlet weak var shareSwitch: UISwitch!
     
     var pickOption = ["Red", "Green", "Blue", "Orange", "Yellow", "Black"]
     

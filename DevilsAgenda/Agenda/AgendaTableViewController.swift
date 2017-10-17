@@ -38,6 +38,10 @@ class AgendaTableViewController: UITableViewController {
         //self.navigationItem.leftBarButtonItem = self.editButtonItem
         taskOrganizer.delegate = self
         tableView.allowsSelectionDuringEditing = true
+        
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
     }
     
     deinit {
@@ -236,6 +240,13 @@ class AgendaTableViewController: UITableViewController {
 }
 
 extension AgendaTableViewController : TaskOrganizerDelegate {
+    func deletedTask(_ task: Task, inSection section: taskSection) {
+        tableView.beginUpdates()
+        tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+        //tableView.reloadRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
+        tableView.endUpdates()
+    }
+
     func deletedClass(_ class: Class) {
         self.tableView.reloadData()
     }

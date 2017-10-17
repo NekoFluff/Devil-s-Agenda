@@ -10,7 +10,7 @@ import SwiftDate
 
 protocol TaskOrganizerDelegate {
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int)
-    //func deletedTask(_ task: Task, inSection section: taskSection)
+    func deletedTask(_ task: Task, inSection section: taskSection)
     func updatedTask(_ task: Task, inSection section: taskSection)
     func deletedClass(_ class: Class)
 }
@@ -185,33 +185,40 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
     }
 
     func addedTask(_ task: Task) {
+        print("ADDING \(task.desc)")
         let (section, index) = addTask(task)
         delegate?.addedTask(task, toSection: section, withIndex: index)
     }
     
     func updatedTask(_ task: Task) {
+        print("UPDATING \(task.desc)")
         let section = getTaskSectionForTask(task)
         delegate?.updatedTask(task, inSection: section)
     }
     
     func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
-        let section = getTaskSectionForTask(task).rawValue
-        
-        if let indexPath = indexPath, organizedTasks[section]!.count - 1 >= indexPath.row && organizedTasks[section]![indexPath.row] === task {
+        print("DELETING \(task.desc)")
+        let section = getTaskSectionForTask(task)
+
+        if let indexPath = indexPath, organizedTasks[section.rawValue]!.count - 1 >= indexPath.row && organizedTasks[section.rawValue]![indexPath.row] === task {
             
-            organizedTasks[section]!.remove(at: indexPath.row)
+            organizedTasks[section.rawValue]!.remove(at: indexPath.row)
             print("Used indexPath to delete task in organized list.")
             
         } else {
             
             //Enumerate through array and attempt to delete it there.
-            for (i,t) in organizedTasks[section]!.enumerated() {
+            for (i,t) in organizedTasks[section.rawValue]!.enumerated() {
                 if t === task {
-                    organizedTasks[section]!.remove(at: i)
+                    organizedTasks[section.rawValue]!.remove(at: i)
                     break
                 }
             }
             print("Used enumeration to delete task in organized list.")
+        }
+        
+        if (indexPath == nil) {
+            delegate?.deletedTask(task, inSection: section)
         }
         
     }

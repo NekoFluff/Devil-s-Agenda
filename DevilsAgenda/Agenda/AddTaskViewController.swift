@@ -19,6 +19,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     let database = DatabaseManager.defaultManager
     var prevIndexPath : IndexPath?
     
+    var classes = [Class]()
     var task : Task? = nil
     var selectedClassIndex : Int = 0
     var selectedCategoryIndex : Int = 0
@@ -40,7 +41,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.view.endEditing(true)
             
             if task != nil { //Edit the task passed in
-                task!.reconfigure(database.classes[selectedClassIndex],
+                task!.reconfigure(classes[selectedClassIndex],
                                  category: taskCategory(rawValue: categories[selectedCategoryIndex])!,
                                  desc: descriptionText,
                                  dueDate: dueDate,
@@ -51,7 +52,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
                 //self.tableView.reloadData()
                 
             } else { //Only make new tasks when you aren't editing a task
-                var newTask = Task(database.classes[selectedClassIndex],
+                var newTask = Task(classes[selectedClassIndex],
                                    category: taskCategory(rawValue: categories[selectedCategoryIndex])!,
                                    desc: descriptionText,
                                    dueDate: dueDate,
@@ -84,6 +85,10 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 44; // Some average height of your cells
         
+        classes = database.classes.filter({ (c) -> Bool in
+            c.owner == Auth.auth().currentUser!.uid
+        })
+        
         setupButtons()
     }
     
@@ -93,10 +98,17 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             cancelButton.title = "Back"
             addButton.title = "Edit"
         } else {
-            if (task != nil) {
+            if let task = task {
                 addButton.title = "Done"
+                
+                //Disable editing if the user is not the owner of the task
+                if task.rClass.owner != Auth.auth().currentUser!.uid {
+                    addButton.isEnabled = false
+                }
             }
         }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -119,7 +131,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     private func indexForClass(_ rClass: Class) -> Int {
-        for (i,c) in database.classes.enumerated() {
+        for (i,c) in classes.enumerated() {
             if c == rClass {
                 return i
             }
@@ -169,7 +181,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 
                 cell.configure(title: section0[indexPath.row],
-                               data: database.classes.map({ (myClass) -> String in
+                               data: classes.map({ (myClass) -> String in
                                     return myClass.name}),
                                selectedRow: selectedClassIndex)
                 cell.editingDisabled = editingDisabled

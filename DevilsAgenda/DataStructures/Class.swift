@@ -12,21 +12,29 @@ class Class : Equatable {
     var name : String
     var color : String
     var databaseKey : String?
+    var isShared : Bool = false
+    var owner : String
     
-    init(name: String, color: String) {
+    init(name: String, color: String, owner: String, shared: Bool? = false) {
         self.name = name
         self.color = color
+        self.isShared = shared!
+        self.owner = owner
     }
     
     init(data : [String : Any], databaseKey: String) {
         self.name = data[Constants.ClassFields.name] as? String ?? ""
         self.color = data[Constants.ClassFields.color] as? String ?? ""
+        self.owner = data[Constants.ClassFields.owner] as? String ?? ""
+        self.isShared = data[Constants.ClassFields.shared] as? Bool ?? false
         self.databaseKey = databaseKey
     }
     
-    func toDict() -> [String : String] {
+    func toDict() -> [String : Any] {
         var data = [Constants.ClassFields.name : name,
-                Constants.ClassFields.color : color]
+                    Constants.ClassFields.color : color,
+                    Constants.ClassFields.owner : owner,
+                    Constants.ClassFields.shared : isShared] as [String : Any]
         
         if databaseKey != nil {
             data[Constants.ClassFields.key] = databaseKey
