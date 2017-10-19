@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,17 +22,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8FB-Dd-vfQ">
-                                <rect key="frame" x="87" y="304" width="240" height="128"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TitleText" translatesAutoresizingMaskIntoConstraints="NO" id="wkI-E4-Jk1">
+                                <rect key="frame" x="67" y="107" width="281" height="156"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8FB-Dd-vfQ">
+                                <rect key="frame" x="150" y="509" width="115" height="44"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="09Y-iU-VIw" customClass="GIDSignInButton">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="09Y-iU-VIw" customClass="GIDSignInButton">
+                                        <rect key="frame" x="0.0" y="0.0" width="115" height="44"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="5iR-um-NRK"/>
+                                            <constraint firstAttribute="width" constant="115" id="VPQ-37-ZnY"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="09Y-iU-VIw" firstAttribute="leading" secondItem="8FB-Dd-vfQ" secondAttribute="leading" id="0wT-oA-68r"/>
+                                    <constraint firstAttribute="bottom" secondItem="09Y-iU-VIw" secondAttribute="bottom" id="87Q-mM-6H8"/>
+                                    <constraint firstItem="09Y-iU-VIw" firstAttribute="top" secondItem="8FB-Dd-vfQ" secondAttribute="top" id="JMW-FE-rIS"/>
+                                    <constraint firstAttribute="trailing" secondItem="09Y-iU-VIw" secondAttribute="trailing" id="mUP-JZ-1sW"/>
+                                </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.34317337762854194" blue="0.31818271340603954" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.5490196078431373" green="0.11372549019607843" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="8FB-Dd-vfQ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="9Gb-xE-Bht"/>
                             <constraint firstItem="8FB-Dd-vfQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kC8-Og-5ZW"/>
@@ -43,7 +58,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-12" y="43"/>
+            <point key="canvasLocation" x="-13.043478260869566" y="42.391304347826093"/>
         </scene>
         <!--Settings-->
         <scene sceneID="NqB-dc-PfD">
@@ -909,4 +924,7 @@ FkNsYXNzIE5hbWU
             <point key="canvasLocation" x="2190" y="-1397"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="TitleText" width="335" height="212"/>
+    </resources>
 </document>
