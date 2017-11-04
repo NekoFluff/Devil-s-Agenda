@@ -18,3 +18,6 @@
 //TODO: Work on Schedule Sharing!!! (Shares all classes. Non-editable. No tasks are shared)
 //TODO: Work on Class Sharing (Shares one class. Editable to the extent of adding and completing tasks. (Autoids are copied. Only contain information on whether or not the task has been finished. Every time the app is started or the agenda is refreshed, re-retrieve the original set. When marking off completed tasks store it in personal database. Only grab completedTasks once. Only show those that are non-completed) <- Tasks are shared only to that extent. Modified date to update?? USE UTC)
 //TODO: Work on refresh functionality when dragging down table view
+//TODO: Setting for user to change duration of notification snooze
+
+

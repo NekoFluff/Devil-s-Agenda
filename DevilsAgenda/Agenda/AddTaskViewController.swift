@@ -8,10 +8,13 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var tableView: UITableView!
+    
+    //MARK: Variables
+    
     let categories = ["Assignment", "Quiz", "Test", "Project", "Other"]
     let section0 = ["Class", "Category", "Name"]
     let section1 = ["Due Date", "When to do"]
@@ -29,8 +32,16 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     private var editingDisabled = false
     
+    
+    //MARK: IBOutlets
+    
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
+    
+    
+    //MARK: IBActions
+    
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil);
     }
@@ -70,8 +81,48 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         }
         
+    }
+    
+    @IBAction func addReminder(_ sender: UIButton) {
+        
+        //Set Up Notification Parameters:
+        
+        //identifier:
+        let identifier = descriptionText
+        
+        //actions:
+        let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
+        let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
+        
+        //category:
+        let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
+        
+        //content:
+        let content = UNMutableNotificationContent()
+        content.title = descriptionText
+        content.body = classes[selectedClassIndex].name
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "ReminderCategory"
+        
+        //trigger:
+        if dueDate == nil {
+            print("Date not set!")
+        }
+        else {
+            
+            let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: dueDate!)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+            
+            
+            //Schedule notification:
+            
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            AppDelegate().setDateNotification(category: category, request: request)
+        }
         
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

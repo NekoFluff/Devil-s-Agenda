@@ -8,6 +8,7 @@
 
 import Foundation
 import Firebase
+import UserNotifications
 
 protocol DatabaseManagerClassDelegate {
     func addedClass(class: Class);
@@ -31,6 +32,8 @@ class DatabaseManager {
     var classes = [Class]()
     var tasks = [Task]()
     var followedClasses = Dictionary<String, Dictionary<String, Bool>>()
+    
+    var snoozeLengthSec = 600 //SETTING USER CAN CHANGE BASED ON HOW LONG THEY WANT THEIR NOTIFICATION TO SNOOZE FOR (default: 10 min)
     
     private var ref : DatabaseReference!
     private var _classRefHandle : DatabaseHandle?
@@ -400,6 +403,11 @@ class DatabaseManager {
     func completeTask(_ t: Task) {
         
     }
+    
+    
+    //MARK: NOTIFICATION Methods
+    
+    // func createNotification(identifier: identifier,
     
     //MARK: Get Paths
     private func getClassPath(_ c: Class) -> String? {
