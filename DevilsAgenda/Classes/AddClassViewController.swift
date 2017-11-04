@@ -53,6 +53,8 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
             if canSave {
                 saveAndExit();
             }
+        } else {
+            saveAndExit();
         }
     }
     

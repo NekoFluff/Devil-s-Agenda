@@ -14,7 +14,7 @@ class Class : Equatable {
     var databaseKey : String?
     var isShared : Bool = false
     var owner : String
-    var tasks = Dictionary<String, NSPointerArray>()
+    var tasks = Dictionary<String, [Task]>()
     
     init(name: String, color: String, owner: String, shared: Bool? = false) {
         self.name = name
@@ -53,13 +53,22 @@ class Class : Equatable {
     }
     
     func addTask(_ t : Task, forKey k: String) {
-        if let pointerArray = self.tasks[t.desc] {
+        if self.tasks[t.desc] != nil {
             print("Added Task \(t.desc) to existing list.")
-            //pointerArray.addObject(t);
+            self.tasks[t.desc]!.append(t);
         } else {
             print("Added Task \(t.desc) to new list.")
-            //self.tasks[t.desc] = NSPointerArray(options: NSPointerFunctions.Options.weakMemory)
-            //self.tasks[t.desc]?.addObject(t)
+            self.tasks[t.desc] = [t]
+        }
+    }
+    
+    func removeTask(_ t: Task) {
+        if let taskArray = self.tasks[t.desc] {
+            for (i, task) in taskArray.enumerated() {
+                if task == t {
+                    self.tasks[t.desc]!.remove(at: i)
+                }
+            }
         }
     }
 }

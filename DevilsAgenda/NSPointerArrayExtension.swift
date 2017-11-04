@@ -17,7 +17,7 @@ extension NSPointerArray {
     }
     
     func insertObject(_ object: AnyObject?, at index: Int) {
-        guard index < count, let strongObject = object else { return }
+        guard index <= count, let strongObject = object else { return }
         
         let pointer = Unmanaged.passUnretained(strongObject).toOpaque()
         insertPointer(pointer, at: index)

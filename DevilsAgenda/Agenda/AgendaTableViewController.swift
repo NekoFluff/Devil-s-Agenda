@@ -207,7 +207,7 @@ class AgendaTableViewController: UITableViewController {
     
     private func taskForIndexPath(_ indexPath: IndexPath) -> Task? {
         if let section = taskSectionForIndexPath(indexPath)?.rawValue, let tasks = taskOrganizer.organizedTasks[section] {
-            return tasks[indexPath.row]
+            return tasks.object(at: indexPath.row) as? Task
         }
         return nil
     }
@@ -274,7 +274,7 @@ extension AgendaTableViewController : TaskOrganizerDelegate {
         
         let section = self.sectionForTaskSection(section)
         //tableView.beginUpdates()
-        //tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+        //tableView.reloadSections(IndexSet([section]), with: UITableViewRowAnimation.automatic)
         self.tableView.insertRows(at: [IndexPath(row: index, section: section)], with: UITableViewRowAnimation.automatic)
         //tableView.endUpdates()
         

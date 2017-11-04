@@ -51,7 +51,7 @@ class DatabaseManager {
     var addClassDelegate : DatabaseManagerAddClassDelegate?
     
     var classes = [Class]()
-    var tasks = [Task]()
+    var tasks = NSPointerArray(options: NSPointerFunctions.Options.weakMemory)
     var followedClasses = Dictionary<String, Dictionary<String, Bool>>()
     
     private var ref : DatabaseReference!
@@ -115,7 +115,7 @@ class DatabaseManager {
                     
                     
                     let newTask = Task(newClass, data: taskData, databaseKey: taskKey)
-                    tasks.append(newTask)
+                    tasks.addObject(newTask)
                     newClass.addTask(newTask, forKey: newTask.desc);
                     
                     newTasks.append(newTask)
@@ -187,8 +187,10 @@ class DatabaseManager {
             guard let strongSelf = self else { return }
             
             print("Adding new class")
-            if let (newClass, _) = strongSelf.createClass(fromSnapshot: snapshot) {
-                strongSelf.classDelegate?.addedClass(class: newClass)
+            strongSelf.DatabaseManagerQueue.sync {
+                if let (newClass, _) = strongSelf.createClass(fromSnapshot: snapshot) {
+                    strongSelf.classDelegate?.addedClass(class: newClass)
+                }
             }
         })
     }
@@ -260,10 +262,10 @@ class DatabaseManager {
                 //Delete the class in the database
                 self.ref.child(path).removeValue()
                 
-                //Delete all tasks associated with that task
-                tasks = tasks.filter({ (task) -> Bool in
-                    task.rClass != classes[i]
-                })
+//                //Delete all tasks associated with that task
+//                tasks = tasks.filter({ (task) -> Bool in
+//                    task.rClass != classes[i]
+//                })
                 
                 //Delete the class
                 let deletedClass = classes.remove(at: i)
@@ -320,10 +322,10 @@ class DatabaseManager {
             let followedClassesPath = getFollowedClassesPath()
             self.ref.child(followedClassesPath+"/\(classKey)").removeValue()
             
-            //Delete all tasks associated with that task
-            tasks = tasks.filter({ (task) -> Bool in
-                task.rClass != c
-            })
+//            //Delete all tasks associated with that task
+//            tasks = tasks.filter({ (task) -> Bool in
+//                task.rClass != c
+//            })
             
             //Delete the class
             let deletedClass = classes.remove(at: index)
@@ -403,7 +405,7 @@ class DatabaseManager {
             newLocation = getClassPath(c2)
         }
         
-
+        
         //Update old location data
         self.ref.child(oldLocation).observeSingleEvent(of: DataEventType.value, with: { [c](snapshot) in
             if var data = snapshot.value as? Dictionary<String, Any?> {
@@ -452,7 +454,7 @@ class DatabaseManager {
                     
                     for (_, array) in c.tasks {
                         for i in 0..<array.count {
-                            newTasks.append(array.object(at: i) as! Task)
+                            newTasks.append(array[i])
                         }
                     }
                     
@@ -475,6 +477,10 @@ class DatabaseManager {
                 }
                 
                 self.DatabaseManagerQueue.sync {
+                    c.name = c2.name;
+                    c.databaseKey = c2.databaseKey;
+                    c.color = c2.color;
+                    c.isShared = c2.isShared;
                     self.classDelegate?.reloadClass(index: index);
                 }
                 
@@ -484,10 +490,7 @@ class DatabaseManager {
             }
         })
         
-        c.name = c2.name;
-        c.databaseKey = c2.databaseKey;
-        c.color = c2.color;
-        c.isShared = c2.isShared;
+
     }
     
     func checkIfSharedClassExists(classCode: String) {
@@ -526,7 +529,7 @@ class DatabaseManager {
                 
                 taskPath.setValue(data)
                 t.databaseKey = taskKey
-                self.tasks.append(t)
+                self.tasks.addObject(t)
                 t.rClass.addTask(t, forKey: t.desc);
                 
                 self.taskDelegate?.addedTask(t)
@@ -555,16 +558,17 @@ class DatabaseManager {
         }
         
         if deletedTask {
-            //Delete the task from the tasks array
-            for (i,task) in tasks.enumerated() {
-                if task === t {
-                    tasks.remove(at: i)
-                    
-                    //Send the signal to delete the task in the TaskOrganizer
-                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
-                    break
-                }
-            }
+//            //Delete the task from the tasks array
+//            for (i,task) in tasks.enumerated() {
+//                if task === t {
+//                    tasks.remove(at: i)
+//                    
+//                    //Send the signal to delete the task in the TaskOrganizer
+//                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
+//                    break
+//                }
+//            }
+            t.rClass.removeTask(t)
         }
     }
     
@@ -590,16 +594,18 @@ class DatabaseManager {
         }
         
         if completedTask {
-            //Delete the task from the tasks array
-            for (i,task) in tasks.enumerated() {
-                if task === t {
-                    tasks.remove(at: i)
-                    
-                    //Send the signal to delete the task in the TaskOrganizer
-                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
-                    break
-                }
-            }
+//            //Delete the task from the tasks array
+//            for (i,task) in tasks.enumerated() {
+//                if task === t {
+//                    tasks.remove(at: i)
+//                    
+//                    //Send the signal to delete the task in the TaskOrganizer
+//                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
+//                    break
+//                }
+//            }
+            t.rClass.removeTask(t)
+            self.taskDelegate?.completedTask(t, withIndexPath: indexPath)
         }
     }
     
@@ -653,7 +659,7 @@ class DatabaseManager {
     func signOut() {
         self.classes.removeAll()
         self.classDelegate?.signOut()
-        self.tasks.removeAll()
+        //self.tasks.removeAll()
         self.followedClasses.removeAll()
         self.taskDelegate?.signOut()
         self.removeClassListener()
