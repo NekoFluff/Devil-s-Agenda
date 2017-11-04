@@ -49,6 +49,7 @@
 		8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */; };
 		825BC1991FAB9B9000DB926F /* NSPointerArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */; };
 		826F06961F8BFACA00805ED1 /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 826F06951F8BFACA00805ED1 /* Fastfile */; };
+		E1FF09A31FAD2AC0008FA3F2 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF09A21FAD2AC0008FA3F2 /* NotificationDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		C5415DD9FBA81B53D7829A9D /* Pods-DevilsAgenda.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgenda.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgenda/Pods-DevilsAgenda.release.xcconfig"; sourceTree = "<group>"; };
 		CD4CDD620EB07058750E74F3 /* Pods_DevilsAgendaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevilsAgendaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9857E25C43554C2A62FE1DB /* Pods-DevilsAgendaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaUITests/Pods-DevilsAgendaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E1FF09A21FAD2AC0008FA3F2 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationDelegate.swift; path = Agenda/NotificationDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -659,6 +661,7 @@
 				820F097B1F85F5E4004D9179 /* WeekCell.swift in Sources */,
 				820F099E1F85F6C5004D9179 /* TaskTableViewCell.swift in Sources */,
 				820F09601F85F5B7004D9179 /* DatabaseManager.swift in Sources */,
+				E1FF09A31FAD2AC0008FA3F2 /* NotificationDelegate.swift in Sources */,
 				820D52311F89C9C300274DFE /* LabelTableViewCell.swift in Sources */,
 				820F09AA1F85F6F1004D9179 /* Task_OLD.swift in Sources */,
 				820F09A11F85F6DC004D9179 /* SettingsTableViewController.swift in Sources */,
