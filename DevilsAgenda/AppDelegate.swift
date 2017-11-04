@@ -16,15 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
 
-    // Notification Center
-    
-    let center = UNUserNotificationCenter.current()
-    
-    let notificationDelegate = NotificationDelegate()
-    
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         // Override point for customization after application launch.
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure();
@@ -75,51 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        
-        
-        center.getNotificationSettings { (settings) in
-            
-            if settings.authorizationStatus == .authorized {
-                
-                
-                // Set Up Notification Parameters:
-                
-                //indentifier:
-                let identifier = "FiveMinuteTimerNotification"
-                
-                //actions:
-                let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
-                let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
-                
-                //category:
-                let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
-                self.center.setNotificationCategories([category])
-                
-                //content:
-                let content = UNMutableNotificationContent()
-                content.title = "It's been 5 minutes!"
-                content.body = "Ring-a-ding-ding"
-                content.sound = UNNotificationSound.default()
-                content.categoryIdentifier = "ReminderCategory"
-                
-                //trigger:
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                
-                
-                // Schedule notification:
-                
-                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                
-                
-                // Add notification to center:
-                
-                self.center.add(request, withCompletionHandler: { (error) in
-                    if error != nil {
-                        //Something's wrong yo
-                    }
-                })
-            }
-        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -134,21 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    
-    //Notification Function:
-    
-    func setDateNotification(category: UNNotificationCategory, request: UNNotificationRequest) -> Void {
-        
-        print("Adding Notification to center")
-        center.setNotificationCategories([category])
-        
-        center.add(request, withCompletionHandler: { (error) in
-            if error != nil {
-                //Something's wrong yo
-                print("oh no")
-            }
-        })
-        
-    }
+
 }
 

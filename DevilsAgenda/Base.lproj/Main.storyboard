@@ -408,7 +408,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cev-Qb-dTn">
-                                                    <rect key="frame" x="158.66666666666666" y="7" width="97" height="30"/>
+                                                    <rect key="frame" x="159" y="7" width="97" height="30"/>
                                                     <state key="normal" title="Add Reminder"/>
                                                     <connections>
                                                         <action selector="buttonPressed:" destination="NRD-hM-ycP" eventType="touchUpInside" id="0rY-XH-g9A"/>
@@ -805,7 +805,7 @@ FkNsYXNzIE5hbWU
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3s-od-RUY">
-                                <rect key="frame" x="181.66666666666666" y="184" width="51" height="26"/>
+                                <rect key="frame" x="182" y="184" width="51" height="26"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -823,7 +823,7 @@ FkNsYXNzIE5hbWU
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shared" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgK-6Q-BsO">
-                                <rect key="frame" x="173.66666666666666" y="292" width="67" height="26"/>
+                                <rect key="frame" x="174" y="292" width="67" height="26"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -919,7 +919,7 @@ FkNsYXNzIE5hbWU
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dMc-qh-UJb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Classes" id="fru-A4-SZJ"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dpr-YE-11o">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dpr-YE-11o">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -938,7 +938,7 @@ FkNsYXNzIE5hbWU
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vZG-fk-QWh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Agenda" id="ygd-ZK-D4H"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zhJ-bs-RDx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="zhJ-bs-RDx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
