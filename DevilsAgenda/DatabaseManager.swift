@@ -11,22 +11,44 @@ import Firebase
 
 protocol DatabaseManagerClassDelegate {
     func addedClass(class: Class);
-    func deletedClass(_ c: Class);
+    func deletedClass(_ c: Class, atIndex index: Int);
     func addedSharedClass(code: String, newClass: Class?, customErrorMessage msg: String?);
+    func reloadClass(index: Int);
+    func signOut();
 }
 
 protocol DatabaseManagerTaskDelegate {
     func addedTask(_ task: Task);
-    func updatedTask(_ task: Task);
-    func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?);
+    //func updatedTask(_ task: Task);
+    func completedTask(_ task: Task, withIndexPath indexPath: IndexPath?);
     func deletedClass(_ c: Class);
+    func reloadTasks();
+    func signOut();
+}
+
+protocol DatabaseManagerAddClassDelegate {
+    func classCodeExists(_ classCode : String, exists: Bool);
+}
+
+// Swift 3:
+class AtomicCounter {
+    private var queue = DispatchQueue(label: "databaseManagerQueue");
+    private (set) var value: Int = 0
+    
+    func increment() {
+        queue.sync {
+            value += 1
+        }
+    }
 }
 
 class DatabaseManager {
     
     static let defaultManager = DatabaseManager()
+    private var DatabaseManagerQueue = DispatchQueue(label: "databaseManagerQueue");
     var classDelegate : DatabaseManagerClassDelegate?
     var taskDelegate : DatabaseManagerTaskDelegate?
+    var addClassDelegate : DatabaseManagerAddClassDelegate?
     
     var classes = [Class]()
     var tasks = [Task]()
@@ -37,6 +59,10 @@ class DatabaseManager {
     //private var _taskRefHandle : DatabaseHandle? //TODO: REMOVE?
     
     private init() {
+        
+    }
+    
+    func signIn() {
         configureDatabase()
     }
     
@@ -87,8 +113,11 @@ class DatabaseManager {
                         }
                     }
                     
+                    
                     let newTask = Task(newClass, data: taskData, databaseKey: taskKey)
                     tasks.append(newTask)
+                    newClass.addTask(newTask, forKey: newTask.desc);
+                    
                     newTasks.append(newTask)
                     taskDelegate?.addedTask(newTask)
                 }
@@ -126,8 +155,10 @@ class DatabaseManager {
                     self.ref.child(sharedClassesPath+"/"+classKey).observeSingleEvent(of: DataEventType.value, with: { (snapshot2) in
                         
                         //Create a class for every followed class
-                        if let (newClass, _) = self.createClass(fromSnapshot: snapshot2) {
-                            self.classDelegate?.addedClass(class: newClass)
+                        self.DatabaseManagerQueue.sync {
+                            if let (newClass, _) = self.createClass(fromSnapshot: snapshot2) {
+                                self.classDelegate?.addedClass(class: newClass)
+                            }
                         }
                     })
                 }
@@ -139,7 +170,7 @@ class DatabaseManager {
         //
         //                                self.tasks = self.tasks.filter({ (task) -> Bool in
         //                                    if task.rClass.isShared, let followedClassesData = self.followedClasses[task.rClass.databaseKey!], let isCompleted = followedClassesData[task.databaseKey!] {
-        //                                        self.taskDelegate?.deletedTask(task, withIndexPath: nil)
+        //                                        self.taskDelegate?.completedTask(task, withIndexPath: nil)
         //                                        return !isCompleted
         //                                    }
         //
@@ -166,6 +197,7 @@ class DatabaseManager {
         if let handle = _classRefHandle, let uid = Auth.auth().currentUser?.uid {
             self.ref.child("users").child(uid).child("classes").removeObserver(withHandle: handle)
         }
+        _classRefHandle = nil;
     }
     
     func removeAllListeners() {
@@ -206,24 +238,40 @@ class DatabaseManager {
         classPath.setValue(c.toDict())
     }
     
-    func deleteClass(atIndex index: Int) {
-        guard !classes[index].isShared else {deleteSharedClass(atIndex: index); return}
+    func deleteClass(_ c : Class, atIndex index: Int) {
+        var targetIndex : Int?
         
-        if let path = getClassPath(classes[index]) {
-            //Delete the class in the database
-            self.ref.child(path).removeValue()
-
-            //Delete all tasks associated with that task
-            tasks = tasks.filter({ (task) -> Bool in
-                task.rClass != classes[index]
-            })
+        //Ensure that the target index is in range and the classes match
+        if index < classes.count && c == classes[index] {
+            targetIndex = index
+        } else {
+            //If the index and class do not match, search the classes array
+            for (i, _c) in classes.enumerated() {
+                if c == _c {
+                    targetIndex = i;
+                }
+            }
+        }
+        
+        if let i = targetIndex {
+            guard !classes[i].isShared else {deleteSharedClass(atIndex: i); return}
             
-            //Delete the class
-            let deletedClass = classes.remove(at: index)
-            
-            //Send signals
-            self.taskDelegate?.deletedClass(deletedClass)
-            self.classDelegate?.deletedClass(deletedClass)
+            if let path = getClassPath(classes[i]) {
+                //Delete the class in the database
+                self.ref.child(path).removeValue()
+                
+                //Delete all tasks associated with that task
+                tasks = tasks.filter({ (task) -> Bool in
+                    task.rClass != classes[i]
+                })
+                
+                //Delete the class
+                let deletedClass = classes.remove(at: i)
+                
+                //Send signals
+                self.taskDelegate?.deletedClass(deletedClass)
+                self.classDelegate?.deletedClass(deletedClass, atIndex: i)
+            }
         }
     }
     
@@ -239,6 +287,8 @@ class DatabaseManager {
             
             print("Saved old class \(classKey)")
             
+            addSharedClass(key: classKey)
+            
         } else { //Create new class
             let newClassPath = self.ref.child(sharedClassesPath).childByAutoId()
             let classKey = newClassPath.key
@@ -252,14 +302,22 @@ class DatabaseManager {
         }
     }
     
-    func deleteSharedClass(atIndex index: Int) {
+    private func deleteSharedClass(atIndex index: Int) {
         let c = classes[index]
-        guard c.isShared else {deleteClass(atIndex: index); return}
-        
-        let followedClassesPath = getFollowedClassesPath()
+        guard c.isShared else {deleteClass(c, atIndex: index); return}
         
         if let classKey = c.databaseKey {
-            //Delete the class in the database
+            
+            if (c.owner == Auth.auth().currentUser!.uid) {
+                
+                
+                //Delete the class in the database
+                let sharedClassesPath = getSharedClassesPath();
+                self.ref.child(sharedClassesPath+"/"+classKey).removeValue()
+            }
+            
+            //Remove from follow list
+            let followedClassesPath = getFollowedClassesPath()
             self.ref.child(followedClassesPath+"/\(classKey)").removeValue()
             
             //Delete all tasks associated with that task
@@ -275,12 +333,12 @@ class DatabaseManager {
             
             //Send signals
             self.taskDelegate?.deletedClass(deletedClass)
-            self.classDelegate?.deletedClass(deletedClass)
+            self.classDelegate?.deletedClass(deletedClass, atIndex: index)
         }
         
     }
     
-    //Called when adding a shared class
+    //Called when adding a shared class (Class Code)
     func addSharedClass(key: String) {
         let sharedClassesPath = getSharedClassesPath()
         
@@ -292,17 +350,10 @@ class DatabaseManager {
             
             if let (newClass, newTasks) = self.createClass(fromSnapshot: snapshot), let classKey = newClass.databaseKey {
             
-                //Construct data structure to add to database
-                var followedClass = Dictionary<String, Any>()
-                followedClass[Constants.FollowedClassFields.owner] = newClass.owner
-                let completion = self.constructCompletionDictionary(tasks: newTasks)
-                followedClass[Constants.FollowedClassFields.tasks] = completion
+                let followedClass = self.constructFollowedClass(newClass, newTasks: newTasks)
                 
                 //Update the database
                 self.ref.child(self.getFollowedClassesPath()+"/"+classKey).setValue(followedClass)
-                
-                //Update local followedClasses structure
-                self.followedClasses[key] = completion
                 
                 //Send signals to update
                 print("Added shared class \(classKey)")
@@ -315,20 +366,139 @@ class DatabaseManager {
                 self.classDelegate?.addedSharedClass(code: key, newClass: nil, customErrorMessage: "Failed to find class with key code: \(key)")
             }
         })
-        
     }
     
-    func constructCompletionDictionary(tasks: [Task]) -> Dictionary<String, Bool> {
-        var completionDictionary = Dictionary<String, Bool>()
+
+    
+//    func removeSharedClass(key: String) {
+//        let sharedClassesPath = getSharedClassesPath()
+//        
+//        guard followedClasses[key] != nil else {return}
+//        
+//        self.ref.child(sharedClassesPath+"/"+key).removeValue()
+//    }
+    
+    func updateClass( _ c: inout Class, atIndex index : Int, toClass c2: Class) {
         
-        for task in tasks {
-            if let key = task.databaseKey {
-                completionDictionary[key] = false
-            }
+        //TODO: Get the data from the stabase using an observe single instance method call. (Use information from old class (c)
+        //TODO: Update the data with information from the new class (c2)
+        //TODO: Delete the old data in the database and replace it with the updated data
+        //TODO: Under the circumstance that the 'isShared' value did not change, do not delete the old data. (Simply update it with the updated data)
+        guard let classCode = c.databaseKey else {return};
+        let sharedClassesPath = getSharedClassesPath()
+        
+        //Figure out old location
+        var oldLocation : String!
+        if c.isShared {
+            oldLocation = sharedClassesPath+"/\(classCode)"
+        } else {
+            oldLocation = getClassPath(c)
         }
         
-        return completionDictionary
+        //Figure out new location
+        var newLocation : String!
+        if c2.isShared {
+            newLocation = sharedClassesPath+"/\(c2.databaseKey!)"
+        } else {
+            newLocation = getClassPath(c2)
+        }
+        
+
+        //Update old location data
+        self.ref.child(oldLocation).observeSingleEvent(of: DataEventType.value, with: { [c](snapshot) in
+            if var data = snapshot.value as? Dictionary<String, Any?> {
+                data["name"] = c2.name;
+                data["color"] = c2.color;
+                data["key"] = c2.databaseKey;
+                data["shared"] = c2.isShared;
+                
+                
+                if (!(c.isShared == c2.isShared && c.databaseKey == c2.databaseKey)) {
+                    self.ref.updateChildValues([oldLocation : []])
+                }
+                self.ref.updateChildValues([newLocation : data])
+                
+
+                
+                let followedClassesPath = self.getFollowedClassesPath()
+                if c.isShared && c2.isShared {
+                    //Update the database
+                    //TODO: Move followed class data...
+                    //TODO: Get followed class data from database
+                    //TODO: Even if you're not the owner, you should still be able to edit the class code field to move the your existing data.
+                    
+                    print("Shared -> Shared. Moving old data to new location")
+                    
+                    //Get data in old location
+                    self.ref.child(followedClassesPath+"/"+classCode).observeSingleEvent(of: DataEventType.value, with: { (snapshot2) in
+                        
+                        if let oldData = snapshot2.value as? Dictionary<String, Any?> {
+                            //Move the data
+                            self.ref.updateChildValues([followedClassesPath+"/"+c2.databaseKey! : oldData, followedClassesPath+"/"+classCode : []])
+                        }
+                    })
+                    
+                    //Update followed classes
+                    let temp = self.followedClasses[classCode]
+                    self.followedClasses[classCode] = nil
+                    self.followedClasses[c2.databaseKey!] = temp
+                    
+                } else if (!c.isShared && c2.isShared) {
+                    print("Non-shared -> Shared. Creating new followed class in database")
+                    
+                    //Construct data to use in constructFollowedClass() Method
+                    let followedClassesPath = self.getFollowedClassesPath()
+                    var newTasks : [Task] = []
+                    
+                    for (_, array) in c.tasks {
+                        for i in 0..<array.count {
+                            newTasks.append(array.object(at: i) as! Task)
+                        }
+                    }
+                    
+                    //Construct followed class
+                    let followedClass = self.constructFollowedClass(c, newTasks: newTasks)
+                    
+                    //Add the class to the database
+                    self.ref.updateChildValues([followedClassesPath+"/"+c2.databaseKey! : followedClass])
+
+                } else if (c.isShared && !c2.isShared) {
+                    print("Shared -> Non-Shared. Deleting old followed class")
+                    //Dete followed class from database
+                    self.ref.child(followedClassesPath+"/"+classCode).removeValue()
+                    
+                    //Delete followed class
+                    self.followedClasses[classCode] = nil
+                    
+                } else {
+                    print("Non-shared -> Non-shared. No followed class update necessary")
+                }
+                
+                self.DatabaseManagerQueue.sync {
+                    self.classDelegate?.reloadClass(index: index);
+                }
+                
+                self.DatabaseManagerQueue.sync {
+                    self.taskDelegate?.reloadTasks();
+                }
+            }
+        })
+        
+        c.name = c2.name;
+        c.databaseKey = c2.databaseKey;
+        c.color = c2.color;
+        c.isShared = c2.isShared;
     }
+    
+    func checkIfSharedClassExists(classCode: String) {
+        let sharedClassesPath = getSharedClassesPath()
+        self.ref.child(sharedClassesPath+"/\(classCode)").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+            
+            self.addClassDelegate?.classCodeExists(classCode, exists: snapshot.exists());
+            
+        })
+    }
+
     
     //MARK: TASK Methods
     func saveTask( _ t: inout Task) {
@@ -344,9 +514,11 @@ class DatabaseManager {
         if let path = path {
             let data = t.toDict()
             if let taskKey = t.databaseKey { //Update a task
+                
                 self.ref.updateChildValues([path+"/"+taskKey : data])
                 
-                self.taskDelegate?.updatedTask(t)
+                //self.taskDelegate?.updatedTask(t)
+                self.taskDelegate?.addedTask(t)
                 
             } else { //Create a new task
                 let taskPath = self.ref.child(path).childByAutoId()
@@ -355,6 +527,7 @@ class DatabaseManager {
                 taskPath.setValue(data)
                 t.databaseKey = taskKey
                 self.tasks.append(t)
+                t.rClass.addTask(t, forKey: t.desc);
                 
                 self.taskDelegate?.addedTask(t)
             }
@@ -362,15 +535,13 @@ class DatabaseManager {
         
     }
     
-    //TODO: Filter tasks if they have been completed...
-    func deleteTask(_ t: Task, atIndexPath indexPath: IndexPath) {
-        
+    func deleteTask(_ t: Task, atIndexPath indexPath: IndexPath?) {
         var deletedTask = false
         
         if t.rClass.isShared, let classKey = t.rClass.databaseKey, let taskKey = t.databaseKey {
             
-            let followedClassesPath = getFollowedClassesPath()
-            self.ref.child(followedClassesPath+"/\(classKey)/\(Constants.FollowedClassFields.tasks)/"+taskKey).setValue(true)
+            let sharedClassesPath = getSharedClassesPath()
+            self.ref.child(sharedClassesPath+"/\(classKey)/\(Constants.ClassFields.tasks)/"+taskKey).removeValue()
             
             deletedTask = true
             
@@ -390,16 +561,48 @@ class DatabaseManager {
                     tasks.remove(at: i)
                     
                     //Send the signal to delete the task in the TaskOrganizer
-                    self.taskDelegate?.deletedTask(task, withIndexPath: indexPath);
+                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
                     break
                 }
             }
         }
     }
     
-    func completeTask(_ t: Task) {
+    //TODO: Filter tasks if they have been completed...
+    func completeTask(_ t: Task, atIndexPath indexPath: IndexPath?) {
         
+        var completedTask = false
+        
+        if t.rClass.isShared, let classKey = t.rClass.databaseKey, let taskKey = t.databaseKey {
+            
+            let followedClassesPath = getFollowedClassesPath()
+            self.ref.child(followedClassesPath+"/\(classKey)/\(Constants.FollowedClassFields.tasks)/"+taskKey).setValue(true)
+            
+            completedTask = true
+            
+        } else { //Task is not shared
+            
+            if let path = getPathForTask(t) {
+                //Delete the task from the database
+                self.ref.child(path).removeValue()
+                completedTask = true
+            }
+        }
+        
+        if completedTask {
+            //Delete the task from the tasks array
+            for (i,task) in tasks.enumerated() {
+                if task === t {
+                    tasks.remove(at: i)
+                    
+                    //Send the signal to delete the task in the TaskOrganizer
+                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
+                    break
+                }
+            }
+        }
     }
+    
     
     //MARK: Get Paths
     private func getClassPath(_ c: Class) -> String? {
@@ -442,7 +645,44 @@ class DatabaseManager {
         return "users/\(Auth.auth().currentUser!.uid)/followed_classes"
     }
 
+    //MARK: *OTHER FUNCTIONS*
     func refresh() {
         
     }
+    
+    func signOut() {
+        self.classes.removeAll()
+        self.classDelegate?.signOut()
+        self.tasks.removeAll()
+        self.followedClasses.removeAll()
+        self.taskDelegate?.signOut()
+        self.removeClassListener()
+    }
+    
+    private func constructFollowedClass(_ c: Class, newTasks tasks: [Task]) -> Dictionary<String, Any> {
+        //Construct data structure to add to database
+        var followedClass = Dictionary<String, Any>()
+        followedClass[Constants.FollowedClassFields.owner] = c.owner
+        let completion = self.constructCompletionDictionary(tasks: tasks)
+        followedClass[Constants.FollowedClassFields.tasks] = completion
+        
+        //Update local followedClasses structure
+        self.followedClasses[c.databaseKey!] = completion
+        
+        return followedClass
+    }
+    
+    private func constructCompletionDictionary(tasks: [Task]) -> Dictionary<String, Bool> {
+        var completionDictionary = Dictionary<String, Bool>()
+        
+        for task in tasks {
+            if let key = task.databaseKey {
+                completionDictionary[key] = false
+            }
+        }
+        
+        return completionDictionary
+    }
+    
+    
 }

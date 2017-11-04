@@ -47,6 +47,8 @@ class Task : Equatable {
         self.databaseKey = databaseKey
     }
     
+    
+    
     func reconfigure(_ rClass: Class, category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
         
         self.rClass = rClass
@@ -83,6 +85,10 @@ class Task : Equatable {
         }
         
         return dict
+    }
+    
+    deinit {
+        print("De-allocating Task \(desc)")
     }
     
     static func ==(left: Task, right: Task) -> Bool {

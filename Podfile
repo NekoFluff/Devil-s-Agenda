@@ -14,6 +14,7 @@ target 'DevilsAgenda' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'Firebase/Performance'
+  pod 'IQKeyboardManagerSwift'
   
   target 'DevilsAgendaTests' do
     inherit! :search_paths

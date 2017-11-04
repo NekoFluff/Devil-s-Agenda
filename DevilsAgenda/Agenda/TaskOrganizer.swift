@@ -10,9 +10,10 @@ import SwiftDate
 
 protocol TaskOrganizerDelegate {
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int)
-    func deletedTask(_ task: Task, inSection section: taskSection)
+    func completedTask(_ task: Task, inSection section: taskSection, andIndexPath indexPath: IndexPath?)
     func updatedTask(_ task: Task, inSection section: taskSection)
     func deletedClass(_ class: Class)
+    func reloadTasks()
 }
 
 enum taskSection : String {
@@ -179,6 +180,10 @@ class TaskOrganizer {
 }
 
 extension TaskOrganizer : DatabaseManagerTaskDelegate {
+    
+    func reloadTasks() {
+        self.delegate?.reloadTasks()
+    }
     func deletedClass(_ c: Class) {
         self.sortTasks(database.tasks)
         delegate?.deletedClass(c)
@@ -196,14 +201,14 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
         delegate?.updatedTask(task, inSection: section)
     }
     
-    func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
+    func completedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
         print("DELETING \(task.desc)")
         let section = getTaskSectionForTask(task)
 
         if let indexPath = indexPath, organizedTasks[section.rawValue]!.count - 1 >= indexPath.row && organizedTasks[section.rawValue]![indexPath.row] === task {
             
             organizedTasks[section.rawValue]!.remove(at: indexPath.row)
-            print("Used indexPath to delete task in organized list.")
+            print("Used indexPath \(indexPath) to delete task in organized list.")
             
         } else {
             
@@ -217,9 +222,12 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
             print("Used enumeration to delete task in organized list.")
         }
         
-        if (indexPath == nil) {
-            delegate?.deletedTask(task, inSection: section)
-        }
+        delegate?.completedTask(task, inSection: section, andIndexPath: indexPath)
         
+    }
+    
+    func signOut() {
+        self.organizedTasks.removeAll();
+        print("Removed all organized tasks")
     }
 }

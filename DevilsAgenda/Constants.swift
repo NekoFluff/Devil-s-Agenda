@@ -18,6 +18,7 @@ struct Constants {
         static let SignIn = "SignIn"
         static let AddClassVC = "AddClassVC"
         static let AddTaskVC = "AddTaskVC"
+        static let EditClassVC = "EditClassVC"
     }
     
     struct ClassFields {

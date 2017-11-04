@@ -10,6 +10,7 @@ import UIKit
 
 class TaskTableViewCell: UITableViewCell {
 
+    weak var task : Task?
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -28,6 +29,7 @@ class TaskTableViewCell: UITableViewCell {
     
     func configure(task: Task) {
         // Configure the cell...
+        self.task = task
         self.colorView.backgroundColor = Constants.uicolorForString(str: task.rClass.color)
         self.titleLabel.text = task.desc
         self.subtitleLabel.text = task.rClass.name
@@ -36,7 +38,8 @@ class TaskTableViewCell: UITableViewCell {
         if let dueDate = task.dueDate {
             let df = DateFormatter()
             df.locale = Locale(identifier: "en_US")
-            df.dateFormat = "E  M/d"
+            //df.dateFormat = "E  M/d"
+            df.dateFormat = "h:mm a"
             dateString = df.string(from: dueDate)
         }
         

@@ -28,6 +28,7 @@ class LogInViewController : UIViewController, GIDSignInUIDelegate {
                 
                 //MeasurementHelper.sendLoginEvent()
                 self.performSegue(withIdentifier: Constants.Segues.SignIn, sender: nil)
+                DatabaseManager.defaultManager.signIn();
             }
         }
         
