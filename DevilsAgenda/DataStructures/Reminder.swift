@@ -9,9 +9,30 @@
 import Foundation
 
 struct Reminder {
-    let date : NSDate
+    let date : Date
+    let text : String
     
-    init(date : NSDate) {
+    init(date : Date, reminderText: String) {
         self.date = date
+        self.text = reminderText
+    }
+    
+    func toDict() -> [String : String] {
+        
+        //Create date formatter
+        let df = DateFormatter()
+        df.dateFormat = "MM-dd-yyyy HH:mm:ss"
+        
+        //Create dictionary to store data in
+        var dict = Dictionary<String, String>()
+        
+        //Add data
+        dict[Constants.ReminderFields.text] = self.text
+        
+        let dateString = df.string(from: date)
+        dict[Constants.ReminderFields.date] = dateString
+
+        
+        return dict
     }
 }

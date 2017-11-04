@@ -20,6 +20,7 @@ class Task : Equatable {
     var dueDate : Date?
     var todoDate : Date?
     var databaseKey : String?
+    var reminders : [Reminder] = []
     
     init(_ rClass: Class, category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
         self.rClass = rClass
@@ -56,14 +57,14 @@ class Task : Equatable {
         self.todoDate = todoDate
     }
     
-    func toDict() -> [String : String] {
+    func toDict() -> [String : Any?] {
         
         //Create date formatter
         let df = DateFormatter()
         df.dateFormat = "MM-dd-yyyy HH:mm:ss"
         
         //Create dictionary to store data in
-        var dict = Dictionary<String, String>()
+        var dict = Dictionary<String, Any?>()
         
         //Add data
         if let category = category {
@@ -81,6 +82,12 @@ class Task : Equatable {
             let dateString = df.string(from: todoDate)
             dict[Constants.TaskFields.todoDate] = dateString
         }
+
+        dict[Constants.TaskFields.reminders] = reminders.map({ (reminder) -> [String:String] in
+            return reminder.toDict()
+        })
+
+
         
         return dict
     }
@@ -89,9 +96,14 @@ class Task : Equatable {
         print("De-allocating Task \(desc)")
     }
     
+    func addReminder(_ r: Reminder) {
+        self.reminders.append(r)
+    }
+    
     static func ==(left: Task, right: Task) -> Bool {
         return left.rClass == right.rClass && left.databaseKey == right.databaseKey && left.category == right.category
     }
+    
     
 
     

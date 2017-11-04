@@ -36,11 +36,17 @@ struct Constants {
         static let dueDate = "dueDate"
         static let todoDate = "todoDate"
         static let key = "key"
+        static let reminders = "reminders"
     }
     
     struct FollowedClassFields {
         static let tasks = "tasks"
         static let owner = "owner"
+    }
+    
+    struct ReminderFields {
+        static let date = "date"
+        static let text = "text"
     }
     
     static func uicolorForString(str: String) -> UIColor {
