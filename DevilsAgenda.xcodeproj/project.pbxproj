@@ -46,6 +46,7 @@
 		820F09B31F85F78E004D9179 /* PickerViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */; };
 		820F09B51F85F810004D9179 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 820F09B41F85F810004D9179 /* GoogleService-Info.plist */; };
 		8215B0631F9685AD006473AC /* ClassTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8215B0621F9685AD006473AC /* ClassTableViewCell.swift */; };
+		8218EC581FAE9E7800B7E56B /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */; };
 		8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */; };
 		825BC1991FAB9B9000DB926F /* NSPointerArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */; };
 		826F06961F8BFACA00805ED1 /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 826F06951F8BFACA00805ED1 /* Fastfile */; };
@@ -114,6 +115,7 @@
 		820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PickerViewTableViewCell.swift; path = TableViewCells/PickerViewTableViewCell.swift; sourceTree = "<group>"; };
 		820F09B41F85F810004D9179 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8215B0621F9685AD006473AC /* ClassTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClassTableViewCell.swift; path = TableViewCells/ClassTableViewCell.swift; sourceTree = "<group>"; };
+		8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationDelegate.swift; path = Agenda/NotificationDelegate.swift; sourceTree = "<group>"; };
 		8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskOrganizer.swift; path = Agenda/TaskOrganizer.swift; sourceTree = "<group>"; };
 		825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPointerArrayExtension.swift; sourceTree = "<group>"; };
 		826F06951F8BFACA00805ED1 /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				820F09571F85F5B7004D9179 /* DatabaseManager.swift */,
 				820F095C1F85F5B7004D9179 /* TODOs.swift */,
 				820F08E61F85F3C4004D9179 /* AppDelegate.swift */,
+				8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */,
 				820F08EA1F85F3C4004D9179 /* Main.storyboard */,
 				820F08ED1F85F3C4004D9179 /* Assets.xcassets */,
 				820F08EF1F85F3C4004D9179 /* LaunchScreen.storyboard */,
@@ -660,6 +663,7 @@
 				820F099E1F85F6C5004D9179 /* TaskTableViewCell.swift in Sources */,
 				820F09601F85F5B7004D9179 /* DatabaseManager.swift in Sources */,
 				820D52311F89C9C300274DFE /* LabelTableViewCell.swift in Sources */,
+				8218EC581FAE9E7800B7E56B /* NotificationDelegate.swift in Sources */,
 				820F09AA1F85F6F1004D9179 /* Task_OLD.swift in Sources */,
 				820F09A11F85F6DC004D9179 /* SettingsTableViewController.swift in Sources */,
 				820F09AB1F85F6F1004D9179 /* Task.swift in Sources */,

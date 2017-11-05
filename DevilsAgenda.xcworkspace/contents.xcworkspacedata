@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:DevilsAgenda/Agenda/NotificationDelegate.swift">
+   </FileRef>
+   <FileRef
       location = "group:DevilsAgenda.xcodeproj">
    </FileRef>
    <FileRef
