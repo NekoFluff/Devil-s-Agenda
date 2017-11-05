@@ -87,6 +87,8 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         //Set Up Notification Parameters:
         
+        
+        
         //identifier:
         let identifier = descriptionText
         
@@ -109,16 +111,18 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             print("Date not set!")
         }
         else {
+            guard dueDate! > Date() else {print("ERROR: Due date < current date"); return}
             
             let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: dueDate!)
+            
             let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-            
-            
+
             //Schedule notification:
-            
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
             
             AppDelegate().setDateNotification(category: category, request: request)
+            
+            
         }
         
     }

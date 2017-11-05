@@ -164,6 +164,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             }
         })
         
+        print("Content: \(request.content)")
+        
+        center.getPendingNotificationRequests(){[unowned self] requests in
+            for request in requests {
+                guard let trigger = request.trigger as? UNCalendarNotificationTrigger else {return}
+                print(Calendar.current.dateComponents([.year,.day,.month,.hour,.minute,.second], from: trigger.nextTriggerDate()!))
+            }
+        }
+        
     }
 }
 
