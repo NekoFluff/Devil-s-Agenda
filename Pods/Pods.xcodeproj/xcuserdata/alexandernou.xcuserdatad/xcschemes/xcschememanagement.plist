@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>lottie-ios.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>nanopb.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -62,7 +67,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>22B5D72C7768A42522F40154E751335A</key>
+		<key>1A1B7418C84815691A2ACECE1B61616C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +82,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>68FA117414EF97491DD2B4C8125ED75E</key>
+		<key>6D5CEDECD3D8DC52EA507E0431BDA8A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6D5CEDECD3D8DC52EA507E0431BDA8A0</key>
+		<key>8386817F9A5E38AB99F1AA49CD86EB76</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,17 +97,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A92AC3114637F1A5F478C04884606AD9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>AE39DBD9B6F76EDA1231941BBDE69D00</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>AFAE3EFBCDB2AC7B93B1CCD348EB21A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BA960BD08C7FAC7BFCB711FAC5083AC8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

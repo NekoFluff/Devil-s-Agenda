@@ -16,6 +16,7 @@ struct Constants {
     
     struct Segues {
         static let SignIn = "SignIn"
+        static let FinishedLoading = "FinishedLoading"
         static let AddClassVC = "AddClassVC"
         static let AddTaskVC = "AddTaskVC"
         static let EditClassVC = "EditClassVC"

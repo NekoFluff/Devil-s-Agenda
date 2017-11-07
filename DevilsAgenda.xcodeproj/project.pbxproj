@@ -49,6 +49,8 @@
 		8218EC581FAE9E7800B7E56B /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */; };
 		8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */; };
 		825BC1991FAB9B9000DB926F /* NSPointerArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */; };
+		825E02441FB22F6000CB3CAA /* PinJump.json in Resources */ = {isa = PBXBuildFile; fileRef = 825E02431FB22F6000CB3CAA /* PinJump.json */; };
+		825E02461FB2400B00CB3CAA /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825E02451FB2400B00CB3CAA /* LoadingViewController.swift */; };
 		826F06961F8BFACA00805ED1 /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 826F06951F8BFACA00805ED1 /* Fastfile */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +120,8 @@
 		8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationDelegate.swift; path = Agenda/NotificationDelegate.swift; sourceTree = "<group>"; };
 		8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskOrganizer.swift; path = Agenda/TaskOrganizer.swift; sourceTree = "<group>"; };
 		825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPointerArrayExtension.swift; sourceTree = "<group>"; };
+		825E02431FB22F6000CB3CAA /* PinJump.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PinJump.json; path = Animations/PinJump.json; sourceTree = "<group>"; };
+		825E02451FB2400B00CB3CAA /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = LoadingViewController/LoadingViewController.swift; sourceTree = "<group>"; };
 		826F06951F8BFACA00805ED1 /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
 		851317DC6E019E559341DFC5 /* Pods-DevilsAgendaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaTests/Pods-DevilsAgendaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8CEA69B96AC6F1696E445929 /* Pods-DevilsAgendaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaUITests/Pods-DevilsAgendaUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 		820F08E51F85F3C4004D9179 /* DevilsAgenda */ = {
 			isa = PBXGroup;
 			children = (
+				825E02421FB22B7100CB3CAA /* Animations */,
 				826F06951F8BFACA00805ED1 /* Fastfile */,
 				820F09B41F85F810004D9179 /* GoogleService-Info.plist */,
 				820F09971F85F62E004D9179 /* TableViewCells */,
@@ -195,6 +200,7 @@
 				820F095C1F85F5B7004D9179 /* TODOs.swift */,
 				820F08E61F85F3C4004D9179 /* AppDelegate.swift */,
 				8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */,
+				825E02411FB22B6000CB3CAA /* LoadingViewController */,
 				820F08EA1F85F3C4004D9179 /* Main.storyboard */,
 				820F08ED1F85F3C4004D9179 /* Assets.xcassets */,
 				820F08EF1F85F3C4004D9179 /* LaunchScreen.storyboard */,
@@ -295,6 +301,22 @@
 				820D52301F89C9C300274DFE /* LabelTableViewCell.swift */,
 			);
 			name = TableViewCells;
+			sourceTree = "<group>";
+		};
+		825E02411FB22B6000CB3CAA /* LoadingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				825E02451FB2400B00CB3CAA /* LoadingViewController.swift */,
+			);
+			name = LoadingViewController;
+			sourceTree = "<group>";
+		};
+		825E02421FB22B7100CB3CAA /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				825E02431FB22F6000CB3CAA /* PinJump.json */,
+			);
+			name = Animations;
 			sourceTree = "<group>";
 		};
 		B7F220BA82A8B89D8D39FB5A /* Pods */ = {
@@ -445,6 +467,7 @@
 				820F08EE1F85F3C4004D9179 /* Assets.xcassets in Resources */,
 				820F097A1F85F5E4004D9179 /* MonthCell.xib in Resources */,
 				820F097C1F85F5E4004D9179 /* WeekCell.xib in Resources */,
+				825E02441FB22F6000CB3CAA /* PinJump.json in Resources */,
 				820F08EC1F85F3C4004D9179 /* Main.storyboard in Resources */,
 				820F09781F85F5E4004D9179 /* DateCell.xib in Resources */,
 			);
@@ -499,6 +522,7 @@
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -510,6 +534,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,6 +693,7 @@
 				820F09A11F85F6DC004D9179 /* SettingsTableViewController.swift in Sources */,
 				820F09AB1F85F6F1004D9179 /* Task.swift in Sources */,
 				820F09B31F85F78E004D9179 /* PickerViewTableViewCell.swift in Sources */,
+				825E02461FB2400B00CB3CAA /* LoadingViewController.swift in Sources */,
 				820F09AE1F85F71D004D9179 /* AddClassViewController.swift in Sources */,
 				820F098A1F85F607004D9179 /* LogInViewController.swift in Sources */,
 				825BC1991FAB9B9000DB926F /* NSPointerArrayExtension.swift in Sources */,

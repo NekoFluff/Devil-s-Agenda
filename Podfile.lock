@@ -62,8 +62,9 @@ PODS:
   - GTMSessionFetcher/Core (1.1.12)
   - GTMSessionFetcher/Full (1.1.12):
     - GTMSessionFetcher/Core (= 1.1.12)
-  - IQKeyboardManagerSwift (5.0.5)
+  - IQKeyboardManagerSwift (5.0.6)
   - leveldb-library (1.20)
+  - lottie-ios (2.1.3)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -81,6 +82,7 @@ DEPENDENCIES:
   - Firebase/Performance
   - GoogleSignIn
   - IQKeyboardManagerSwift
+  - lottie-ios (= 2.1.3)
   - SwiftDate (~> 4.3.0)
 
 SPEC CHECKSUMS:
@@ -97,12 +99,13 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMOAuth2: be83fd28d63ae3087e7d351b1f39c1a7e24ab6e7
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
-  IQKeyboardManagerSwift: ee393093cfb41069a72584a8f599ba5519a7febe
+  IQKeyboardManagerSwift: 02bfbb0dff71c66d0ab77d80d25dfce0c3717735
   leveldb-library: 44ef425bfde64f5b41daef86b38db2d13edbbee1
+  lottie-ios: 8c150606598931621e927377f1426d2d3e99282d
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   SwiftDate: 64e2312711c5c506f7b51794308ce91f19eb494a
 
-PODFILE CHECKSUM: 86a2be8794751f91f45778a384e4416052b6ffee
+PODFILE CHECKSUM: 59d68b4668f85d070c171050aa4a9204a8a99402
 
 COCOAPODS: 1.3.1

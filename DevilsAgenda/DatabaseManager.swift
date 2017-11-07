@@ -32,12 +32,27 @@ protocol DatabaseManagerAddClassDelegate {
 
 // Swift 3:
 class AtomicCounter {
-    private var queue = DispatchQueue(label: "databaseManagerQueue");
-    private (set) var value: Int = 0
+    private var queue = DispatchQueue(label: "AtomicCounterQueue");
+    private (set) var totalClasses: Int = 0
+    private (set) var downloadedClasses: Int = 0
     
-    func increment() {
+    
+    func incrementTotalClasses(_ val: Int) {
         queue.sync {
-            value += 1
+            totalClasses += val
+        }
+    }
+    
+    func incrementDownloadedClasses(_ val: Int) {
+        queue.sync {
+            downloadedClasses += val
+        }
+    }
+    
+    func reset() {
+        queue.sync {
+            totalClasses = 0
+            downloadedClasses = 0
         }
     }
 }
@@ -56,6 +71,8 @@ class DatabaseManager {
     
     private var ref : DatabaseReference!
     private var _classRefHandle : DatabaseHandle?
+    private let atomicCounter = AtomicCounter()
+    
     //private var _taskRefHandle : DatabaseHandle? //TODO: REMOVE?
     
     private init() {
@@ -78,7 +95,7 @@ class DatabaseManager {
 //            self.createClasses(fromSnapshot: snapshot)
 //        })
         addClassListener()
-        downloadFollowedClasses()
+
         
         print("Configured database!")
     }
@@ -127,7 +144,7 @@ class DatabaseManager {
         return nil
     }
     
-    func downloadFollowedClasses() {
+    func downloadFollowedClasses(update: @escaping (_ current: Int,_ max: Int) -> ()) {
         let followedClassesPath = getFollowedClassesPath()
         
         //Get all the followedClasses
@@ -137,6 +154,8 @@ class DatabaseManager {
             
             //Unwrap the data
             if let followedClassesData = snapshot.value as? Dictionary<String, Any> {
+                self.atomicCounter.incrementTotalClasses(followedClassesData.values.count)
+                
                 let sharedClassesPath = self.getSharedClassesPath()
                 
                 //For each of the followed classes download the class data
@@ -154,8 +173,11 @@ class DatabaseManager {
                     //Download the class information from the shared location
                     self.ref.child(sharedClassesPath+"/"+classKey).observeSingleEvent(of: DataEventType.value, with: { (snapshot2) in
                         
+                        self.atomicCounter.incrementDownloadedClasses(1)
+                        
                         //Create a class for every followed class
                         self.DatabaseManagerQueue.sync {
+                            update(self.atomicCounter.downloadedClasses, self.atomicCounter.totalClasses)
                             if let (newClass, _) = self.createClass(fromSnapshot: snapshot2) {
                                 self.classDelegate?.addedClass(class: newClass)
                             }
@@ -657,12 +679,14 @@ class DatabaseManager {
     }
     
     func signOut() {
+        self.removeClassListener()
         self.classes.removeAll()
         self.classDelegate?.signOut()
-        //self.tasks.removeAll()
+        self.tasks.compact()
         self.followedClasses.removeAll()
         self.taskDelegate?.signOut()
-        self.removeClassListener()
+        self.taskDelegate?.reloadTasks()
+        self.atomicCounter.reset()
     }
     
     private func constructFollowedClass(_ c: Class, newTasks tasks: [Task]) -> Dictionary<String, Any> {
