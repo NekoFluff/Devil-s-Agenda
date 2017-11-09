@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -109,8 +110,6 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             AppDelegate().setDateNotification(category: category, request: request)
             
-            
->>>>>>> notificationsUpdate
         }
         
         
