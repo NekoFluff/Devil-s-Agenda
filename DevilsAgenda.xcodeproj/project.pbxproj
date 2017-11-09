@@ -52,6 +52,7 @@
 		825E02441FB22F6000CB3CAA /* PinJump.json in Resources */ = {isa = PBXBuildFile; fileRef = 825E02431FB22F6000CB3CAA /* PinJump.json */; };
 		825E02461FB2400B00CB3CAA /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825E02451FB2400B00CB3CAA /* LoadingViewController.swift */; };
 		826F06961F8BFACA00805ED1 /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 826F06951F8BFACA00805ED1 /* Fastfile */; };
+		82774D761FB4D43C00F0EF6F /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82774D751FB4D43C00F0EF6F /* ReminderViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		825E02431FB22F6000CB3CAA /* PinJump.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PinJump.json; path = Animations/PinJump.json; sourceTree = "<group>"; };
 		825E02451FB2400B00CB3CAA /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = LoadingViewController/LoadingViewController.swift; sourceTree = "<group>"; };
 		826F06951F8BFACA00805ED1 /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
+		82774D751FB4D43C00F0EF6F /* ReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReminderViewController.swift; path = Agenda/ReminderViewController.swift; sourceTree = "<group>"; };
 		851317DC6E019E559341DFC5 /* Pods-DevilsAgendaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaTests/Pods-DevilsAgendaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8CEA69B96AC6F1696E445929 /* Pods-DevilsAgendaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaUITests/Pods-DevilsAgendaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B4CF2DE15388AF4707AA7494 /* Pods_DevilsAgenda.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevilsAgenda.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,10 +232,10 @@
 		820F09531F85F57E004D9179 /* Agenda */ = {
 			isa = PBXGroup;
 			children = (
+				82774D751FB4D43C00F0EF6F /* ReminderViewController.swift */,
 				820F09511F85F576004D9179 /* AgendaTableViewController.swift */,
 				820F09B01F85F744004D9179 /* AddTaskViewController.swift */,
 				8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */,
-				E12AF1501FAEBF0200E7A350 /* ReminderViewController.swift */,
 			);
 			name = Agenda;
 			sourceTree = "<group>";
@@ -679,7 +681,6 @@
 			files = (
 				820F099C1F85F6C5004D9179 /* ButtonTableViewCell.swift in Sources */,
 				820F09741F85F5E4004D9179 /* CalendarView.swift in Sources */,
-				E12AF1511FAEBF0200E7A350 /* ReminderViewController.swift in Sources */,
 				8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */,
 				820F095F1F85F5B7004D9179 /* Constants.swift in Sources */,
 				8215B0631F9685AD006473AC /* ClassTableViewCell.swift in Sources */,
@@ -697,6 +698,7 @@
 				820F09B31F85F78E004D9179 /* PickerViewTableViewCell.swift in Sources */,
 				825E02461FB2400B00CB3CAA /* LoadingViewController.swift in Sources */,
 				820F09AE1F85F71D004D9179 /* AddClassViewController.swift in Sources */,
+				82774D761FB4D43C00F0EF6F /* ReminderViewController.swift in Sources */,
 				820F098A1F85F607004D9179 /* LogInViewController.swift in Sources */,
 				825BC1991FAB9B9000DB926F /* NSPointerArrayExtension.swift in Sources */,
 				820F09AF1F85F71D004D9179 /* ClassesTableViewController.swift in Sources */,
