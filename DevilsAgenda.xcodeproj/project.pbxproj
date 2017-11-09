@@ -233,6 +233,7 @@
 				820F09511F85F576004D9179 /* AgendaTableViewController.swift */,
 				820F09B01F85F744004D9179 /* AddTaskViewController.swift */,
 				8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */,
+				E12AF1501FAEBF0200E7A350 /* ReminderViewController.swift */,
 			);
 			name = Agenda;
 			sourceTree = "<group>";
@@ -678,6 +679,7 @@
 			files = (
 				820F099C1F85F6C5004D9179 /* ButtonTableViewCell.swift in Sources */,
 				820F09741F85F5E4004D9179 /* CalendarView.swift in Sources */,
+				E12AF1511FAEBF0200E7A350 /* ReminderViewController.swift in Sources */,
 				8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */,
 				820F095F1F85F5B7004D9179 /* Constants.swift in Sources */,
 				8215B0631F9685AD006473AC /* ClassTableViewCell.swift in Sources */,
