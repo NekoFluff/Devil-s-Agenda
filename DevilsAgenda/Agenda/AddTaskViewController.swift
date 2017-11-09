@@ -65,7 +65,52 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             addButton.title = "Done"
             self.tableView.reloadData() //Allow selection of cell content
             self.tableView.allowsSelection = true
+
+        }
+        
+    }
+    
+    @IBAction func addReminder(_ sender: UIButton) {
+        
+        //Set Up Notification Parameters:
+        
+        
+        
+        //identifier:
+        let identifier = descriptionText
+        
+        //actions:
+        let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
+        let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
+        
+        //category:
+        let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
+        
+        //content:
+        let content = UNMutableNotificationContent()
+        content.title = descriptionText
+        content.body = classes[selectedClassIndex].name
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "ReminderCategory"
+        
+        //trigger:
+        if dueDate == nil {
+            print("Date not set!")
+        }
+        else {
+            guard dueDate! > Date() else {print("ERROR: Due date < current date"); return}
             
+            let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: dueDate!)
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+
+            //Schedule notification:
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            AppDelegate().setDateNotification(category: category, request: request)
+            
+            
+>>>>>>> notificationsUpdate
         }
         
         
