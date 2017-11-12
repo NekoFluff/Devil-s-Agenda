@@ -61,6 +61,12 @@ class ReminderViewController: UIViewController {
                 let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                 
                 AppDelegate().setDateNotification(category: category, request: request)
+            
+                print("Reminder Set!")
+            
+                dismiss(animated: true, completion: nil)
+            
+                //TODO: Have a visual identicator for the user to know their reminder was set in Add Task VC
         }
     }
     

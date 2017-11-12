@@ -171,7 +171,9 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
+    
     //MARK: Public Methods
+    
     func configure(withTask task: Task) {
         self.task = task
         selectedClassIndex = indexForClass(task.rClass)
@@ -184,6 +186,11 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     func disableEditing() {
         editingDisabled = true
     }
+    
+    
+    
+    
+    //MARK: Private Methods
     
     private func indexForClass(_ rClass: Class) -> Int {
         for (i,c) in classes.enumerated() {
