@@ -20,6 +20,7 @@ struct Constants {
         static let AddClassVC = "AddClassVC"
         static let AddTaskVC = "AddTaskVC"
         static let EditClassVC = "EditClassVC"
+        static let AddReminderVC = "AddReminderVC"
     }
     
     struct ClassFields {
@@ -47,7 +48,8 @@ struct Constants {
     
     struct ReminderFields {
         static let date = "date"
-        static let text = "text"
+        static let title = "title"
+        static let description = "description"
     }
     
     static func uicolorForString(str: String) -> UIColor {

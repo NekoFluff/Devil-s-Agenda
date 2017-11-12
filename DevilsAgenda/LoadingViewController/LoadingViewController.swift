@@ -20,19 +20,37 @@ class LoadingViewController: UIViewController {
     var bottomText : UILabel!
     let database = DatabaseManager.defaultManager
     
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         addAnimation()
         
-        database.downloadFollowedClasses { [weak self] (current, max) in
+        var follow = false;
+        var local = false;
+        
+        database.downloadClasses { [weak self] (current, max, checkedFollowedClasses, checkedLocalClasses) in
             print("Download Progress: \(current)\\\(max)")
             
             if let strongSelf = self {
                 strongSelf.topText.text = "Downloading your classes (\(current)/\(max))"
                 
-                if (current == max) {
+                
+                if checkedFollowedClasses {
+                    follow = true
+                }
+                if checkedLocalClasses {
+                    local = true
+                }
+                if (current == max && follow && local) { //Checked both followed and local classes (Prevents double segue)
+                    
+                    print("Segue in 2 seconds...")
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+2, execute: {
+                        //Reset
+                        follow = false
+                        local = false
+                        
                         strongSelf.performSegue(withIdentifier: Constants.Segues.FinishedLoading, sender: strongSelf)
                     })
                 }
@@ -57,11 +75,14 @@ class LoadingViewController: UIViewController {
         //MIDDLE ANIMATION
         let animationHeight : CGFloat = 250.0;
         
-        animationView = LOTAnimationView(name: "PinJump");
+        animationView = LOTAnimationView(name: "animation-w200-h200");
         animationView.contentMode = .scaleAspectFill;
         animationView.frame = CGRect(x: 0, y: self.view.frame.size.height/2 - animationHeight/2, width: self.view.frame.size.width, height: animationHeight);
         animationView.loopAnimation = true;
         self.view.addSubview(animationView);
+        let lab = UILabel()
+        lab.text = "hello there world"
+        animationView.addSubview(lab)
         
         //TOP TEXT
         topText = UILabel(frame: CGRect(x: 0, y: animationView.frame.minY-35, width: self.view.frame.size.width, height: 30))

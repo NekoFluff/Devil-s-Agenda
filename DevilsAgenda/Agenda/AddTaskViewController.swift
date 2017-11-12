@@ -51,7 +51,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             if let task = task { //Delete the task passed in
                 
                 //database.completeTask(task, atIndexPath: indexPath)
-            
+                newTask.reminders = task.reminders
                 database.deleteTask(task, atIndexPath: indexPath);
                 database.saveTask(&newTask)
                 
@@ -71,50 +71,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    @IBAction func addReminder(_ sender: UIButton) {
-        
-        //Set Up Notification Parameters:
-        
-        
-        
-        //identifier:
-        let identifier = descriptionText
-        
-        //actions:
-        let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
-        let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
-        
-        //category:
-        let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
-        
-        //content:
-        let content = UNMutableNotificationContent()
-        content.title = descriptionText
-        content.body = classes[selectedClassIndex].name
-        content.sound = UNNotificationSound.default()
-        content.categoryIdentifier = "ReminderCategory"
-        
-        //trigger:
-        if dueDate == nil {
-            print("Date not set!")
-        }
-        else {
-            guard dueDate! > Date() else {print("ERROR: Due date < current date"); return}
-            
-            let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: dueDate!)
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-
-            //Schedule notification:
-            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-            
-            AppDelegate().setDateNotification(category: category, request: request)
-            
-        }
-        
-        
-    }
-    
+    //MARK - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -163,7 +120,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK: Public Methods
+    //MARK: - Public Methods
     func configure(withTask task: Task, andIndexPath indexPath: IndexPath) {
         self.task = task
         self.indexPath = indexPath
@@ -350,17 +307,30 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
      }
      */
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
+        if segue.identifier == Constants.Segues.AddReminderVC {
+            if let destination = segue.destination as? ReminderViewController {
+                
+                if (self.task == nil) {
+                    self.task = Task(classes[selectedClassIndex],
+                                     category: taskCategory(rawValue: categories[selectedCategoryIndex])!,
+                                     desc: descriptionText,
+                                     dueDate: dueDate,
+                                     todoDate: whenToDoDate)
+                }
+                destination.task = self.task!
+            }
+        }
      }
-     */
     
     
+    //MARK: TableViewDelegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -488,6 +458,8 @@ extension AddTaskViewController : ButtonTableViewCellDelegate {
             self.present(alert, animated: true, completion: {
                 print("Presented warning")
             })
+        } else if button.titleLabel?.text == "Add Reminder" {
+            self.performSegue(withIdentifier: Constants.Segues.AddReminderVC, sender: self)
         }
     }
 }

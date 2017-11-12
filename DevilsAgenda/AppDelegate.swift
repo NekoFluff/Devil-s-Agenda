@@ -86,55 +86,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        setReminders()
         
-        
-        center.getNotificationSettings { (settings) in
-            
-            if settings.authorizationStatus == .authorized {
-                
-                
-                // Set Up Notification Parameters:
-                
-                //indentifier:
-                let identifier = "FiveMinuteTimerNotification"
-                
-                //actions:
-                let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
-                let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
-                
-                //category:
-                let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
-                self.center.setNotificationCategories([category])
-                
-                //content:
-                let content = UNMutableNotificationContent()
-                content.title = "It's been 5 minutes!"
-                content.body = "Ring-a-ding-ding"
-                content.sound = UNNotificationSound.default()
-                content.categoryIdentifier = "ReminderCategory"
-                
-                //trigger:
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                
-                
-                // Schedule notification:
-                
-                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                
-                
-                // Add notification to center:
-                
-                self.center.add(request, withCompletionHandler: { (error) in
-                    if error != nil {
-                        //Something's wrong yo
-                    }
-                })
-            }
-        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        //TODO: Remove all reminders
+        deleteReminders()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -143,6 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        setReminders()
     }
 
     
@@ -164,10 +124,74 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         center.getPendingNotificationRequests(){[unowned self] requests in
             for request in requests {
                 guard let trigger = request.trigger as? UNCalendarNotificationTrigger else {return}
-                print(Calendar.current.dateComponents([.year,.day,.month,.hour,.minute,.second], from: trigger.nextTriggerDate()!))
+                print("Set alert at: \(Calendar.current.dateComponents([.year,.day,.month,.hour,.minute,.second], from: trigger.nextTriggerDate()!))")
             }
         }
         
+    }
+    
+    private func setReminders() {
+        center.getNotificationSettings { (settings) in
+            
+            //Make sure the app are authorized
+            if settings.authorizationStatus == .authorized {
+                
+                //Compact tasks
+                let manager = DatabaseManager.defaultManager
+                manager.tasks.compact()
+                
+                //Enumerate tasks
+                for index in 0..<manager.tasks.count {
+                    if let task = manager.tasks.object(at: index) as? Task {
+                        
+                        //Enumerate reminders
+                        for reminder in task.reminders {
+                            
+                            //identifier:
+                            let identifier = reminder.title
+                            
+                            //actions:
+                            let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
+                            let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
+                            
+                            //category:
+                            let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
+                            
+                            //content:
+                            let content = UNMutableNotificationContent()
+                            content.title = reminder.title
+                            content.body = reminder.description
+                            content.sound = UNNotificationSound.default()
+                            content.categoryIdentifier = "ReminderCategory"
+                            
+                            //trigger:
+                            guard reminder.date > Date() else {print("ERROR: Due date < current date"); continue}
+                            
+                            let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: reminder.date)
+                            
+                            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                            
+                            //Schedule notification:
+                            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                            
+                            self.setDateNotification(category: category, request: request)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func deleteReminders() {
+        print("\n\nRemoving notifications")
+        center.getPendingNotificationRequests { (notifications) in
+            print(notifications)
+            
+            self.center.removePendingNotificationRequests(withIdentifiers: notifications.map({ (request) -> String in
+                return request.identifier
+            }))
+        }
+        print("Removed notifications\n\n")
     }
 }
 

@@ -45,14 +45,20 @@
 		820F09B11F85F744004D9179 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09B01F85F744004D9179 /* AddTaskViewController.swift */; };
 		820F09B31F85F78E004D9179 /* PickerViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */; };
 		820F09B51F85F810004D9179 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 820F09B41F85F810004D9179 /* GoogleService-Info.plist */; };
+		8213A9431FB7772A0039CB8C /* trail_loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8213A9421FB7772A0039CB8C /* trail_loading.json */; };
+		8213A9451FB777380039CB8C /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8213A9441FB777380039CB8C /* loading.json */; };
+		8213A94A1FB77A080039CB8C /* animation-w200-h200.json in Resources */ = {isa = PBXBuildFile; fileRef = 8213A9461FB77A080039CB8C /* animation-w200-h200.json */; };
+		8213A94B1FB77A080039CB8C /* animation-w256-h256.json in Resources */ = {isa = PBXBuildFile; fileRef = 8213A9471FB77A080039CB8C /* animation-w256-h256.json */; };
+		8213A94C1FB77A080039CB8C /* animation-w1440-h1080.json in Resources */ = {isa = PBXBuildFile; fileRef = 8213A9481FB77A080039CB8C /* animation-w1440-h1080.json */; };
+		8213A94D1FB77A080039CB8C /* progress_bar.json in Resources */ = {isa = PBXBuildFile; fileRef = 8213A9491FB77A080039CB8C /* progress_bar.json */; };
 		8215B0631F9685AD006473AC /* ClassTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8215B0621F9685AD006473AC /* ClassTableViewCell.swift */; };
-		8218EC581FAE9E7800B7E56B /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */; };
 		8252D4DB1F8AE7AC003033E2 /* TaskOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */; };
 		825BC1991FAB9B9000DB926F /* NSPointerArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */; };
 		825E02441FB22F6000CB3CAA /* PinJump.json in Resources */ = {isa = PBXBuildFile; fileRef = 825E02431FB22F6000CB3CAA /* PinJump.json */; };
 		825E02461FB2400B00CB3CAA /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825E02451FB2400B00CB3CAA /* LoadingViewController.swift */; };
 		826F06961F8BFACA00805ED1 /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 826F06951F8BFACA00805ED1 /* Fastfile */; };
 		82774D761FB4D43C00F0EF6F /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82774D751FB4D43C00F0EF6F /* ReminderViewController.swift */; };
+		82774D7A1FB4E9AB00F0EF6F /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82774D791FB4E9AB00F0EF6F /* NotificationDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,14 +123,20 @@
 		820F09B01F85F744004D9179 /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddTaskViewController.swift; path = Agenda/AddTaskViewController.swift; sourceTree = "<group>"; };
 		820F09B21F85F78E004D9179 /* PickerViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PickerViewTableViewCell.swift; path = TableViewCells/PickerViewTableViewCell.swift; sourceTree = "<group>"; };
 		820F09B41F85F810004D9179 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8213A9421FB7772A0039CB8C /* trail_loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = trail_loading.json; path = Animations/trail_loading.json; sourceTree = "<group>"; };
+		8213A9441FB777380039CB8C /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = loading.json; path = Animations/loading.json; sourceTree = "<group>"; };
+		8213A9461FB77A080039CB8C /* animation-w200-h200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "animation-w200-h200.json"; path = "Animations/animation-w200-h200.json"; sourceTree = "<group>"; };
+		8213A9471FB77A080039CB8C /* animation-w256-h256.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "animation-w256-h256.json"; path = "Animations/animation-w256-h256.json"; sourceTree = "<group>"; };
+		8213A9481FB77A080039CB8C /* animation-w1440-h1080.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "animation-w1440-h1080.json"; path = "Animations/animation-w1440-h1080.json"; sourceTree = "<group>"; };
+		8213A9491FB77A080039CB8C /* progress_bar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = progress_bar.json; path = Animations/progress_bar.json; sourceTree = "<group>"; };
 		8215B0621F9685AD006473AC /* ClassTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClassTableViewCell.swift; path = TableViewCells/ClassTableViewCell.swift; sourceTree = "<group>"; };
-		8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationDelegate.swift; path = Agenda/NotificationDelegate.swift; sourceTree = "<group>"; };
 		8252D4DA1F8AE7AC003033E2 /* TaskOrganizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskOrganizer.swift; path = Agenda/TaskOrganizer.swift; sourceTree = "<group>"; };
 		825BC1981FAB9B9000DB926F /* NSPointerArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPointerArrayExtension.swift; sourceTree = "<group>"; };
 		825E02431FB22F6000CB3CAA /* PinJump.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PinJump.json; path = Animations/PinJump.json; sourceTree = "<group>"; };
 		825E02451FB2400B00CB3CAA /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = LoadingViewController/LoadingViewController.swift; sourceTree = "<group>"; };
 		826F06951F8BFACA00805ED1 /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
 		82774D751FB4D43C00F0EF6F /* ReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReminderViewController.swift; path = Agenda/ReminderViewController.swift; sourceTree = "<group>"; };
+		82774D791FB4E9AB00F0EF6F /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationDelegate.swift; path = Agenda/NotificationDelegate.swift; sourceTree = "<group>"; };
 		851317DC6E019E559341DFC5 /* Pods-DevilsAgendaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaTests/Pods-DevilsAgendaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8CEA69B96AC6F1696E445929 /* Pods-DevilsAgendaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevilsAgendaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevilsAgendaUITests/Pods-DevilsAgendaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B4CF2DE15388AF4707AA7494 /* Pods_DevilsAgenda.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevilsAgenda.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +204,7 @@
 				820F09971F85F62E004D9179 /* TableViewCells */,
 				820F098E1F85F619004D9179 /* Settings */,
 				820F098B1F85F60B004D9179 /* Login */,
+				825E02411FB22B6000CB3CAA /* LoadingViewController */,
 				820F09881F85F5FC004D9179 /* DataStructures */,
 				820F097D1F85F5EA004D9179 /* Calendar */,
 				820F096A1F85F5D9004D9179 /* Classes */,
@@ -201,8 +214,6 @@
 				820F09571F85F5B7004D9179 /* DatabaseManager.swift */,
 				820F095C1F85F5B7004D9179 /* TODOs.swift */,
 				820F08E61F85F3C4004D9179 /* AppDelegate.swift */,
-				8218EC571FAE9E7800B7E56B /* NotificationDelegate.swift */,
-				825E02411FB22B6000CB3CAA /* LoadingViewController */,
 				820F08EA1F85F3C4004D9179 /* Main.storyboard */,
 				820F08ED1F85F3C4004D9179 /* Assets.xcassets */,
 				820F08EF1F85F3C4004D9179 /* LaunchScreen.storyboard */,
@@ -232,6 +243,7 @@
 		820F09531F85F57E004D9179 /* Agenda */ = {
 			isa = PBXGroup;
 			children = (
+				82774D791FB4E9AB00F0EF6F /* NotificationDelegate.swift */,
 				82774D751FB4D43C00F0EF6F /* ReminderViewController.swift */,
 				820F09511F85F576004D9179 /* AgendaTableViewController.swift */,
 				820F09B01F85F744004D9179 /* AddTaskViewController.swift */,
@@ -318,6 +330,12 @@
 			isa = PBXGroup;
 			children = (
 				825E02431FB22F6000CB3CAA /* PinJump.json */,
+				8213A9421FB7772A0039CB8C /* trail_loading.json */,
+				8213A9441FB777380039CB8C /* loading.json */,
+				8213A9461FB77A080039CB8C /* animation-w200-h200.json */,
+				8213A9471FB77A080039CB8C /* animation-w256-h256.json */,
+				8213A9481FB77A080039CB8C /* animation-w1440-h1080.json */,
+				8213A9491FB77A080039CB8C /* progress_bar.json */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -465,14 +483,20 @@
 			files = (
 				826F06961F8BFACA00805ED1 /* Fastfile in Resources */,
 				820F08F11F85F3C4004D9179 /* LaunchScreen.storyboard in Resources */,
+				8213A94D1FB77A080039CB8C /* progress_bar.json in Resources */,
 				820F09B51F85F810004D9179 /* GoogleService-Info.plist in Resources */,
 				820F09751F85F5E4004D9179 /* CalendarView.xib in Resources */,
 				820F08EE1F85F3C4004D9179 /* Assets.xcassets in Resources */,
+				8213A94B1FB77A080039CB8C /* animation-w256-h256.json in Resources */,
+				8213A9451FB777380039CB8C /* loading.json in Resources */,
 				820F097A1F85F5E4004D9179 /* MonthCell.xib in Resources */,
+				8213A94A1FB77A080039CB8C /* animation-w200-h200.json in Resources */,
 				820F097C1F85F5E4004D9179 /* WeekCell.xib in Resources */,
 				825E02441FB22F6000CB3CAA /* PinJump.json in Resources */,
+				8213A94C1FB77A080039CB8C /* animation-w1440-h1080.json in Resources */,
 				820F08EC1F85F3C4004D9179 /* Main.storyboard in Resources */,
 				820F09781F85F5E4004D9179 /* DateCell.xib in Resources */,
+				8213A9431FB7772A0039CB8C /* trail_loading.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -690,8 +714,8 @@
 				820F097B1F85F5E4004D9179 /* WeekCell.swift in Sources */,
 				820F099E1F85F6C5004D9179 /* TaskTableViewCell.swift in Sources */,
 				820F09601F85F5B7004D9179 /* DatabaseManager.swift in Sources */,
+				82774D7A1FB4E9AB00F0EF6F /* NotificationDelegate.swift in Sources */,
 				820D52311F89C9C300274DFE /* LabelTableViewCell.swift in Sources */,
-				8218EC581FAE9E7800B7E56B /* NotificationDelegate.swift in Sources */,
 				820F09AA1F85F6F1004D9179 /* Task_OLD.swift in Sources */,
 				820F09A11F85F6DC004D9179 /* SettingsTableViewController.swift in Sources */,
 				820F09AB1F85F6F1004D9179 /* Task.swift in Sources */,

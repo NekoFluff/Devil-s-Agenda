@@ -94,8 +94,6 @@ class DatabaseManager {
 //            
 //            self.createClasses(fromSnapshot: snapshot)
 //        })
-        addClassListener()
-
         
         print("Configured database!")
     }
@@ -144,7 +142,19 @@ class DatabaseManager {
         return nil
     }
     
-    func downloadFollowedClasses(update: @escaping (_ current: Int,_ max: Int) -> ()) {
+    func downloadClasses(update: @escaping (_ current: Int,_ max: Int, Bool, Bool) -> ()) {
+        downloadFollowedClasses(update: update)
+        addClassListener(update: update)
+    }
+    
+    private func downloadFollowedClasses(update: @escaping (_ current: Int,_ max: Int, Bool, Bool) -> ()) {
+        
+        self.getClassCount { (count) in
+            let isZero = count == 0;
+            update(self.atomicCounter.downloadedClasses, self.atomicCounter.totalClasses, false, isZero)
+            self.atomicCounter.incrementTotalClasses(count)
+        }
+        
         let followedClassesPath = getFollowedClassesPath()
         
         //Get all the followedClasses
@@ -177,13 +187,17 @@ class DatabaseManager {
                         
                         //Create a class for every followed class
                         self.DatabaseManagerQueue.sync {
-                            update(self.atomicCounter.downloadedClasses, self.atomicCounter.totalClasses)
+                            update(self.atomicCounter.downloadedClasses, self.atomicCounter.totalClasses, true, false)
                             if let (newClass, _) = self.createClass(fromSnapshot: snapshot2) {
                                 self.classDelegate?.addedClass(class: newClass)
                             }
                         }
                     })
                 }
+                
+            } else {
+                print("No followed classes")
+                update(self.atomicCounter.downloadedClasses, self.atomicCounter.totalClasses, true, false)
             }
             
             print("Finished downloading shared classes")
@@ -201,9 +215,9 @@ class DatabaseManager {
         //                                })
     }
     
-    func addClassListener() {
+    func addClassListener(update: @escaping (_ current: Int,_ max: Int, Bool, Bool) -> ()) {
         guard _classRefHandle == nil else {return}
-            
+        
         //Listen for new class additions in the Firebase database
         _classRefHandle = self.ref.child("users").child(Auth.auth().currentUser!.uid).child("classes").observe(DataEventType.childAdded, with: { [weak self](snapshot) in
             guard let strongSelf = self else { return }
@@ -212,6 +226,8 @@ class DatabaseManager {
             strongSelf.DatabaseManagerQueue.sync {
                 if let (newClass, _) = strongSelf.createClass(fromSnapshot: snapshot) {
                     strongSelf.classDelegate?.addedClass(class: newClass)
+                    strongSelf.atomicCounter.incrementDownloadedClasses(1)
+                    update(strongSelf.atomicCounter.downloadedClasses, strongSelf.atomicCounter.totalClasses, false, true)
                 }
             }
         })
@@ -247,6 +263,28 @@ class DatabaseManager {
     }*/
     
     //MARK: CLASS Methods
+    func getClassCount(f: @escaping (Int)->()) {
+        ref.child("users/\(Auth.auth().currentUser!.uid)/classes/count").observe(.value, with: { (snapshot) in
+            if let count = snapshot.value as? Int {
+                f(count)
+            }
+        })
+    }
+    
+    func changeClassCountBy(increment: Int) {
+        ref.child("users/\(Auth.auth().currentUser!.uid)/classes/count").runTransactionBlock({ (data) -> TransactionResult in
+            
+            var count = data.value as? Int ?? 0
+            count = count + increment;
+            data.value = count;
+
+            return TransactionResult.success(withValue: data)
+
+        }, andCompletionBlock: { (error, aBool, snapshot) in
+            print(error?.localizedDescription ?? "No error", aBool, snapshot ?? "No snapshot")
+        })
+    }
+    
     func saveClass(_ c: Class) {
         guard !c.isShared else {saveSharedClass(c); return}
         
@@ -255,6 +293,8 @@ class DatabaseManager {
         if c.databaseKey == nil {
             classPath = classPath.childByAutoId()
             c.databaseKey = classPath.key
+            changeClassCountBy(increment: 1)
+
         } else {
             classPath.child(c.databaseKey!)
         }
@@ -283,6 +323,7 @@ class DatabaseManager {
             if let path = getClassPath(classes[i]) {
                 //Delete the class in the database
                 self.ref.child(path).removeValue()
+                changeClassCountBy(increment: -1)
                 
 //                //Delete all tasks associated with that task
 //                tasks = tasks.filter({ (task) -> Bool in
@@ -458,7 +499,12 @@ class DatabaseManager {
                         
                         if let oldData = snapshot2.value as? Dictionary<String, Any?> {
                             //Move the data
-                            self.ref.updateChildValues([followedClassesPath+"/"+c2.databaseKey! : oldData, followedClassesPath+"/"+classCode : []])
+                            
+                            if c2.databaseKey != classCode {
+                                self.ref.updateChildValues([followedClassesPath+"/"+c2.databaseKey! : oldData, followedClassesPath+"/"+classCode : []])
+                            } else {
+                                self.ref.updateChildValues([followedClassesPath+"/"+c2.databaseKey! : oldData])
+                            }
                         }
                     })
                     

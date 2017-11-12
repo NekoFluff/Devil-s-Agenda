@@ -24,6 +24,30 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil);
     }
+    @IBOutlet weak var deleteClassButton: UIButton!
+    @IBAction func deleteClass(_ sender: Any) {
+        if let index = index {
+            
+            //Create an alert saying that the class code is already being used.
+            let alert = UIAlertController(title: "Are you sure?", message: "This action cannot be undone. All data loss is permanent. If this class is shared, all users following it will no longer be able to use it.", preferredStyle: .alert)
+            
+            
+            alert.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: "Delete action"), style: .destructive, handler: { (action) in
+                self.classCodeTextField.becomeFirstResponder()
+                self.database.deleteClass(self.database.classes[index], atIndex: index)
+                self.presentingViewController?.dismiss(animated: true, completion: nil)
+            }))
+            
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel action"), style: .cancel, handler: { (action) in
+                
+            }))
+            
+            self.present(alert, animated: true, completion: {
+                print("Presented class code error")
+            })
+            
+        }
+    }
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBAction func done(_ sender: UIBarButtonItem) {
@@ -70,6 +94,8 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
         
         if (shareSwitch.isOn) {
             newClass.databaseKey = classCodeTextField.text
+        } else {
+            newClass.databaseKey = _class?.databaseKey
         }
         
         if var c = _class, let i = index {
@@ -169,6 +195,10 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 self.addButton.isEnabled = false;
 
             }
+        } else {
+            self.deleteClassButton.isHidden = true;
+            self.classCodeTextField.isHidden = true;
+            self.classCodeLabel.isHidden = true;
         }
     }
     

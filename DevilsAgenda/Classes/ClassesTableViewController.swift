@@ -58,7 +58,6 @@ class ClassesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.leftBarButtonItem = self.editButtonItem
-        database.addClassListener()
         database.classDelegate = self
         
         self.tableView.estimatedRowHeight = 0;
@@ -175,8 +174,8 @@ extension ClassesTableViewController : DatabaseManagerClassDelegate {
     func addedClass(class: Class) {
         //tableView.reloadData()
         
-        self.tableView.insertRows(at: [IndexPath(row: self.database.classes.count-1, section: 0)], with: UITableViewRowAnimation.automatic)
-        
+        //self.tableView.insertRows(at: [IndexPath(row: self.database.classes.count-1, section: 0)], with: UITableViewRowAnimation.automatic)
+        self.tableView.reloadData()
         DispatchQueue.main.async {
             self.tableView.beginUpdates()
             self.tableView.endUpdates()

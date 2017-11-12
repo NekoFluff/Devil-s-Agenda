@@ -10,11 +10,13 @@ import Foundation
 
 struct Reminder {
     let date : Date
-    let text : String
+    let title : String
+    let description : String
     
-    init(date : Date, reminderText: String) {
+    init(date : Date, title: String, description: String) {
         self.date = date
-        self.text = reminderText
+        self.title = title
+        self.description = description
     }
     
     func toDict() -> [String : String] {
@@ -27,7 +29,8 @@ struct Reminder {
         var dict = Dictionary<String, String>()
         
         //Add data
-        dict[Constants.ReminderFields.text] = self.text
+        dict[Constants.ReminderFields.title] = self.title
+        dict[Constants.ReminderFields.description] = self.description
         
         let dateString = df.string(from: date)
         dict[Constants.ReminderFields.date] = dateString
