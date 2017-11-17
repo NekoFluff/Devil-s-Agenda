@@ -16,6 +16,7 @@ target 'DevilsAgenda' do
   pod 'Firebase/Performance'
   pod 'IQKeyboardManagerSwift'
   pod 'lottie-ios', '2.1.3'
+  pod 'SpreadsheetView'
   
   target 'DevilsAgendaTests' do
     inherit! :search_paths
