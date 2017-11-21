@@ -17,7 +17,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     let section0 = ["Name", "Color"] //Required
     let section1 = ["Professor", "Location", "Start Time", "End Time"] //Optional
     let section2 = ["Shared"]
-    let section3 = ["Delete"]
+    let section3 = ["Delete Class"]
     
     let colorOptions = ["Red", "Green", "Blue", "Orange", "Yellow", "Black"]
     //        let database = DatabaseManager.defaultManager
@@ -43,17 +43,23 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     private var _class : Class?;
     private var index : Int?;
     private var editingDisabled = false
-    
+    var prevIndexPath : IndexPath?
     
     
     //MARK: - Class-specific values
-    private var className : String?
-    private var classColor = "Red"
+    //Required
+    public var className : String?
+    public var classColor = "Red"
+
+    //Optional
+    public var classProfessor : String?
+    public var classLocation : String?
+    public var classStartTime : Date?
+    public var classEndTime : Date?
     
-    private var classStartTime : Date?
-    private var classEndTime : Date?
+    //Share
     public var shareSwitchIsOn = false
-    private var classCodeText : String!
+    public var classCodeText : String!
     //MARK: -
     
     
@@ -73,6 +79,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             self.addButton.title = "Done";
             
         } else if self.addButton.title == "Done" {
+            self.view.endEditing(true)
             
             var canSave = false;
             
@@ -109,6 +116,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.estimatedRowHeight = 44; // Some average height of your cells
         
         setupButtons()
+        updateFields()
     }
     
     private func setupButtons() {
@@ -308,9 +316,9 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 //var dateString = "-"
                 if let startTime = classStartTime {
                     //dateString = timeFormatter.string(from: startTime)
-                    cell.configure(title: section2[indexPath.row], date: startTime, formatter: timeFormatter);
+                    cell.configure(title: section1[indexPath.row], date: startTime, formatter: timeFormatter);
                 } else {
-                    cell.configure(title: section2[indexPath.row], date: Date(), formatter: timeFormatter);
+                    cell.configure(title: section1[indexPath.row], date: Date(), formatter: timeFormatter);
                 }
                 
                 cell.editingDisabled = editingDisabled
@@ -321,9 +329,9 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 //var dateString = "-"
                 if let endTime = classEndTime {
                     //dateString = dateFormatter.string(from: endTime)
-                    cell.configure(title: section2[indexPath.row], date: endTime, formatter: timeFormatter);
+                    cell.configure(title: section1[indexPath.row], date: endTime, formatter: timeFormatter);
                 } else {
-                    cell.configure(title: section2[indexPath.row], date: Date(), formatter: timeFormatter);
+                    cell.configure(title: section1[indexPath.row], date: Date(), formatter: timeFormatter);
                 }
                 
                 cell.editingDisabled = editingDisabled
@@ -331,12 +339,11 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             }
 
             
-        } else { //Shared
+        } else if indexPath.section == 2 { //Shared
             
             if (indexPath.row == 0) { //Share Switch
                 let cell = tableView.dequeueReusableCell(withIdentifier: "switchTableViewCell", for: indexPath) as! SwitchTableViewCell
                 
-                //cell.button.setTitle(section2[0], for: UIControlState.normal)
                 cell.configure(title: section2[indexPath.row], isOn: shareSwitchIsOn)
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self;
@@ -349,9 +356,19 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                                textFieldPlaceholder: "Make the Class Code easy to type!")
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self
+                cell.characterLimited = true
                 
                 return cell
             }
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "buttonTableViewCell", for: indexPath) as! ButtonTableViewCell
+            
+            cell.button.setTitle(section3[indexPath.row], for: UIControlState.normal)
+            cell.button.tintColor = UIColor.red
+            cell.delegate = self
+            cell.editingDisabled = editingDisabled
+            
+            return cell
         }
         
     }
@@ -424,21 +441,40 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     
     //MARK: TableViewDelegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*
+        
         tableView.deselectRow(at: indexPath, animated: true)
         guard !editingDisabled else {return}
         
-        if let prevI = prevIndexPath, let prevPickerCell = tableView.cellForRow(at: prevI) as? PickerViewTableViewCell {
-            if (prevIndexPath != indexPath && prevPickerCell.showsDetails) {
-                prevPickerCell.showsDetails = !prevPickerCell.showsDetails
-                
-                UIView.animate(withDuration: 0.3) {
-                    prevPickerCell.contentView.layoutIfNeeded() // Or self.contentView if you're doing this from your own cell subclass
+        if let prevI = prevIndexPath {
+            if let prevPickerCell = tableView.cellForRow(at: prevI) as? PickerViewTableViewCell {
+                if (prevIndexPath != indexPath && prevPickerCell.showsDetails) {
+                    prevPickerCell.showsDetails = !prevPickerCell.showsDetails
+                    
+                    UIView.animate(withDuration: 0.3) {
+                        prevPickerCell.contentView.layoutIfNeeded() // Or self.contentView if you're doing this from your own cell subclass
+                    }
+                }
+            } else if let prevPickerCell = tableView.cellForRow(at: prevI) as? DatePickerViewTableViewCell {
+                if (prevIndexPath != indexPath && prevPickerCell.showsDetails) {
+                    prevPickerCell.showsDetails = !prevPickerCell.showsDetails
+                    
+                    UIView.animate(withDuration: 0.3) {
+                        prevPickerCell.contentView.layoutIfNeeded() // Or self.contentView if you're doing this from your own cell subclass
+                    }
                 }
             }
         }
         
         if let pickerCell = tableView.cellForRow(at: indexPath) as? PickerViewTableViewCell {
+            pickerCell.showsDetails = !pickerCell.showsDetails;
+            
+            
+            UIView.animate(withDuration: 0.3) {
+                pickerCell.contentView.layoutIfNeeded() // Or self.contentView if you're doing this from your own cell subclass
+            }
+            
+            self.view.endEditing(true)
+        } else if let pickerCell = tableView.cellForRow(at: indexPath) as? DatePickerViewTableViewCell {
             pickerCell.showsDetails = !pickerCell.showsDetails;
             
             
@@ -454,41 +490,25 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.endUpdates()
         
         prevIndexPath = indexPath
-        
-        
-        if !editingDisabled && indexPath.section == 1 {
-            let calendar = CalendarView(nibName: "CalendarView", bundle: Bundle(for: CalendarView.self))
-            calendar.delegate = self
-            calendar.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-            
-            if indexPath.row == 0 {
-                if let dueDate = dueDate {
-                    calendar.date = dueDate
-                }
-            } else if indexPath.row == 1 {
-                if let whenToDoDate = whenToDoDate {
-                    calendar.date = whenToDoDate
-                }
-            }
-            
-            self.present(calendar, animated: true) {
-                print("Presented Calendar View")
-            }
-            
-        }
-        */
     }
 }
 
 extension AddClass2ViewController : SwitchTableViewCellDelegate {
     func switchCell(cell: UITableViewCell, isNowOn isOn: Bool) {
         shareSwitchIsOn = isOn
+        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
     }
 }
 
 extension AddClass2ViewController : DatePickerViewTableCellDelegate {
     func datePickerCell(cell: UITableViewCell, selectedDate: Date) {
-        
+        if let indexPath = tableView.indexPath(for: cell) {
+            if indexPath.section == 1 && indexPath.row == 2 { //Start Time
+                classStartTime = selectedDate
+            } else if indexPath.section == 1 && indexPath.row == 3 { //End Time
+                classEndTime = selectedDate
+            }
+        }
     }
 
 }
@@ -497,14 +517,11 @@ extension AddClass2ViewController : PickerViewTableCellDelegate {
     
     func pickerCell(cell: UITableViewCell, selectedPickerIndex index: Int, inArray array: [String]) {
         if let indexPath = tableView.indexPath(for: cell) {
-            /*
-            if indexPath.section == 0 && indexPath.row == 0 {
-                selectedClassIndex = index
-                print("Changed class index to \(index)")
-            } else if indexPath.section == 0 && indexPath.row == 1 {
-                selectedCategoryIndex = index
-                print("Changed category index to \(index)")
-            }*/
+            
+            if indexPath.section == 0 && indexPath.row == 1 { //Color
+                classColor = array[index]
+                print("Changed color to \(classColor)")
+            } 
         }
     }
 }
@@ -512,10 +529,22 @@ extension AddClass2ViewController : PickerViewTableCellDelegate {
 
 extension AddClass2ViewController : TextFieldTableCellDelegate {
     func textFieldCell(cell: UITableViewCell, changedText text: String) {
-        /*
-        self.descriptionText = text;
-        print("New description text: " + text)
-         */
+        
+        if let indexPath = tableView.indexPath(for: cell) {
+            if indexPath.section == 0 && indexPath.row == 0 { //Class Name
+                self.className = text
+                print("New class name: " + text)
+            } else if indexPath.section == 1 && indexPath.row == 0 { //Professor
+                self.classProfessor = text
+                print("New class professor: " + text)
+            } else if indexPath.section == 1 && indexPath.row == 1 { //Location
+                self.classLocation = text
+                print("New class location: " + text)
+            } else if indexPath.section == 2 && indexPath.row == 1 { //Class Code
+                self.classCodeText = text
+                print("New class code: " + text)
+            }
+        }
     }
     
     func textFieldCellBeganEditing(cell: UITableViewCell) {
@@ -579,17 +608,3 @@ extension AddClass2ViewController : DatabaseManagerAddClassDelegate {
     }
 }
 
-extension AddClass2ViewController : UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        let set = NSCharacterSet(charactersIn: "ABCDEFGHIJKLMONPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-").inverted
-        return (string.rangeOfCharacter(from: set) == nil)
-    }
-    
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
-        return true;
-    }
-}

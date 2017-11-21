@@ -43,7 +43,7 @@ class LoadingViewController: UIViewController {
                 if checkedLocalClasses {
                     local = true
                 }
-                if (current == max && follow && local) { //Checked both followed and local classes (Prevents double segue)
+                if (current >= max && follow && local) { //Checked both followed and local classes (Prevents double segue)
                     
                     print("Segue in 2 seconds...")
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+2, execute: {

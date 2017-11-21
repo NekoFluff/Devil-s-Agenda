@@ -693,8 +693,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="rwB-oM-at8" kind="presentation" identifier="AddClassVC" id="NkQ-uT-2k5"/>
-                        <segue destination="rwB-oM-at8" kind="presentation" identifier="EditClassVC" id="G1R-Rg-mB8"/>
+                        <segue destination="rwB-oM-at8" kind="presentation" identifier="AddClassVC_OLD" id="NkQ-uT-2k5"/>
+                        <segue destination="rwB-oM-at8" kind="presentation" identifier="EditClassVC_OLD" id="G1R-Rg-mB8"/>
+                        <segue destination="NcZ-kt-Z7M" kind="presentation" identifier="AddClassVC" id="NKw-9y-Z7i"/>
+                        <segue destination="NcZ-kt-Z7M" kind="presentation" identifier="EditClassVC" id="LUK-TO-bbX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aag-jh-ekF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -922,7 +924,7 @@ FkNsYXNzIE5hbWU
         <!--Add Class2 View Controller-->
         <scene sceneID="qId-cV-yFb">
             <objects>
-                <viewController storyboardIdentifier="addClass2ViewController" id="NcZ-kt-Z7M" customClass="AddClass2ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="addClass2ViewController" id="NcZ-kt-Z7M" customClass="AddClass2ViewController" customModule="DevilsAgenda" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tsI-3U-ivV"/>
                         <viewControllerLayoutGuide type="bottom" id="hgl-vZ-vm6"/>
@@ -1079,7 +1081,7 @@ FkNsYXNzIE5hbWU
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqY-gm-YoY">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqY-gm-YoY">
                                                     <rect key="frame" x="15" y="11" width="45" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1138,40 +1140,36 @@ FkNsYXNzIE5hbWU
                                             <outlet property="title" destination="0hx-Qs-8Q6" id="hIz-5e-uDJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switchTableViewCell" id="Rhw-b5-xYo" userLabel="switchTableViewCell" customClass="SwitchTableViewCell" customModule="DevilsAgenda" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switchTableViewCell" id="SpM-Go-RvO" customClass="SwitchTableViewCell" customModule="DevilsAgenda" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="560" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rhw-b5-xYo" id="7NQ-z2-wge">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Switch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUB-Yb-r12">
-                                                    <rect key="frame" x="15" y="11" width="315" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Switch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lex-UO-zc4">
+                                                    <rect key="frame" x="15" y="11" width="52" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SJe-lK-iQH">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ifn-vH-Vep">
                                                     <rect key="frame" x="345" y="6" width="51" height="31"/>
                                                     <connections>
-                                                        <action selector="switchChanged:" destination="Rhw-b5-xYo" eventType="valueChanged" id="PF8-2n-VRm"/>
+                                                        <action selector="switchChanged:" destination="SpM-Go-RvO" eventType="valueChanged" id="qGO-rH-sia"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="SJe-lK-iQH" secondAttribute="trailing" constant="20" id="H7T-W3-BJ2"/>
-                                                <constraint firstItem="jUB-Yb-r12" firstAttribute="centerY" secondItem="7NQ-z2-wge" secondAttribute="centerY" id="I6a-xp-Phb"/>
-                                                <constraint firstItem="SJe-lK-iQH" firstAttribute="centerY" secondItem="7NQ-z2-wge" secondAttribute="centerY" id="IdF-9V-dAr"/>
-                                                <constraint firstItem="jUB-Yb-r12" firstAttribute="leading" secondItem="7NQ-z2-wge" secondAttribute="leading" constant="15" id="UeB-do-bcI"/>
-                                                <constraint firstItem="SJe-lK-iQH" firstAttribute="leading" secondItem="jUB-Yb-r12" secondAttribute="trailing" constant="15" id="bVd-XH-OMc"/>
+                                                <constraint firstItem="ifn-vH-Vep" firstAttribute="centerY" secondItem="6Cf-8g-y3x" secondAttribute="centerY" id="Fd8-bP-uBB"/>
+                                                <constraint firstAttribute="trailing" secondItem="ifn-vH-Vep" secondAttribute="trailing" constant="20" id="HK2-iV-ymZ"/>
+                                                <constraint firstItem="Lex-UO-zc4" firstAttribute="leading" secondItem="6Cf-8g-y3x" secondAttribute="leading" constant="15" id="lCL-T1-ucW"/>
+                                                <constraint firstItem="Lex-UO-zc4" firstAttribute="centerY" secondItem="6Cf-8g-y3x" secondAttribute="centerY" id="lHQ-TQ-5tP"/>
                                             </constraints>
-                                            <connections>
-                                                <outlet property="title" destination="jUB-Yb-r12" id="9kF-xL-Y2d"/>
-                                            </connections>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="cellSwitch" destination="SJe-lK-iQH" id="n7s-Nx-IIc"/>
-                                            <outlet property="title" destination="jUB-Yb-r12" id="vCA-jx-aQu"/>
+                                            <outlet property="cellSwitch" destination="ifn-vH-Vep" id="tnT-SX-0Vg"/>
+                                            <outlet property="title" destination="Lex-UO-zc4" id="sSf-uE-hQ2"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="3yO-Vu-0h0">
@@ -1262,7 +1260,7 @@ FkNsYXNzIE5hbWU
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XOt-Ad-bF9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4820" y="-541"/>
+            <point key="canvasLocation" x="4074" y="-3"/>
         </scene>
     </scenes>
     <resources>
@@ -1273,6 +1271,7 @@ FkNsYXNzIE5hbWU
         <image name="icon_settings" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="LUK-TO-bbX"/>
         <segue reference="G1R-Rg-mB8"/>
     </inferredMetricsTieBreakers>
 </document>

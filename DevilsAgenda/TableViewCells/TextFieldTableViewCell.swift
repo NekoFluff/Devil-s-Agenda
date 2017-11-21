@@ -16,6 +16,7 @@ protocol TextFieldTableCellDelegate {
 class TextFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     var delegate : TextFieldTableCellDelegate?
+    var characterLimited = false
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var textField: UITextField!
     var editingDisabled = false {
@@ -58,4 +59,21 @@ class TextFieldTableViewCell: UITableViewCell, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true;
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if (self.characterLimited) {
+            let set = NSCharacterSet(charactersIn: "ABCDEFGHIJKLMONPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-").inverted
+            return (string.rangeOfCharacter(from: set) == nil)
+        } else {
+            return true;
+        }
+    }
 }
+

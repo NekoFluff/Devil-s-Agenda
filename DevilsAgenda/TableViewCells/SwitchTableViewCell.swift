@@ -12,7 +12,7 @@ protocol SwitchTableViewCellDelegate {
     func switchCell(cell: UITableViewCell, isNowOn isOn: Bool);
 }
 
-class SwitchTableViewCell:  UITableViewCell {
+class SwitchTableViewCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var cellSwitch: UISwitch!
