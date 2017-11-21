@@ -57,8 +57,7 @@ class ClassesTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem        
-        database.addClassListener()
+        //self.navigationItem.leftBarButtonItem = self.editButtonItem
         database.classDelegate = self
         
         self.tableView.estimatedRowHeight = 0;
@@ -103,6 +102,9 @@ class ClassesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        self.performSegue(withIdentifier: Constants.Segues.EditClassVC, sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -120,9 +122,9 @@ class ClassesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            database.deleteClass(atIndex: indexPath.row)
+            database.deleteClass(database.classes[indexPath.row], atIndex: indexPath.row)
             
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            //tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -157,6 +159,12 @@ class ClassesTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Segues.AddClassVC {
             //let addClassVC = segue.destination as! AddClassViewController
+        } else if segue.identifier == Constants.Segues.EditClassVC {
+            let editClassVC = segue.destination as! AddClassViewController
+            
+            if let row = tableView.indexPathForSelectedRow?.row {
+                editClassVC.setClass(database.classes[row], withIndex: row)
+            }
         }
     }
 
@@ -165,13 +173,26 @@ class ClassesTableViewController: UITableViewController {
 extension ClassesTableViewController : DatabaseManagerClassDelegate {
     func addedClass(class: Class) {
         //tableView.reloadData()
-        tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: database.classes.count-1, section: 0)], with: UITableViewRowAnimation.automatic)
-        tableView.endUpdates()
+        
+        //self.tableView.insertRows(at: [IndexPath(row: self.database.classes.count-1, section: 0)], with: UITableViewRowAnimation.automatic)
+        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+
     }
     
-    func deletedClass(_ c: Class) {
+    func deletedClass(_ c: Class, atIndex index: Int) {
         print("Deleted class \(c.name)")
+
+        
+        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
+        
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
     
     func addedSharedClass(code: String, newClass: Class?, customErrorMessage msg: String?) {
@@ -190,6 +211,23 @@ extension ClassesTableViewController : DatabaseManagerClassDelegate {
         }))
         
         self.present(resultAlert, animated: true, completion: nil)
+    }
+    
+    func signOut() {
+        self.tableView.reloadSections(IndexSet([0]), with: UITableViewRowAnimation.automatic)
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+    }
+    
+    func reloadClass(index: Int) {
+        //self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
+        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
 
 }

@@ -25,6 +25,7 @@ class AgendaTableViewController: UITableViewController {
         } else {
             self.performSegue(withIdentifier: Constants.Segues.AddTaskVC, sender: self)
         }
+        
     }
     
     
@@ -36,6 +37,7 @@ class AgendaTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         //self.navigationItem.leftBarButtonItem = self.editButtonItem
+
         taskOrganizer.delegate = self
         tableView.allowsSelectionDuringEditing = true
         
@@ -131,7 +133,7 @@ class AgendaTableViewController: UITableViewController {
 //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 //        if editingStyle == .delete {
 //            // Delete the row from the data source
-//            database.deleteTask(database.tasks[indexPath.row], atIndexPath: indexPath)
+//            database.completeTask(database.tasks[indexPath.row], atIndexPath: indexPath)
 //            tableView.deleteRows(at: [indexPath], with: .fade)
 //        } else if editingStyle == .insert {
 //            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -147,9 +149,9 @@ class AgendaTableViewController: UITableViewController {
             // share item at indexPath
             
             if let task = self.taskForIndexPath(indexPath) {
-                self.database.deleteTask(task , atIndexPath: indexPath)
+                self.database.completeTask(task , atIndexPath: indexPath)
                 
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                //tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
             }
         }
         
@@ -190,7 +192,7 @@ class AgendaTableViewController: UITableViewController {
         if let taskVC = storyboard?.instantiateViewController(withIdentifier: "addTaskViewController") as? AddTaskViewController {
             
             if let task = taskForIndexPath(indexPath) {
-                taskVC.configure(withTask: task)
+                taskVC.configure(withTask: task, andIndexPath: indexPath)
                 
                 if !tableView.isEditing {
                     taskVC.disableEditing()
@@ -205,7 +207,7 @@ class AgendaTableViewController: UITableViewController {
     
     private func taskForIndexPath(_ indexPath: IndexPath) -> Task? {
         if let section = taskSectionForIndexPath(indexPath)?.rawValue, let tasks = taskOrganizer.organizedTasks[section] {
-            return tasks[indexPath.row]
+            return tasks.object(at: indexPath.row) as? Task
         }
         return nil
     }
@@ -240,29 +242,57 @@ class AgendaTableViewController: UITableViewController {
 }
 
 extension AgendaTableViewController : TaskOrganizerDelegate {
-    func deletedTask(_ task: Task, inSection section: taskSection) {
-        tableView.beginUpdates()
-        tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+    func reloadTasks() {
+        self.tableView.reloadData()
+    }
+
+    func completedTask(_ task: Task, inSection section: taskSection, andIndexPath indexPath: IndexPath?) {
+
+        if let indexPath = indexPath, (self.tableView.cellForRow(at: indexPath) as! TaskTableViewCell).task == task {
+            self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            print("Deleted task using indexPath \(indexPath)")
+        } else {
+            self.tableView.reloadSections(IndexSet([self.sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
+            print("Reloaded table view section \(section) to delete task")
+        }
         //tableView.reloadRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
-        tableView.endUpdates()
+        
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
 
     func deletedClass(_ class: Class) {
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int) {
-        tableView.beginUpdates()
-        //tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
-        tableView.insertRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
-        tableView.endUpdates()
+        
+        
+        let section = self.sectionForTaskSection(section)
+        //tableView.beginUpdates()
+        //tableView.reloadSections(IndexSet([section]), with: UITableViewRowAnimation.automatic)
+        self.tableView.insertRows(at: [IndexPath(row: index, section: section)], with: UITableViewRowAnimation.automatic)
+        //tableView.endUpdates()
+        
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+        
     }
     
     func updatedTask(_ task: Task, inSection section: taskSection) {
-        tableView.beginUpdates()
+        
         tableView.reloadSections(IndexSet([sectionForTaskSection(section)]), with: UITableViewRowAnimation.automatic)
         //tableView.reloadRows(at: [IndexPath(row: index, section: sectionForTaskSection(section))], with: UITableViewRowAnimation.automatic)
-        tableView.endUpdates()
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
     
     private func sectionForTaskSection(_ ts: taskSection) -> Int {

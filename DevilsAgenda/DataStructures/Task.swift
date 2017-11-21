@@ -14,23 +14,23 @@ enum taskCategory : String {
 
 class Task : Equatable {
     
-    var rClass : Class
+    unowned let rClass : Class
     var category : taskCategory?
     var desc : String = ""
     var dueDate : Date?
     var todoDate : Date?
     var databaseKey : String?
+    var reminders : [Reminder] = []
     
     init(_ rClass: Class, category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
         self.rClass = rClass
-        reconfigure(rClass, category: category, desc: desc, dueDate: dueDate, todoDate: todoDate)
+        reconfigure(category: category, desc: desc, dueDate: dueDate, todoDate: todoDate)
     }
     
     init(_ rClass: Class, data: [String : String], databaseKey: String) {
         self.rClass = rClass
         
-        reconfigure(rClass,
-                    category: taskCategory(rawValue: data[Constants.TaskFields.category] ?? "Assignment")!,
+        reconfigure(category: taskCategory(rawValue: data[Constants.TaskFields.category] ?? "Assignment")!,
                     desc: (data[Constants.TaskFields.description]) ?? "ERROR_DESC")
         
         let df = DateFormatter()
@@ -47,23 +47,24 @@ class Task : Equatable {
         self.databaseKey = databaseKey
     }
     
-    func reconfigure(_ rClass: Class, category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
+    
+    
+    func reconfigure(category: taskCategory, desc : String, dueDate : Date? = nil, todoDate: Date? = nil) {
         
-        self.rClass = rClass
         self.category = category
         self.desc = desc
         self.dueDate = dueDate
         self.todoDate = todoDate
     }
     
-    func toDict() -> [String : String] {
+    func toDict() -> [String : Any?] {
         
         //Create date formatter
         let df = DateFormatter()
         df.dateFormat = "MM-dd-yyyy HH:mm:ss"
         
         //Create dictionary to store data in
-        var dict = Dictionary<String, String>()
+        var dict = Dictionary<String, Any?>()
         
         //Add data
         if let category = category {
@@ -81,12 +82,29 @@ class Task : Equatable {
             let dateString = df.string(from: todoDate)
             dict[Constants.TaskFields.todoDate] = dateString
         }
+
+        dict[Constants.TaskFields.reminders] = reminders.map({ (reminder) -> [String:String] in
+            return reminder.toDict()
+        })
+
+
         
         return dict
+    }
+    
+    deinit {
+        print("De-allocating Task \(desc)")
+    }
+    
+    func addReminder(_ r: Reminder) {
+        self.reminders.append(r)
     }
     
     static func ==(left: Task, right: Task) -> Bool {
         return left.rClass == right.rClass && left.databaseKey == right.databaseKey && left.category == right.category
     }
+    
+    
+
     
 }

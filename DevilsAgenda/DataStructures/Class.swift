@@ -14,6 +14,7 @@ class Class : Equatable {
     var databaseKey : String?
     var isShared : Bool = false
     var owner : String
+    var tasks = Dictionary<String, [Task]>()
     
     init(name: String, color: String, owner: String, shared: Bool? = false) {
         self.name = name
@@ -28,6 +29,10 @@ class Class : Equatable {
         self.owner = data[Constants.ClassFields.owner] as? String ?? ""
         self.isShared = data[Constants.ClassFields.shared] as? Bool ?? false
         self.databaseKey = databaseKey
+    }
+    
+    deinit {
+        print("De-allocating Class \(name)")
     }
     
     func toDict() -> [String : Any] {
@@ -45,5 +50,25 @@ class Class : Equatable {
     
     static func ==(left: Class, right: Class) -> Bool {
         return left.name == right.name && left.databaseKey == right.databaseKey && left.color == right.color
+    }
+    
+    func addTask(_ t : Task, forKey k: String) {
+        if self.tasks[t.desc] != nil {
+            print("Added Task \(t.desc) to existing list.")
+            self.tasks[t.desc]!.append(t);
+        } else {
+            print("Added Task \(t.desc) to new list.")
+            self.tasks[t.desc] = [t]
+        }
+    }
+    
+    func removeTask(_ t: Task) {
+        if let taskArray = self.tasks[t.desc] {
+            for (i, task) in taskArray.enumerated() {
+                if task == t {
+                    self.tasks[t.desc]!.remove(at: i)
+                }
+            }
+        }
     }
 }

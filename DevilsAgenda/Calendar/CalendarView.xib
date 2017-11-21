@@ -21,9 +21,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fYe-pc-Jg5" userLabel="background">
+                <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fYe-pc-Jg5" userLabel="background">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T9d-Tq-mpq" userLabel="main">
@@ -94,8 +93,12 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="T9d-Tq-mpq" secondAttribute="bottom" id="92y-rE-gh2"/>
+                <constraint firstAttribute="trailing" secondItem="fYe-pc-Jg5" secondAttribute="trailing" id="DfW-Pw-V5y"/>
                 <constraint firstItem="T9d-Tq-mpq" firstAttribute="height" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="height" id="Ebv-iX-JXf"/>
                 <constraint firstItem="T9d-Tq-mpq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="JzW-Ex-JFI"/>
+                <constraint firstItem="fYe-pc-Jg5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="LrG-D3-WQt"/>
+                <constraint firstAttribute="bottom" secondItem="fYe-pc-Jg5" secondAttribute="bottom" id="aZF-nI-IC0"/>
+                <constraint firstItem="fYe-pc-Jg5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fkd-bm-1fP"/>
                 <constraint firstAttribute="trailing" secondItem="T9d-Tq-mpq" secondAttribute="trailing" id="fn0-OY-46a"/>
             </constraints>
             <point key="canvasLocation" x="42.5" y="59.5"/>

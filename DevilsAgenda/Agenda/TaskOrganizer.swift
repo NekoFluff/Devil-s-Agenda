@@ -10,9 +10,10 @@ import SwiftDate
 
 protocol TaskOrganizerDelegate {
     func addedTask(_ task: Task, toSection section: taskSection, withIndex index: Int)
-    func deletedTask(_ task: Task, inSection section: taskSection)
+    func completedTask(_ task: Task, inSection section: taskSection, andIndexPath indexPath: IndexPath?)
     func updatedTask(_ task: Task, inSection section: taskSection)
     func deletedClass(_ class: Class)
+    func reloadTasks()
 }
 
 enum taskSection : String {
@@ -31,7 +32,7 @@ class TaskOrganizer {
     let database = DatabaseManager.defaultManager
     
     
-    var organizedTasks : [String : [Task]] = [:]
+    var organizedTasks : [String : NSPointerArray] = [:]
     var delegate : TaskOrganizerDelegate?
     
     init() {
@@ -39,10 +40,13 @@ class TaskOrganizer {
         database.taskDelegate = self
     }
     
-    func sortTasks(_ tasks: [Task]) {
+    func sortTasks(_ tasks: NSPointerArray) {
         organizedTasks = [:]
-        for (t) in tasks {
-            addTask(t)
+        
+        for i in 0..<tasks.count {
+            if let task = tasks.object(at: i) as? Task {
+                addTask(task)
+            }
         }
     }
     
@@ -60,13 +64,16 @@ class TaskOrganizer {
                 
                 return binarySearchInsert(t, intoSection: section)
                 
+                
             } else {
-                organizedTasks[section.rawValue]?.append(t)
+                organizedTasks[section.rawValue]?.addObject(t)
                 return organizedTasks[section.rawValue]!.count - 1
                 
             }
         } else {
-            organizedTasks[section.rawValue] = [t]
+            organizedTasks[section.rawValue] = NSPointerArray(options: NSPointerFunctions.Options.weakMemory)
+            organizedTasks[section.rawValue]?.addObject(t)
+            
             return 0
         }
     }
@@ -82,7 +89,7 @@ class TaskOrganizer {
         while (L <= R) {
             let M = (L+R)/2
             
-            if let middleDueDate = tasks[M].dueDate {
+            if let middleDueDate = (tasks.object(at: M) as! Task).dueDate {
                 if dueDate > middleDueDate {
                     L = M + 1
                 } else {
@@ -91,7 +98,7 @@ class TaskOrganizer {
             }
         }
         
-        organizedTasks[section.rawValue]!.insert(t, at: L)
+        organizedTasks[section.rawValue]!.insertObject(t, at: L)
         return L
     }
     
@@ -179,6 +186,10 @@ class TaskOrganizer {
 }
 
 extension TaskOrganizer : DatabaseManagerTaskDelegate {
+    
+    func reloadTasks() {
+        self.delegate?.reloadTasks()
+    }
     func deletedClass(_ c: Class) {
         self.sortTasks(database.tasks)
         delegate?.deletedClass(c)
@@ -196,30 +207,33 @@ extension TaskOrganizer : DatabaseManagerTaskDelegate {
         delegate?.updatedTask(task, inSection: section)
     }
     
-    func deletedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
+    func completedTask(_ task: Task, withIndexPath indexPath: IndexPath?) {
         print("DELETING \(task.desc)")
         let section = getTaskSectionForTask(task)
 
-        if let indexPath = indexPath, organizedTasks[section.rawValue]!.count - 1 >= indexPath.row && organizedTasks[section.rawValue]![indexPath.row] === task {
+        if let indexPath = indexPath, organizedTasks[section.rawValue]!.count - 1 >= indexPath.row && organizedTasks[section.rawValue]!.object(at: indexPath.row) === task {
             
-            organizedTasks[section.rawValue]!.remove(at: indexPath.row)
-            print("Used indexPath to delete task in organized list.")
+            organizedTasks[section.rawValue]!.removeObject(at: indexPath.row)
+            print("Used indexPath \(indexPath) to delete task '\(task.desc)' in organized list.")
             
         } else {
             
             //Enumerate through array and attempt to delete it there.
-            for (i,t) in organizedTasks[section.rawValue]!.enumerated() {
-                if t === task {
-                    organizedTasks[section.rawValue]!.remove(at: i)
+            for i in 0..<organizedTasks[section.rawValue]!.count {
+                if organizedTasks[section.rawValue]?.object(at: i) === task {
+                    organizedTasks[section.rawValue]!.removeObject(at: i)
                     break
                 }
             }
             print("Used enumeration to delete task in organized list.")
         }
         
-        if (indexPath == nil) {
-            delegate?.deletedTask(task, inSection: section)
-        }
+        delegate?.completedTask(task, inSection: section, andIndexPath: indexPath)
         
+    }
+    
+    func signOut() {
+        self.organizedTasks.removeAll();
+        print("Removed all organized tasks")
     }
 }

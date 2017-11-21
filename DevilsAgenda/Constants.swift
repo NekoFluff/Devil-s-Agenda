@@ -16,8 +16,11 @@ struct Constants {
     
     struct Segues {
         static let SignIn = "SignIn"
+        static let FinishedLoading = "FinishedLoading"
         static let AddClassVC = "AddClassVC"
         static let AddTaskVC = "AddTaskVC"
+        static let EditClassVC = "EditClassVC"
+        static let AddReminderVC = "AddReminderVC"
     }
     
     struct ClassFields {
@@ -35,11 +38,18 @@ struct Constants {
         static let dueDate = "dueDate"
         static let todoDate = "todoDate"
         static let key = "key"
+        static let reminders = "reminders"
     }
     
     struct FollowedClassFields {
         static let tasks = "tasks"
         static let owner = "owner"
+    }
+    
+    struct ReminderFields {
+        static let date = "date"
+        static let title = "title"
+        static let description = "description"
     }
     
     static func uicolorForString(str: String) -> UIColor {

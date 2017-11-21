@@ -8,9 +8,18 @@
 
 import UIKit
 
+protocol ButtonTableViewCellDelegate {
+    func buttonPressed(_ button: UIButton, forCell cell: ButtonTableViewCell);
+}
+
 class ButtonTableViewCell: UITableViewCell {
 
     @IBOutlet weak var button: UIButton!
+    @IBAction func buttonPressed(_ sender: UIButton) {
+        delegate?.buttonPressed(sender, forCell: self)
+    }
+    
+    var delegate : ButtonTableViewCellDelegate? = nil
     
     var editingDisabled = false {
         didSet {

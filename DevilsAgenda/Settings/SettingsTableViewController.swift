@@ -20,8 +20,10 @@ class SettingsTableViewController: UITableViewController {
             
             try Auth.auth().signOut();
             GIDSignIn.sharedInstance().signOut();
+            self.database.signOut();
             
-            dismiss(animated: true, completion: nil)
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+            
         } catch let signOutError as NSError {
             print ("Error signing out: \(signOutError.localizedDescription)")
         }
