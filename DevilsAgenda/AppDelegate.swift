@@ -87,13 +87,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         setReminders()
-        
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         //DONE - TODO: Remove all reminders
-        deleteReminders()
+        //deleteReminders()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -121,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         print("Content: \(request.content)")
         
-        center.getPendingNotificationRequests(){[unowned self] requests in
+        center.getPendingNotificationRequests(){ requests in
             for request in requests {
                 guard let trigger = request.trigger as? UNCalendarNotificationTrigger else {return}
                 print("Set alert at: \(Calendar.current.dateComponents([.year,.day,.month,.hour,.minute,.second], from: trigger.nextTriggerDate()!))")
@@ -147,39 +146,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                         //Enumerate reminders
                         for reminder in task.reminders {
                             
-                            //identifier:
-                            let identifier = reminder.title
-                            
-                            //actions:
-                            let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
-                            let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
-                            
-                            //category:
-                            let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
-                            
-                            //content:
-                            let content = UNMutableNotificationContent()
-                            content.title = reminder.title
-                            content.body = reminder.description
-                            content.sound = UNNotificationSound.default()
-                            content.categoryIdentifier = "ReminderCategory"
-                            
-                            //trigger:
-                            guard reminder.date > Date() else {print("ERROR: Due date < current date"); continue}
-                            
-                            let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: reminder.date)
-                            
-                            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-                            
-                            //Schedule notification:
-                            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-                            
-                            self.setDateNotification(category: category, request: request)
+                            self.setReminder(reminder);
                         }
                     }
                 }
             }
         }
+    }
+    
+    public func setReminder(_ reminder: Reminder) -> Bool {
+        //identifier:
+        let identifier = reminder.title
+        
+        //actions:
+        let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
+        let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])
+        
+        //category:
+        let category = UNNotificationCategory(identifier: "ReminderCategory", actions: [snoozeAction, taskCompleteAction], intentIdentifiers: [], options: [])
+        
+        //content:
+        let content = UNMutableNotificationContent()
+        content.title = reminder.title
+        content.body = reminder.description
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "ReminderCategory"
+        
+        //trigger:
+        guard reminder.date > Date() else {print("ERROR: Due date < current date"); return false}
+        
+        let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: reminder.date)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        
+        //Schedule notification:
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        self.setDateNotification(category: category, request: request)
+        
+        //Success!
+        return true
     }
     
     private func deleteReminders() {
@@ -192,6 +198,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             }))
         }
         print("Removed notifications\n\n")
+    }
+    
+    public func deleteReminder(_ reminder : Reminder) {
+        center.getPendingNotificationRequests { (notifications) in
+            
+            self.center.removePendingNotificationRequests(withIdentifiers: [reminder.title])
+        }
     }
 }
 

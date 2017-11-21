@@ -196,7 +196,7 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
     @IBOutlet weak var spreadsheetView: SpreadsheetView!
     
     var channels : [String] = []
-    
+    let database = DatabaseManager.defaultManager
 
     
     let numberOfRows = 24 * 60 + 1

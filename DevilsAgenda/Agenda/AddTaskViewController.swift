@@ -29,11 +29,17 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     var dueDate : Date?
     var whenToDoDate : Date?
     
+    var newReminders : [(Reminder, Int)] = []
     private var editingDisabled = false
     
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBAction func cancel(_ sender: UIBarButtonItem) {
+
+        for (r,index) in newReminders {
+            database.deleteReminder(r, atIndex: index)
+        }
+        
         dismiss(animated: true, completion: nil);
     }
     
@@ -321,8 +327,6 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             return false
         }
-        
-
     }
     
     
@@ -330,7 +334,9 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            self.database.deleteReminder(task!.reminders[indexPath.row-1], atIndex: indexPath.row-1)
+            let _ = self.database.deleteReminder(task!.reminders[indexPath.row-1], atIndex: indexPath.row-1)
+            
+
             //tableView.deleteRows(at: [indexPath], with: .fade)
             
         } else if editingStyle == .insert {
@@ -515,12 +521,14 @@ extension AddTaskViewController : ButtonTableViewCellDelegate {
 extension AddTaskViewController : DatabaseManagerReminderDelegate {
     func addedReminder(_ r : Reminder) {
         print("Add reminder in reminder table")
-        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+        //self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+        self.tableView.insertRows(at: [IndexPath(row:  r.task.reminders.count-1+1, section:2)], with: .automatic)
     }
     
-    func deletedReminder(_ r : Reminder) {
+    func deletedReminder(_ r : Reminder, atIndex index: Int) {
         print("Delete reminder in reminder table")
-        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+        //self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+        self.tableView.deleteRows(at: [IndexPath(row: index+1, section:2)], with: .automatic)
     }
 }
 
@@ -530,5 +538,6 @@ extension AddTaskViewController : AddReminderDelegate {
         
         self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
         database.saveReminder(r)
+        newReminders.append((r,r.task.reminders.count-1))
     }
 }
