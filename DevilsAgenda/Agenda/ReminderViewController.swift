@@ -28,12 +28,12 @@ class ReminderViewController: UIViewController {
     
     @IBAction func setReminder(_ sender: UIButton) {
         
-        if (reminderTitle.text == nil) {
+        if (reminderTitle.text == "") {
             
             print("Set Reminder Title first!")
             
         }
-        else if (reminderDescription.text == nil) {
+        else if (reminderDescription.text == "") {
             
             print("Set Reminder Description first!")
             
@@ -59,6 +59,7 @@ class ReminderViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.reminderDescription.text = task.rClass.name
+        self.datePicker.minimumDate = Date().add(components: [Calendar.Component.minute : 1])
     }
 
     override func didReceiveMemoryWarning() {

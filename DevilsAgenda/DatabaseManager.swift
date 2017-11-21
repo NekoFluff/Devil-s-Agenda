@@ -32,7 +32,7 @@ protocol DatabaseManagerAddClassDelegate {
 
 protocol DatabaseManagerReminderDelegate {
     func addedReminder(_ r : Reminder);
-    func deletedReminder(_ r : Reminder);
+    func deletedReminder(_ r : Reminder, atIndex index: Int);
 }
 
 
@@ -511,14 +511,22 @@ class DatabaseManager {
                 if (!(c.isShared == c2.isShared && c.databaseKey == c2.databaseKey)) {
                     self.ref.updateChildValues([oldLocation : []])
                 }
-                //Write shared data in new location
-                self.ref.updateChildValues([newLocation : data])
                 
-                if (c2.isShared) {
-                    //do write
-                } else {
+                //Write shared data in new location
+                if (c.isShared && !c2.isShared) {
                     //todo: generate new key and use it for data
+                    var classPath = self.ref.child("users").child(Auth.auth().currentUser!.uid).child("classes")
+                    
+                    
+                    classPath = classPath.childByAutoId()
+                    c2.databaseKey = classPath.key
+                    classPath.setValue(data);
+                
                     //make sure the database keys are different beforehand
+                } else {
+                    //Default write
+                    self.ref.updateChildValues([newLocation : data])
+
                 }
 
                 //Re-write personal data
@@ -729,6 +737,9 @@ class DatabaseManager {
     
     //MARK: - Reminder Methods
     func saveReminder(_ r: Reminder) {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let _ = appDelegate.setReminder(r)
+        }
         
         //Determine save path
         var path : String?
@@ -749,8 +760,13 @@ class DatabaseManager {
         }
     }
     
-    func deleteReminder(_ r: Reminder, atIndex index: Int) {
-        guard (index < r.task.reminders.count) else {return;}
+    func deleteReminder(_ r: Reminder, atIndex index: Int) -> Bool {
+        guard (index < r.task.reminders.count) else {return false;}
+        
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let _ = appDelegate.deleteReminder(r)
+        }
+        
         var deletedReminder = false
         if (r.databaseKey == nil) {print("ERROR: No database key for reminder!")}
             
@@ -772,8 +788,14 @@ class DatabaseManager {
         
         if deletedReminder {
             r.task.reminders.remove(at: index)
-            self.reminderDelegate?.deletedReminder(r);
+            self.reminderDelegate?.deletedReminder(r, atIndex: index);
+            return true
+        } else {
+            r.task.reminders.remove(at: index)
+            self.reminderDelegate?.deletedReminder(r, atIndex: index);
+            return false
         }
+        
     }
     
     //MARK: - Get Paths
