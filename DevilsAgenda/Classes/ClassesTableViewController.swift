@@ -160,7 +160,10 @@ class ClassesTableViewController: UITableViewController {
         if segue.identifier == Constants.Segues.AddClassVC {
             //let addClassVC = segue.destination as! AddClassViewController
         } else if segue.identifier == Constants.Segues.EditClassVC {
-            let editClassVC = segue.destination as! AddClassViewController
+            //let editClassVC = segue.destination as! AddClassViewController
+            
+            let editClassVC = segue.destination as! AddClass2ViewController
+
             
             if let row = tableView.indexPathForSelectedRow?.row {
                 editClassVC.setClass(database.classes[row], withIndex: row)

@@ -36,8 +36,23 @@ class Class : Equatable {
         self.color = data[Constants.ClassFields.color] as? String ?? ""
         self.owner = data[Constants.ClassFields.owner] as? String ?? ""
         self.isShared = data[Constants.ClassFields.shared] as? Bool ?? false
+        self.professor = data[Constants.ClassFields.professor] as? String ?? ""
+        self.location = data[Constants.ClassFields.location] as? String ?? ""
+
+        let df = DateFormatter()
+        df.dateFormat = "HH:mm:ss"
+        
+        if let start = data[Constants.ClassFields.startTime] as? String {
+            self.startTime = df.date(from : start) ?? Date()
+        }
+        
+        if let end = data[Constants.ClassFields.endTime] as? String {
+            self.endTime = df.date(from : end) ?? Date()
+        }
+        
         self.databaseKey = databaseKey
     }
+    
     
     deinit {
         print("De-allocating Class \(name)")
@@ -45,10 +60,30 @@ class Class : Equatable {
     
     //MARK: - Public functions
     func toDict() -> [String : Any] {
+        
         var data = [Constants.ClassFields.name : name,
                     Constants.ClassFields.color : color,
                     Constants.ClassFields.owner : owner,
                     Constants.ClassFields.shared : isShared] as [String : Any]
+        
+        let df = DateFormatter()
+        df.dateFormat = "HH:mm:ss"
+        
+        if let professor = self.professor {
+            data[Constants.ClassFields.professor] = professor
+        }
+        
+        if let location = self.location {
+            data[Constants.ClassFields.location] = location
+        }
+        
+        if let startTime = self.startTime {
+            data[Constants.ClassFields.startTime] = startTime
+        }
+        
+        if let endTime = self.endTime {
+            data[Constants.ClassFields.endTime] = endTime
+        }
         
         if databaseKey != nil {
             data[Constants.ClassFields.key] = databaseKey

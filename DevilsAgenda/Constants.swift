@@ -30,6 +30,11 @@ struct Constants {
         static let tasks = "tasks"
         static let shared = "shared"
         static let key = "key"
+        
+        static let professor = "professor"
+        static let location = "location"
+        static let startTime = "startTime"
+        static let endTime = "endTime"
     }
     
     struct TaskFields {

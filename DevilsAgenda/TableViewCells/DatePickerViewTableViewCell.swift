@@ -50,6 +50,7 @@ class DatePickerViewTableViewCell: UITableViewCell {
         self.title.text = title
         self.result.text = formatter.string(from: date)
         self.picker.setDate(date, animated: false)
+        self.formatter = formatter
     }
     
     //MARK: PickerView Delegate Methods
