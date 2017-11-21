@@ -889,7 +889,7 @@ FkNsYXNzIE5hbWU
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dMc-qh-UJb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Classes" image="icon_classes" id="fru-A4-SZJ"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dpr-YE-11o">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dpr-YE-11o">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -908,7 +908,7 @@ FkNsYXNzIE5hbWU
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vZG-fk-QWh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Agenda" image="icon_agenda" id="ygd-ZK-D4H"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zhJ-bs-RDx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="zhJ-bs-RDx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
