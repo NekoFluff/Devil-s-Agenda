@@ -32,13 +32,26 @@ class ReminderViewController: UIViewController {
             
             print("Set Reminder Title first!")
             
+            let alertController = UIAlertController(title: "Wait", message: "Give your reminder a title first!", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            
+            self.present(alertController, animated: true, completion: nil)
+            
         }
         else if (reminderDescription.text == "") {
             
             print("Set Reminder Description first!")
             
+            let alertController = UIAlertController(title: "Wait", message: "Give your reminder a description first!", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+            
+            self.present(alertController, animated: true, completion: nil)
+            
         }
         else {
+            
             //Create Reminder object
             let reminder = Reminder(task: task, date: datePicker.date, title: reminderTitle.text ?? "", description: reminderDescription.text ?? "")
             
@@ -92,4 +105,20 @@ class ReminderViewController: UIViewController {
     }
     */
 
+}
+
+extension ReminderViewController : UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let set = NSCharacterSet(charactersIn: "ABCDEFGHIJKLMONPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789- !?#").inverted
+        return (string.rangeOfCharacter(from: set) == nil)
+        
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true;
+    }
 }
