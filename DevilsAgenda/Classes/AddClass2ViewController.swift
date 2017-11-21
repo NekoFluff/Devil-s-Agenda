@@ -39,9 +39,9 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         return formatter;
     }()
     
-    private let database = DatabaseManager.defaultManager
-    private var _class : Class?;
-    private var index : Int?;
+    public let database = DatabaseManager.defaultManager
+    public var _class : Class?;
+    public var index : Int?;
     private var editingDisabled = false
     var prevIndexPath : IndexPath?
     
@@ -75,6 +75,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         if self.addButton.title == "Edit" {
             
             self.editingDisabled = false;
+            self.tableView.allowsSelection = true
             self.tableView.reloadData();
             self.addButton.title = "Done";
             
@@ -112,6 +113,8 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
+        database.addClassDelegate = self
+        
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 44; // Some average height of your cells
         
@@ -147,7 +150,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     //MARK: - Private Methods
     public func saveAndExit() {
         //Construct the new class
-        let newClass = Class(name: className ?? "", color: classColor ?? "", owner: Auth.auth().currentUser!.uid, shared: shareSwitchIsOn)
+        let newClass = Class(name: className ?? "", color: classColor, owner: Auth.auth().currentUser!.uid, professor: classProfessor, location: classLocation, startTime : classStartTime, endTime : classEndTime, shared: shareSwitchIsOn)
         
         if (shareSwitchIsOn) {
             newClass.databaseKey = classCodeText
@@ -171,11 +174,12 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             self.navigationItem.title = "Class Info"
             self.addButton.title = "Edit"
             self.className = c.name;
-            
-            
-            //self.pickerView.selectRow(rowForColor(c.color), inComponent: 0, animated: false)
             self.classColor = c.color
-            shareSwitchIsOn = c.isShared
+            self.classProfessor = c.professor
+            self.classLocation = c.location
+            self.classStartTime = c.startTime
+            self.classEndTime = c.endTime
+            self.shareSwitchIsOn = c.isShared
             
             if c.isShared {
                 self.classCodeText = c.databaseKey
@@ -312,10 +316,10 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 return cell
             } else if indexPath.row == 2 { //Start Time
                 let cell = tableView.dequeueReusableCell(withIdentifier: "datePickerViewTableViewCell", for: indexPath) as! DatePickerViewTableViewCell
+                cell.delegate = self
                 
-                //var dateString = "-"
                 if let startTime = classStartTime {
-                    //dateString = timeFormatter.string(from: startTime)
+                    
                     cell.configure(title: section1[indexPath.row], date: startTime, formatter: timeFormatter);
                 } else {
                     cell.configure(title: section1[indexPath.row], date: Date(), formatter: timeFormatter);
@@ -326,9 +330,10 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 
             } else { //End Time
                 let cell = tableView.dequeueReusableCell(withIdentifier: "datePickerViewTableViewCell", for: indexPath) as! DatePickerViewTableViewCell
-                //var dateString = "-"
+                cell.delegate = self
+                
                 if let endTime = classEndTime {
-                    //dateString = dateFormatter.string(from: endTime)
+                    
                     cell.configure(title: section1[indexPath.row], date: endTime, formatter: timeFormatter);
                 } else {
                     cell.configure(title: section1[indexPath.row], date: Date(), formatter: timeFormatter);
@@ -351,8 +356,10 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             } else { //Class Code
                 let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldTableViewCell", for: indexPath) as! TextFieldTableViewCell
                 
+                let key = _class?.databaseKey ?? ""
+                classCodeText = key
                 cell.configure(title: "Class Code",
-                               textFieldText: _class?.databaseKey ?? "",
+                               textFieldText: key,
                                textFieldPlaceholder: "Make the Class Code easy to type!")
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self
@@ -378,26 +385,12 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         return " "
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        
-        if (editingDisabled == false && indexPath.section == 2 && indexPath.row > 0) {
-            return UITableViewCellEditingStyle.delete
-        } else {
-            return UITableViewCellEditingStyle.none
-        }
-    }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard (editingDisabled == false) else {return editingDisabled;}
-        
-        // Return false if you do not want the specified item to be editable.
-        if indexPath.section == 2 && indexPath.row > 0 {
-            return true
-        } else {
-            return false
-        }
-        
-        
+
+        return false
+
     }
     
     /*
@@ -558,13 +551,14 @@ extension AddClass2ViewController : TextFieldTableCellDelegate {
 
 extension AddClass2ViewController : ButtonTableViewCellDelegate {
     func buttonPressed(_ button: UIButton, forCell cell: ButtonTableViewCell) {
-        /*
-        if let task = task, button.titleLabel?.text == "Delete Shared Task" {
+        
+        if let c = _class, let index = index, button.titleLabel?.text == "Delete Class" {
             
             let alert = UIAlertController(title: "Are you sure?", message: "This action is permanent. Any other users registered to this class will be affected.", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: "Delete action"), style: UIAlertActionStyle.destructive, handler: { (action) in
-                self.database.deleteTask(task, atIndexPath: self.indexPath)
+                
+                self.database.deleteClass(c, atIndex: index);
                 
                 self.navigationController?.popViewController(animated: true)
                 self.dismiss(animated: true, completion: { //Once to remove the AddTaskViewController
@@ -580,20 +574,23 @@ extension AddClass2ViewController : ButtonTableViewCellDelegate {
         } else if button.titleLabel?.text == "Add Reminder" {
             self.performSegue(withIdentifier: Constants.Segues.AddReminderVC, sender: self)
         }
-         */
+        
     }
 }
 
 extension AddClass2ViewController : DatabaseManagerAddClassDelegate {
     func classCodeExists(_ classCode : String, exists: Bool) {
-        /*
+        //TODO: Present loading popup w/ cancel button
         if (exists) {
             //Create an alert saying that the class code is already being used.
             let alert = UIAlertController(title: "Class code already in use", message: "The class code is already being used. Please try modifying it.", preferredStyle: .alert)
             
             
             alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "OK action"), style: .default, handler: { (action) in
-                self.classCodeTextField.becomeFirstResponder()
+
+                if self.shareSwitchIsOn, let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 2)) as? TextFieldTableViewCell {
+                    cell.textField.becomeFirstResponder()
+                }
             }))
             
             self.present(alert, animated: true, completion: {
@@ -604,7 +601,7 @@ extension AddClass2ViewController : DatabaseManagerAddClassDelegate {
         } else {
             saveAndExit();
         }
-        */
+ 
     }
 }
 

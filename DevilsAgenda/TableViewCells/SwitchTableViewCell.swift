@@ -17,7 +17,11 @@ class SwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var cellSwitch: UISwitch!
     var delegate : SwitchTableViewCellDelegate?
-    var editingDisabled = false
+    var editingDisabled = false {
+        didSet {
+            self.cellSwitch.isEnabled = !editingDisabled
+        }
+    }
     
     @IBAction func switchChanged(_ sender: UISwitch) {
         self.delegate?.switchCell(cell: self, isNowOn: sender.isOn)

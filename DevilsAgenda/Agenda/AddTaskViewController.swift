@@ -271,7 +271,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
                 var dateString = "-"//"--/--/---- --:-- --"
                 let dateFormatter = DateFormatter()
                 dateFormatter.locale = Locale(identifier: "en_US")
-                dateFormatter.dateFormat = "MMMM dd,   h:mm a"
+                dateFormatter.dateFormat = "MM/dd  h:mm a"
                 
                 //Customize Label Cell
                 if let task = task {
@@ -490,7 +490,7 @@ extension AddTaskViewController : ButtonTableViewCellDelegate {
     func buttonPressed(_ button: UIButton, forCell cell: ButtonTableViewCell) {
         if let task = task, button.titleLabel?.text == "Delete Shared Task" {
             
-            let alert = UIAlertController(title: "Are you sure?", message: "This action is permanent. Any other users registered to this class will be affected.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Are you sure?", message: "This action is permanent. Any other users registered to this task will be affected.", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: "Delete action"), style: UIAlertActionStyle.destructive, handler: { (action) in
                 self.database.deleteTask(task, atIndexPath: self.indexPath)

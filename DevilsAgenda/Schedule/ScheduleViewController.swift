@@ -195,9 +195,9 @@ import SpreadsheetView
 class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetViewDelegate {
     @IBOutlet weak var spreadsheetView: SpreadsheetView!
     
-    let channels = [
-        "ABC", "NNN", "BBC", "J-Sports", "OK News", "SSS", "Apple", "CUK", "KKR", "APAR",
-        "SU", "CCC", "Game", "Anime", "Tokyo NX", "NYC", "SAN", "Drama", "Hobby", "Music"]
+    var channels : [String] = []
+    
+
     
     let numberOfRows = 24 * 60 + 1
     var slotInfo = [IndexPath: (Int, Int)]()
@@ -211,6 +211,10 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for i in 1...10 {
+            channels.append("Person-\(i)")
+        }
         
         spreadsheetView.dataSource = self
         spreadsheetView.delegate = self
@@ -325,7 +329,7 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
         if let (minutes, duration) = slotInfo[indexPath] {
             let cell = spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: SlotCell.self), for: indexPath) as! SlotCell
             cell.minutes = minutes % 60
-            cell.title = "Dummy Text"
+            cell.title = "Class name goes here"
             cell.tableHighlight = duration > 20 ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit" : ""
             return cell
         }

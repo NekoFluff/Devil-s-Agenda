@@ -231,6 +231,14 @@ class DatabaseManager {
             
             print("Adding new class")
             strongSelf.DatabaseManagerQueue.sync {
+                
+                //TODO: Better way to find class. Idea: dictionary of array of classes
+                for c in strongSelf.classes {
+                    if c.databaseKey == snapshot.key {
+                        return;
+                    }
+                }
+                
                 if let (newClass, _) = strongSelf.createClass(fromSnapshot: snapshot) {
                     strongSelf.classDelegate?.addedClass(class: newClass)
                     strongSelf.atomicCounter.incrementDownloadedClasses(1)
@@ -479,19 +487,41 @@ class DatabaseManager {
         //Update old location data
         self.ref.child(oldLocation).observeSingleEvent(of: DataEventType.value, with: { [c](snapshot) in
             if var data = snapshot.value as? Dictionary<String, Any?> {
-                data["name"] = c2.name;
-                data["color"] = c2.color;
-                data["key"] = c2.databaseKey;
-                data["shared"] = c2.isShared;
+                data[Constants.ClassFields.name] = c2.name;
+                data[Constants.ClassFields.color] = c2.color;
+                data[Constants.ClassFields.key] = c2.databaseKey;
+                data[Constants.ClassFields.shared] = c2.isShared;
+                
+                data[Constants.ClassFields.professor] = c2.professor;
+                data[Constants.ClassFields.location] = c2.location;
+                
+                let df = DateFormatter()
+                df.dateFormat = "HH:mm:ss"
+                
+                if let start = c2.startTime {
+                    data[Constants.ClassFields.startTime] = df.string(from: start)
+                }
+                
+                if let end = c2.endTime {
+                    data[Constants.ClassFields.endTime] = df.string(from: end)
+                }
                 
                 
+                //Delete shared data if both classes aren't shared and the keys don't match
                 if (!(c.isShared == c2.isShared && c.databaseKey == c2.databaseKey)) {
                     self.ref.updateChildValues([oldLocation : []])
                 }
+                //Write shared data in new location
                 self.ref.updateChildValues([newLocation : data])
                 
+                if (c2.isShared) {
+                    //do write
+                } else {
+                    //todo: generate new key and use it for data
+                    //make sure the database keys are different beforehand
+                }
 
-                
+                //Re-write personal data
                 let followedClassesPath = self.getFollowedClassesPath()
                 if c.isShared && c2.isShared {
                     //Update the database
@@ -538,14 +568,20 @@ class DatabaseManager {
                     
                     //Add the class to the database
                     self.ref.updateChildValues([followedClassesPath+"/"+c2.databaseKey! : followedClass])
+                    
+                    //Decrement number of non-shared classes
+                    self.changeClassCountBy(increment: -1)
 
                 } else if (c.isShared && !c2.isShared) {
                     print("Shared -> Non-Shared. Deleting old followed class")
-                    //Dete followed class from database
+                    //Delete followed class from database
                     self.ref.child(followedClassesPath+"/"+classCode).removeValue()
                     
                     //Delete followed class
                     self.followedClasses[classCode] = nil
+                    
+                    //Increment number of non-shared classes
+                    self.changeClassCountBy(increment: 1)
                     
                 } else {
                     print("Non-shared -> Non-shared. No followed class update necessary")
@@ -556,6 +592,12 @@ class DatabaseManager {
                     c.databaseKey = c2.databaseKey;
                     c.color = c2.color;
                     c.isShared = c2.isShared;
+                    
+                    c.professor = c2.professor;
+                    c.location = c2.location;
+                    c.startTime = c2.startTime;
+                    c.endTime = c2.endTime;
+                    
                     self.classDelegate?.reloadClass(index: index);
                 }
                 
