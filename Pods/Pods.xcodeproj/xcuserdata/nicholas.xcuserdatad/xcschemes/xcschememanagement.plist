@@ -19,10 +19,15 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>IQKeyboardManagerSwift.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>Pods-DevilsAgenda.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>4</integer>
 		</dict>
 		<key>Pods-DevilsAgendaTests.xcscheme</key>
 		<dict>
@@ -37,17 +42,27 @@
 		<key>Protobuf.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>5</integer>
+		</dict>
+		<key>SpreadsheetView.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 		<key>SwiftDate.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>7</integer>
 		</dict>
 		<key>leveldb-library.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
+		</dict>
+		<key>lottie-ios.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 		<key>nanopb.xcscheme</key>
 		<dict>
@@ -67,6 +82,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>3A594A42B6264DDC04846203A843D0F4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3B08C49A396BAA0D9DCAD4460CC52F95</key>
 		<dict>
 			<key>primary</key>
@@ -78,6 +98,16 @@
 			<true/>
 		</dict>
 		<key>6D5CEDECD3D8DC52EA507E0431BDA8A0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8386817F9A5E38AB99F1AA49CD86EB76</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8916378674C162CF65B0BC55A254C77B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -98,6 +128,21 @@
 			<true/>
 		</dict>
 		<key>B1C4AAFAF49036C7007633DAA3C806AD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C235F77E101E742652CCF98FFDFA5182</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C6724A93237F76AF8E18793AAA4C8A96</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB2955C7BCD2E3886091EBF411217201</key>
 		<dict>
 			<key>primary</key>
 			<true/>
