@@ -39,6 +39,9 @@ class ReminderViewController: UIViewController {
             //Store in Task
             task.addReminder(rem)
             
+            //identifier:
+            let identifier = "reminder"
+            
             //actions:
             let snoozeAction = UNNotificationAction(identifier: "SnoozeAction", title: "Snooze", options: [])
             let taskCompleteAction = UNNotificationAction(identifier: "TaskCompleteAction", title: "Mark Completed", options: [])

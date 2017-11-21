@@ -123,7 +123,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     //MARK: Public Methods
     
-    func configure(withTask task: Task) {
+    func configure(withTask task: Task, andIndexPath indexPath: IndexPath) {
         self.task = task
         self.indexPath = indexPath
         setupClasses()

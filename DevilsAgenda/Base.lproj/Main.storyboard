@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -742,27 +743,27 @@ FkNsYXNzIE5hbWU
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3s-od-RUY">
-                                <rect key="frame" x="182" y="184" width="51" height="26"/>
+                                <rect key="frame" x="182" y="154" width="51" height="26"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-tC-U1i">
-                                <rect key="frame" x="183" y="320" width="51" height="31"/>
+                                <rect key="frame" x="183" y="270" width="51" height="31"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shared" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgK-6Q-BsO">
-                                <rect key="frame" x="174" y="292" width="67" height="26"/>
+                                <rect key="frame" x="174" y="242" width="67" height="26"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Create your own class code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="swr-H9-eXX">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Create your own class code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="swr-H9-eXX">
                                 <rect key="frame" x="70" y="359" width="274" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEQ-qA-LOZ">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEQ-qA-LOZ">
                                 <rect key="frame" x="164" y="419" width="86" height="30"/>
                                 <state key="normal" title="Delete Class">
                                     <color key="titleColor" red="1" green="0.3431733776" blue="0.31818271339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -780,8 +781,7 @@ FkNsYXNzIE5hbWU
                             <constraint firstItem="jEQ-qA-LOZ" firstAttribute="top" secondItem="swr-H9-eXX" secondAttribute="bottom" constant="30" id="AUJ-Ma-2xC"/>
                             <constraint firstItem="fJf-wG-u2d" firstAttribute="top" secondItem="wpr-e6-QVV" secondAttribute="bottom" constant="30" id="DMY-xN-FqX"/>
                             <constraint firstItem="UgR-tC-U1i" firstAttribute="centerX" secondItem="CmB-Zg-EfX" secondAttribute="centerX" id="Kjg-Y9-Jy0"/>
-                            <constraint firstItem="swr-H9-eXX" firstAttribute="top" secondItem="q0E-et-XFt" secondAttribute="bottom" constant="2" id="Q9j-kl-FZJ"/>
-                            <constraint firstItem="q0E-et-XFt" firstAttribute="centerX" secondItem="CmB-Zg-EfX" secondAttribute="centerX" id="Riu-pt-cH4"/>
+                            <constraint firstAttribute="centerX" secondItem="CmB-Zg-EfX" secondAttribute="centerX" id="Riu-pt-cH4"/>
                             <constraint firstItem="qTu-lD-cO8" firstAttribute="trailing" secondItem="fJf-wG-u2d" secondAttribute="trailing" id="XUI-eB-Zge"/>
                             <constraint firstItem="swr-H9-eXX" firstAttribute="centerX" secondItem="CmB-Zg-EfX" secondAttribute="centerX" id="Xe4-JV-i9e"/>
                             <constraint firstAttribute="trailing" secondItem="wpr-e6-QVV" secondAttribute="trailing" id="YrO-ei-zqa"/>
@@ -797,12 +797,11 @@ FkNsYXNzIE5hbWU
                             <constraint firstItem="swr-H9-eXX" firstAttribute="trailing" secondItem="qTu-lD-cO8" secondAttribute="trailing" id="sFA-N3-gEP"/>
                             <constraint firstItem="wpr-e6-QVV" firstAttribute="centerX" secondItem="CmB-Zg-EfX" secondAttribute="centerX" id="sao-Qk-g6a"/>
                             <constraint firstItem="hgK-6Q-BsO" firstAttribute="top" secondItem="qTu-lD-cO8" secondAttribute="bottom" constant="30" id="ths-X1-NYf"/>
-                            <constraint firstItem="q0E-et-XFt" firstAttribute="top" secondItem="UgR-tC-U1i" secondAttribute="bottom" constant="30" id="wL0-Eb-d8u"/>
+                            <constraint firstAttribute="top" secondItem="UgR-tC-U1i" secondAttribute="bottom" constant="30" id="wL0-Eb-d8u"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="addButton" destination="9Td-yp-DVK" id="eh4-a6-hDZ"/>
-                        <outlet property="classCodeLabel" destination="q0E-et-XFt" id="0mS-1n-4As"/>
                         <outlet property="classCodeTextField" destination="swr-H9-eXX" id="KeH-Ir-rrp"/>
                         <outlet property="classTextField" destination="fJf-wG-u2d" id="kbM-lH-SkB"/>
                         <outlet property="colorTextField" destination="qTu-lD-cO8" id="PUs-Cu-Fc7"/>
