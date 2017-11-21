@@ -73,6 +73,9 @@ class ReminderViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.reminderDescription.text = task.rClass.name
         self.datePicker.minimumDate = Date().add(components: [Calendar.Component.minute : 1])
+        
+        self.reminderTitle.delegate = self
+        self.reminderDescription.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
