@@ -30,6 +30,12 @@ protocol DatabaseManagerAddClassDelegate {
     func classCodeExists(_ classCode : String, exists: Bool);
 }
 
+protocol DatabaseManagerReminderDelegate {
+    func addedReminder(_ r : Reminder);
+    func deletedReminder(_ r : Reminder);
+}
+
+
 // Swift 3:
 class AtomicCounter {
     private var queue = DispatchQueue(label: "AtomicCounterQueue");
@@ -64,6 +70,7 @@ class DatabaseManager {
     var classDelegate : DatabaseManagerClassDelegate?
     var taskDelegate : DatabaseManagerTaskDelegate?
     var addClassDelegate : DatabaseManagerAddClassDelegate?
+    var reminderDelegate : DatabaseManagerReminderDelegate?
     
     var classes = [Class]()
     var tasks = NSPointerArray(options: NSPointerFunctions.Options.weakMemory)
@@ -117,7 +124,7 @@ class DatabaseManager {
             
             //Tasks
             var newTasks = [Task]()
-            if let newTasksData = classData[Constants.ClassFields.tasks] as? Dictionary<String, [String : String]> {
+            if let newTasksData = classData[Constants.ClassFields.tasks] as? Dictionary<String, [String : Any]> {
                 for (taskKey, taskData) in newTasksData {
                     
                     //Only create a new task if it hasn't already been completed
@@ -262,7 +269,7 @@ class DatabaseManager {
         }
     }*/
     
-    //MARK: CLASS Methods
+    //MARK: - CLASS Methods
     func getClassCount(f: @escaping (Int)->()) {
         ref.child("users/\(Auth.auth().currentUser!.uid)/classes/count").observe(.value, with: { (snapshot) in
             if let count = snapshot.value as? Int {
@@ -340,7 +347,7 @@ class DatabaseManager {
         }
     }
     
-    //MARK: SHARED CLASS Methods
+    //MARK: - SHARED CLASS Methods
     func saveSharedClass(_ c: Class) {
         guard c.isShared else {saveClass(c); return}
         
@@ -445,10 +452,10 @@ class DatabaseManager {
     
     func updateClass( _ c: inout Class, atIndex index : Int, toClass c2: Class) {
         
-        //TODO: Get the data from the stabase using an observe single instance method call. (Use information from old class (c)
-        //TODO: Update the data with information from the new class (c2)
-        //TODO: Delete the old data in the database and replace it with the updated data
-        //TODO: Under the circumstance that the 'isShared' value did not change, do not delete the old data. (Simply update it with the updated data)
+        //DONE - TODO: Get the data from the stabase using an observe single instance method call. (Use information from old class (c)
+        //DONE - TODO: Update the data with information from the new class (c2)
+        //DONE - TODO: Delete the old data in the database and replace it with the updated data
+        //DONE - TODO: Under the circumstance that the 'isShared' value did not change, do not delete the old data. (Simply update it with the updated data)
         guard let classCode = c.databaseKey else {return};
         let sharedClassesPath = getSharedClassesPath()
         
@@ -488,9 +495,9 @@ class DatabaseManager {
                 let followedClassesPath = self.getFollowedClassesPath()
                 if c.isShared && c2.isShared {
                     //Update the database
-                    //TODO: Move followed class data...
-                    //TODO: Get followed class data from database
-                    //TODO: Even if you're not the owner, you should still be able to edit the class code field to move the your existing data.
+                    //DONE - TODO: Move followed class data...
+                    //DONE - TODO: Get followed class data from database
+                    //DONE - TODO: Even if you're not the owner, you should still be able to edit the class code field to move the your existing data.
                     
                     print("Shared -> Shared. Moving old data to new location")
                     
@@ -571,7 +578,7 @@ class DatabaseManager {
     }
 
     
-    //MARK: TASK Methods
+    //MARK: - TASK Methods
     func saveTask( _ t: inout Task) {
         
         //Determine save path
@@ -603,7 +610,6 @@ class DatabaseManager {
                 self.taskDelegate?.addedTask(t)
             }
         }
-        
     }
     
     func deleteTask(_ t: Task, atIndexPath indexPath: IndexPath?) {
@@ -626,21 +632,23 @@ class DatabaseManager {
         }
         
         if deletedTask {
-//            //Delete the task from the tasks array
-//            for (i,task) in tasks.enumerated() {
-//                if task === t {
-//                    tasks.remove(at: i)
-//                    
-//                    //Send the signal to delete the task in the TaskOrganizer
-//                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
-//                    break
-//                }
-//            }
+            //Delete the task from the tasks array
+            for i in 0..<tasks.count {
+                let task = tasks.object(at: i) as! Task
+                if task === t {
+                    tasks.removeObject(at: i)
+                    
+                    //Send the signal to delete the task in the TaskOrganizer
+                    self.taskDelegate?.completedTask(task, withIndexPath: indexPath);
+                    break
+                }
+            }
+            
             t.rClass.removeTask(t)
         }
     }
     
-    //TODO: Filter tasks if they have been completed...
+    //DONE - TODO: Filter tasks if they have been completed...
     func completeTask(_ t: Task, atIndexPath indexPath: IndexPath?) {
         
         var completedTask = false
@@ -677,8 +685,56 @@ class DatabaseManager {
         }
     }
     
+    //MARK: - Reminder Methods
+    func saveReminder(_ r: Reminder) {
+        
+        //Determine save path
+        var path : String?
+        if r.task.rClass.isShared {
+            path = getSharedClassesPath()+"/\(r.task.rClass.databaseKey!)/\(Constants.ClassFields.tasks)/"
+        } else {
+            path = getTasksPath(r.task.rClass)
+        }
+        
+        if let path = path {
+            let data = r.toDict()
+            if let taskKey = r.task.databaseKey, let reminderKey = r.databaseKey { //Update a reminder
+                
+                self.ref.updateChildValues([path+"/"+taskKey+"/\(Constants.TaskFields.reminders)/\(reminderKey)" : data])
+                
+                self.reminderDelegate?.addedReminder(r);
+            }
+        }
+    }
     
-    //MARK: Get Paths
+    func deleteReminder(_ r: Reminder, atIndex index: Int) {
+        guard (index < r.task.reminders.count) else {return;}
+        var deletedReminder = false
+        if (r.databaseKey == nil) {print("ERROR: No database key for reminder!")}
+            
+        if r.task.rClass.isShared, let classKey = r.task.rClass.databaseKey, let taskKey = r.task.databaseKey, let reminderKey = r.databaseKey {
+            
+            let sharedClassesPath = getSharedClassesPath()
+            self.ref.child(sharedClassesPath+"/\(classKey)/\(Constants.ClassFields.tasks)/"+taskKey+"/\(Constants.TaskFields.reminders)/\(reminderKey)").removeValue()
+            
+            deletedReminder = true
+            
+        } else { //Task is not shared
+            
+            if let path = getPathForTask(r.task), let reminderKey = r.databaseKey {
+                //Delete the task from the database
+                self.ref.child(path+"/\(Constants.TaskFields.reminders)/\(reminderKey)").removeValue()
+                deletedReminder = true
+            }
+        }
+        
+        if deletedReminder {
+            r.task.reminders.remove(at: index)
+            self.reminderDelegate?.deletedReminder(r);
+        }
+    }
+    
+    //MARK: - Get Paths
     private func getClassPath(_ c: Class) -> String? {
         if let classKey = c.databaseKey {
             
@@ -719,7 +775,7 @@ class DatabaseManager {
         return "users/\(Auth.auth().currentUser!.uid)/followed_classes"
     }
 
-    //MARK: *OTHER FUNCTIONS*
+    //MARK: - *OTHER FUNCTIONS*
     func refresh() {
         
     }

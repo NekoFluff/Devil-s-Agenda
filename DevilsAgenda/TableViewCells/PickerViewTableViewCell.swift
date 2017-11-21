@@ -73,6 +73,7 @@ class PickerViewTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard row < pickerData.count else {return "";}
         return pickerData[row]
     }
     

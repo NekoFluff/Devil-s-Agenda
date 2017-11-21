@@ -9,6 +9,7 @@
 import Foundation
 
 class Class : Equatable {
+    //MARK: - Main Variables
     var name : String
     var color : String
     var databaseKey : String?
@@ -16,6 +17,13 @@ class Class : Equatable {
     var owner : String
     var tasks = Dictionary<String, [Task]>()
     
+    //MARK: - Optional Variables
+    var professor : String?
+    var location : String?
+    var startTime : Date?
+    var endTime : Date?
+    
+    //MARK: - Initializers
     init(name: String, color: String, owner: String, shared: Bool? = false) {
         self.name = name
         self.color = color
@@ -35,6 +43,7 @@ class Class : Equatable {
         print("De-allocating Class \(name)")
     }
     
+    //MARK: - Public functions
     func toDict() -> [String : Any] {
         var data = [Constants.ClassFields.name : name,
                     Constants.ClassFields.color : color,

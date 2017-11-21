@@ -47,11 +47,16 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
                                desc: descriptionText,
                                dueDate: dueDate,
                                todoDate: whenToDoDate)
+           
             
             if let task = task { //Delete the task passed in
                 
                 //database.completeTask(task, atIndexPath: indexPath)
-                newTask.reminders = task.reminders
+                
+                for (index, reminder) in task.reminders.enumerated() {
+                    let _ = Reminder(task: newTask, data: reminder.toDict(), databaseKey: "\(index)")
+                }
+                
                 database.deleteTask(task, atIndexPath: indexPath);
                 database.saveTask(&newTask)
                 
@@ -65,6 +70,8 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             editingDisabled = false
             addButton.title = "Done"
             self.tableView.reloadData() //Allow selection of cell content
+            self.tableView.delegate = self;
+            self.tableView.dataSource = self;
             self.tableView.allowsSelection = true
 
         }
@@ -81,6 +88,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
+        database.reminderDelegate = self
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 44; // Some average height of your cells
         
@@ -171,11 +179,11 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return section0.count
+            return section0.count //Class/category/name
         } else if section == 1 {
-            return section1.count
+            return section1.count //Due-date/when to-do
         } else if section == 2 {
-            return section2.count
+            return section2.count + (task != nil ? task!.reminders.count : 0)//Reminder
         } else {
             return 1
         }
@@ -247,13 +255,35 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             return cell
             
-        } else if indexPath.section == 2 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "buttonTableViewCell", for: indexPath) as! ButtonTableViewCell
+        } else if indexPath.section == 2 { //Add reminders
             
-            cell.button.setTitle(section2[0], for: UIControlState.normal)
-            cell.editingDisabled = editingDisabled
-            
-            return cell
+            if (indexPath.row == 0) { //Add reminder button
+                let cell = tableView.dequeueReusableCell(withIdentifier: "buttonTableViewCell", for: indexPath) as! ButtonTableViewCell
+                
+                cell.button.setTitle(section2[0], for: UIControlState.normal)
+                cell.editingDisabled = editingDisabled
+                cell.delegate = self;
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "labelTableViewCell", for: indexPath) as! LabelTableViewCell
+                
+                //Date Formatter
+                var dateString = "-"//"--/--/---- --:-- --"
+                let dateFormatter = DateFormatter()
+                dateFormatter.locale = Locale(identifier: "en_US")
+                dateFormatter.dateFormat = "MMMM dd,   h:mm a"
+                
+                //Customize Label Cell
+                if let task = task {
+                    dateString = dateFormatter.string(from: task.reminders[indexPath.row-1].date)
+                    cell.configure(titleText: task.reminders[indexPath.row-1].title, labelText: dateString)
+                }
+                
+                
+                cell.editingDisabled = editingDisabled
+                
+                return cell
+            }
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonTableViewCell", for: indexPath) as! ButtonTableViewCell
             
@@ -272,25 +302,42 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return " "
     }
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
     
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        
+        if (editingDisabled == false && indexPath.section == 2 && indexPath.row > 0) {
+            return UITableViewCellEditingStyle.delete
+        } else {
+            return UITableViewCellEditingStyle.none
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard (editingDisabled == false) else {return editingDisabled;}
+        
+        // Return false if you do not want the specified item to be editable.
+        if indexPath.section == 2 && indexPath.row > 0 {
+            return true
+        } else {
+            return false
+        }
+        
+
+    }
+    
+    
+    // Override to support editing the table view.
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            self.database.deleteReminder(task!.reminders[indexPath.row-1], atIndex: indexPath.row-1)
+            //tableView.deleteRows(at: [indexPath], with: .fade)
+            
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
     
     /*
      // Override to support rearranging the table view.
@@ -325,6 +372,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
                                      todoDate: whenToDoDate)
                 }
                 destination.task = self.task!
+                destination.delegate = self
             }
         }
      }
@@ -461,5 +509,26 @@ extension AddTaskViewController : ButtonTableViewCellDelegate {
         } else if button.titleLabel?.text == "Add Reminder" {
             self.performSegue(withIdentifier: Constants.Segues.AddReminderVC, sender: self)
         }
+    }
+}
+
+extension AddTaskViewController : DatabaseManagerReminderDelegate {
+    func addedReminder(_ r : Reminder) {
+        print("Add reminder in reminder table")
+        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+    }
+    
+    func deletedReminder(_ r : Reminder) {
+        print("Delete reminder in reminder table")
+        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+    }
+}
+
+extension AddTaskViewController : AddReminderDelegate {
+    func addedNewReminder(_ r : Reminder) {
+        print("Add reminder in reminder table")
+        
+        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+        database.saveReminder(r)
     }
 }

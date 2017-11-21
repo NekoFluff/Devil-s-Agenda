@@ -39,6 +39,7 @@ class AgendaTableViewController: UITableViewController {
         //self.navigationItem.leftBarButtonItem = self.editButtonItem
 
         taskOrganizer.delegate = self
+        
         tableView.allowsSelectionDuringEditing = true
         
         self.tableView.estimatedRowHeight = 0;

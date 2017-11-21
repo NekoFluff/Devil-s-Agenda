@@ -9,7 +9,13 @@
 import UIKit
 import UserNotifications
 
+protocol AddReminderDelegate {
+    func addedNewReminder(_ r : Reminder);
+}
+
 class ReminderViewController: UIViewController {
+    
+    var delegate : AddReminderDelegate?;
     
     var task : Task!
     @IBOutlet weak var reminderTitle: UITextField!
@@ -34,10 +40,13 @@ class ReminderViewController: UIViewController {
         }
         else {
             //Create Reminder object
-            let rem = Reminder(date: datePicker.date, title: reminderTitle.text ?? "", description: reminderDescription.text ?? "")
+            let reminder = Reminder(task: task, date: datePicker.date, title: reminderTitle.text ?? "", description: reminderDescription.text ?? "")
             
             //Store in Task
-            task.addReminder(rem)
+            //task.addReminder(rem)
+            
+            //Signal delegate
+            delegate?.addedNewReminder(reminder)
             
             //Dismiss
             dismiss(animated: true, completion: nil)
@@ -63,11 +72,11 @@ class ReminderViewController: UIViewController {
     //DONE - TODO: When program exits, send reminders to NotificationCenter
     //DONE - TODO: When program comes to foreground, remove all reminders
     
-    //TODO: When adding a reminder, save the reminder to the database. (WRITE)
-    //TODO: When loading in each task, create any associated reminder (READ)
-    //TODO: Table of reminders (under 'Add Reminder' button) in AddReminderViewController (VISUAL REPRESENTATION)
-    //TODO: Add ability to delete reminders (DELETE)
-    //TODO: Add ability to modify reminders? (MAYBE?)
+    //DONE - TODO: When adding a reminder, save the reminder to the database. (WRITE)
+    //DONE - TODO: When loading in each task, create any associated reminder (READ)
+    //DONE - TODO: Table of reminders (under 'Add Reminder' button) in AddReminderViewController (VISUAL REPRESENTATION)
+    //DONE - TODO: Add ability to delete reminders (DELETE)
+    //DONE - TODO: Add ability to modify reminders? (MAYBE?)
     
     
     

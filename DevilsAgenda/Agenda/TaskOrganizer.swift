@@ -45,7 +45,7 @@ class TaskOrganizer {
         
         for i in 0..<tasks.count {
             if let task = tasks.object(at: i) as? Task {
-                addTask(task)
+                let _ = addTask(task)
             }
         }
     }

@@ -27,21 +27,27 @@ class Task : Equatable {
         reconfigure(category: category, desc: desc, dueDate: dueDate, todoDate: todoDate)
     }
     
-    init(_ rClass: Class, data: [String : String], databaseKey: String) {
+    init(_ rClass: Class, data: [String : Any], databaseKey: String) {
         self.rClass = rClass
         
-        reconfigure(category: taskCategory(rawValue: data[Constants.TaskFields.category] ?? "Assignment")!,
-                    desc: (data[Constants.TaskFields.description]) ?? "ERROR_DESC")
+        reconfigure(category: taskCategory(rawValue: data[Constants.TaskFields.category] as? String ?? "Assignment")!,
+                    desc: (data[Constants.TaskFields.description]) as? String ?? "ERROR_DESC")
         
         let df = DateFormatter()
         df.dateFormat = "MM-dd-yyyy HH:mm:ss"
         
-        if let date = data[Constants.TaskFields.dueDate] {
+        if let date = data[Constants.TaskFields.dueDate] as? String {
             self.dueDate = df.date(from : date)
         }
         
-        if let date = data[Constants.TaskFields.todoDate] {
+        if let date = data[Constants.TaskFields.todoDate] as? String {
             self.todoDate = df.date(from : date)
+        }
+        
+        if let remindersData = data[Constants.TaskFields.reminders] as? [[String : String]] {
+            for (index, data) in remindersData.enumerated() {
+                let _ = Reminder(task: self, data: data, databaseKey: "\(index)")
+            }
         }
         
         self.databaseKey = databaseKey
@@ -71,6 +77,7 @@ class Task : Equatable {
             dict[Constants.TaskFields.category] = category.rawValue
         }
         
+        //Description
         dict[Constants.TaskFields.description] = self.desc
         
         if let dueDate = dueDate {

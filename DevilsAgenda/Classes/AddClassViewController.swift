@@ -83,9 +83,9 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     //DONE - TODO: For some reason it's not being registered as a followed class?
-    //TODO: Only perform deletion/additon if switching from shared to notshared.
+    //DONE - TODO: Only perform deletion/additon if switching from shared to notshared.
     // OTHERWISE, simply updating the data values will do.
-    //TODO: Warning that completion data will be lost if switchign from shared to not shared. Also warn about making users lose access to the shared class.
+    //DONE - TODO: Warning that completion data will be lost if switchign from shared to not shared. Also warn about making users lose access to the shared class.
     
     
     func saveAndExit() {
@@ -249,6 +249,7 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
 }
+
 
 extension AddClassViewController : DatabaseManagerAddClassDelegate {
     func classCodeExists(_ classCode : String, exists: Bool) {

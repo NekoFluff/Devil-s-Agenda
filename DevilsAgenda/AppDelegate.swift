@@ -92,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        //TODO: Remove all reminders
+        //DONE - TODO: Remove all reminders
         deleteReminders()
     }
 
@@ -185,7 +185,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     private func deleteReminders() {
         print("\n\nRemoving notifications")
         center.getPendingNotificationRequests { (notifications) in
-            print(notifications)
+            print("NOTIFICATIONS: \(notifications)")
             
             self.center.removePendingNotificationRequests(withIdentifiers: notifications.map({ (request) -> String in
                 return request.identifier

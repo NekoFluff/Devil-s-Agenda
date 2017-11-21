@@ -9,14 +9,46 @@
 import Foundation
 
 struct Reminder {
+    var databaseKey : String?
     let date : Date
     let title : String
     let description : String
+    unowned let task : Task
     
-    init(date : Date, title: String, description: String) {
+    init(task : Task, date : Date, title: String, description: String) {
         self.date = date
         self.title = title
         self.description = description
+        self.task = task
+        task.addReminder(self)
+    }
+    
+    init(task: Task, data: [String : String], databaseKey : String?) {
+        self.task = task
+        self.databaseKey = databaseKey
+        
+        let df = DateFormatter()
+        df.dateFormat = "MM-dd-yyyy HH:mm:ss"
+        
+        if let date = data[Constants.ReminderFields.date] {
+            self.date = df.date(from : date) ?? Date()
+        } else {
+            self.date = Date()
+        }
+        
+        if let title = data[Constants.ReminderFields.title] {
+            self.title = title
+        } else {
+            self.title = "CORRUPTED TITLE"
+        }
+        
+        if let description = data[Constants.ReminderFields.description] {
+            self.description = description
+        } else {
+            self.description = "CORRUPTED DESCRIPTION"
+        }
+        
+        task.addReminder(self)
     }
     
     func toDict() -> [String : String] {
