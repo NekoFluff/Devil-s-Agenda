@@ -41,6 +41,8 @@ class ClassTableViewCell: UITableViewCell {
         //If it isn't shared, but it
         if (!_class.isShared) {
             titleLabelCenterY.priority = 999;
+        } else {
+            titleLabelCenterY.priority = 749;
         }
 //        var dateString = ""
 //        if let dueDate = task.dueDate {

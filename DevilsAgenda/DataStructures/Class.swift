@@ -24,11 +24,15 @@ class Class : Equatable {
     var endTime : Date?
     
     //MARK: - Initializers
-    init(name: String, color: String, owner: String, shared: Bool? = false) {
+    init(name: String, color: String, owner: String, professor: String?, location: String?, startTime : Date?, endTime : Date?, shared: Bool? = false) {
         self.name = name
         self.color = color
-        self.isShared = shared!
         self.owner = owner
+        self.professor = professor
+        self.location = location
+        self.startTime = startTime
+        self.endTime = endTime
+        self.isShared = shared!
     }
     
     init(data : [String : Any], databaseKey: String) {
@@ -52,8 +56,7 @@ class Class : Equatable {
         
         self.databaseKey = databaseKey
     }
-    
-    
+
     deinit {
         print("De-allocating Class \(name)")
     }

@@ -164,16 +164,17 @@ class ClassesTableViewController: UITableViewController {
             
             let editClassVC = segue.destination as! AddClass2ViewController
 
-            
             if let row = tableView.indexPathForSelectedRow?.row {
                 editClassVC.setClass(database.classes[row], withIndex: row)
             }
+            editClassVC.disableEditing()
         }
     }
 
 }
 
 extension ClassesTableViewController : DatabaseManagerClassDelegate {
+    //TODO: Fix efficiency
     func addedClass(class: Class) {
         //tableView.reloadData()
         

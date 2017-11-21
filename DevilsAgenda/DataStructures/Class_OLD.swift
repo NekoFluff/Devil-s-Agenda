@@ -30,7 +30,6 @@ class Class_OLD : NSObject, NSCoding {
                 Constants.ClassFields.color : color]
     }
     
-    
     required init?(coder aDecoder: NSCoder) {
         self.name = aDecoder.decodeObject(forKey: "name") as! String
         self.color = aDecoder.decodeObject(forKey: "tasks") as! String
