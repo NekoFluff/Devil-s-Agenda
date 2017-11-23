@@ -26,7 +26,7 @@ class ReminderViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func setReminder(_ sender: UIButton) {
+    @IBAction func setReminder(_ sender: UIBarButtonItem) {
         
         if (reminderTitle.text == "") {
             
@@ -64,7 +64,9 @@ class ReminderViewController: UIViewController {
             //Dismiss
             dismiss(animated: true, completion: nil)
         }
+
     }
+
     
 
     override func viewDidLoad() {

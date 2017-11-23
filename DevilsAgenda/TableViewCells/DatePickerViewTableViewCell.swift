@@ -53,6 +53,13 @@ class DatePickerViewTableViewCell: UITableViewCell {
         self.formatter = formatter
     }
     
+    func configure(title: String, formatter: DateFormatter) {
+        self.title.text = title
+        self.result.text = ""
+        self.picker.setDate(Date(), animated: false)
+        self.formatter = formatter
+    }
+    
     //MARK: PickerView Delegate Methods
     func handleDatePicker(sender: UIDatePicker) {
         self.delegate?.datePickerCell(cell: self, selectedDate: picker.date)

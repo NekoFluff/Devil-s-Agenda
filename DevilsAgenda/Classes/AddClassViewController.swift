@@ -90,7 +90,7 @@ class AddClassViewController: UIViewController, UIPickerViewDataSource, UIPicker
     
     func saveAndExit() {
         //Construct the new class
-        let newClass = Class(name: classTextField.text ?? "", color: colorTextField.text ?? "", owner: Auth.auth().currentUser!.uid, professor: nil, location: nil, startTime : nil, endTime : nil, shared: shareSwitch.isOn)
+        let newClass = Class(name: classTextField.text ?? "", color: colorTextField.text ?? "", owner: Auth.auth().currentUser!.uid, professor: nil, location: nil, startTime : nil, endTime : nil, daysOfTheWeek: [], shared: shareSwitch.isOn)
         
         if (shareSwitch.isOn) {
             newClass.databaseKey = classCodeTextField.text

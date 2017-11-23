@@ -35,6 +35,7 @@ struct Constants {
         static let location = "location"
         static let startTime = "startTime"
         static let endTime = "endTime"
+        static let daysOfTheWeek = "daysOfTheWeek"
     }
     
     struct TaskFields {

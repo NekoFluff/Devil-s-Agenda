@@ -28,7 +28,6 @@ class AgendaTableViewController: UITableViewController {
         
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

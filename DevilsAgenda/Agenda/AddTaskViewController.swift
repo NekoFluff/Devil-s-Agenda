@@ -37,7 +37,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBAction func cancel(_ sender: UIBarButtonItem) {
 
         for (r,index) in newReminders {
-            database.deleteReminder(r, atIndex: index)
+            let _ = database.deleteReminder(r, atIndex: index)
         }
         
         dismiss(animated: true, completion: nil);
@@ -47,6 +47,25 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         if (!editingDisabled) { //title == "Done"
             self.view.endEditing(true)
+            
+            if (descriptionText == "") {
+                let alert = UIAlertController(title: "Wait", message: "Add a name to your task!", preferredStyle: .alert)
+                
+                
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok action"), style: .default, handler: { (action) in
+                    
+                    if let nameCell = self.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell {
+                        
+                        nameCell.textField.becomeFirstResponder()
+                    }
+                }))
+                
+                self.present(alert, animated: true, completion: {
+                    print("Presented name warning")
+                })
+                return
+            }
+            
             
             var newTask = Task(classes[selectedClassIndex],
                                category: taskCategory(rawValue: categories[selectedCategoryIndex])!,
@@ -384,7 +403,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
      }
     
     
-    //MARK: TableViewDelegate Methods
+    //MARK: - TableViewDelegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -443,6 +462,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 }
 
+//MARK: - Extensions
 extension AddTaskViewController : PickerViewTableCellDelegate {
     
     func pickerCell(cell: UITableViewCell, selectedPickerIndex index: Int, inArray array: [String]) {
@@ -522,13 +542,17 @@ extension AddTaskViewController : DatabaseManagerReminderDelegate {
     func addedReminder(_ r : Reminder) {
         print("Add reminder in reminder table")
         //self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
-        self.tableView.insertRows(at: [IndexPath(row:  r.task.reminders.count-1+1, section:2)], with: .automatic)
+        if (self.tableView.numberOfRows(inSection: 2) - 1 < r.task.reminders.count) {
+            self.tableView.insertRows(at: [IndexPath(row:  r.task.reminders.count-1+1, section:2)], with: .automatic)
+        }
     }
     
     func deletedReminder(_ r : Reminder, atIndex index: Int) {
         print("Delete reminder in reminder table")
         //self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
-        self.tableView.deleteRows(at: [IndexPath(row: index+1, section:2)], with: .automatic)
+        if (self.tableView.numberOfRows(inSection: 2) - 1 > r.task.reminders.count) {
+            self.tableView.deleteRows(at: [IndexPath(row: index+1, section:2)], with: .automatic)
+        }
     }
 }
 

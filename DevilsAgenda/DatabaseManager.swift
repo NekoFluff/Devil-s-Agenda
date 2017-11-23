@@ -71,6 +71,7 @@ class DatabaseManager {
     var taskDelegate : DatabaseManagerTaskDelegate?
     var addClassDelegate : DatabaseManagerAddClassDelegate?
     var reminderDelegate : DatabaseManagerReminderDelegate?
+    var classDelegateForSchedule : DatabaseManagerClassDelegate?
     
     var classes = [Class]()
     var tasks = NSPointerArray(options: NSPointerFunctions.Options.weakMemory)
@@ -197,6 +198,7 @@ class DatabaseManager {
                             update(self.atomicCounter.downloadedClasses, self.atomicCounter.totalClasses, true, false)
                             if let (newClass, _) = self.createClass(fromSnapshot: snapshot2) {
                                 self.classDelegate?.addedClass(class: newClass)
+                                self.classDelegateForSchedule?.addedClass(class: newClass)
                             }
                         }
                     })
@@ -241,6 +243,7 @@ class DatabaseManager {
                 
                 if let (newClass, _) = strongSelf.createClass(fromSnapshot: snapshot) {
                     strongSelf.classDelegate?.addedClass(class: newClass)
+                    strongSelf.classDelegateForSchedule?.addedClass(class: newClass)
                     strongSelf.atomicCounter.incrementDownloadedClasses(1)
                     update(strongSelf.atomicCounter.downloadedClasses, strongSelf.atomicCounter.totalClasses, false, true)
                 }
@@ -351,6 +354,7 @@ class DatabaseManager {
                 //Send signals
                 self.taskDelegate?.deletedClass(deletedClass)
                 self.classDelegate?.deletedClass(deletedClass, atIndex: i)
+                self.classDelegateForSchedule?.deletedClass(deletedClass, atIndex: i)
             }
         }
     }
@@ -414,6 +418,7 @@ class DatabaseManager {
             //Send signals
             self.taskDelegate?.deletedClass(deletedClass)
             self.classDelegate?.deletedClass(deletedClass, atIndex: index)
+            self.classDelegateForSchedule?.deletedClass(deletedClass, atIndex: index)
         }
         
     }
@@ -439,6 +444,8 @@ class DatabaseManager {
                 print("Added shared class \(classKey)")
                 self.classDelegate?.addedClass(class: newClass)
                 self.classDelegate?.addedSharedClass(code: key, newClass: newClass, customErrorMessage: nil)
+                self.classDelegateForSchedule?.addedClass(class: newClass)
+                //self.classDelegateForSchedule?.addedSharedClass(code: key, newClass: newClass, customErrorMessage: nil)
             } else {
                 
                 //Send failure signal
@@ -494,6 +501,7 @@ class DatabaseManager {
                 
                 data[Constants.ClassFields.professor] = c2.professor;
                 data[Constants.ClassFields.location] = c2.location;
+                data[Constants.ClassFields.daysOfTheWeek] = c2.daysOfTheWeek;
                 
                 let df = DateFormatter()
                 df.dateFormat = "HH:mm:ss"
@@ -606,7 +614,10 @@ class DatabaseManager {
                     c.startTime = c2.startTime;
                     c.endTime = c2.endTime;
                     
+                    c.daysOfTheWeek = c2.daysOfTheWeek;
+                    
                     self.classDelegate?.reloadClass(index: index);
+                    self.classDelegateForSchedule?.reloadClass(index: index)
                 }
                 
                 self.DatabaseManagerQueue.sync {
@@ -737,9 +748,8 @@ class DatabaseManager {
     
     //MARK: - Reminder Methods
     func saveReminder(_ r: Reminder) {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let _ = appDelegate.setReminder(r)
-        }
+
+        let _ = NotificationsHandler.defaultHandler.setReminder(r)
         
         //Determine save path
         var path : String?
@@ -754,18 +764,16 @@ class DatabaseManager {
             if let taskKey = r.task.databaseKey, let reminderKey = r.databaseKey { //Update a reminder
                 
                 self.ref.updateChildValues([path+"/"+taskKey+"/\(Constants.TaskFields.reminders)/\(reminderKey)" : data])
-                
-                self.reminderDelegate?.addedReminder(r);
             }
         }
+        
+        self.reminderDelegate?.addedReminder(r);
     }
     
     func deleteReminder(_ r: Reminder, atIndex index: Int) -> Bool {
         guard (index < r.task.reminders.count) else {return false;}
-        
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let _ = appDelegate.deleteReminder(r)
-        }
+
+        NotificationsHandler.defaultHandler.deleteReminder(r)
         
         var deletedReminder = false
         if (r.databaseKey == nil) {print("ERROR: No database key for reminder!")}
@@ -848,6 +856,7 @@ class DatabaseManager {
         self.removeClassListener()
         self.classes.removeAll()
         self.classDelegate?.signOut()
+        self.classDelegateForSchedule?.signOut()
         self.tasks.compact()
         self.followedClasses.removeAll()
         self.taskDelegate?.signOut()
