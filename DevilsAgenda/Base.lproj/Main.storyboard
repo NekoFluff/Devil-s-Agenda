@@ -109,7 +109,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a9T-N7-tdP">
-                                <rect key="frame" x="20" y="481" width="374" height="30"/>
+                                <rect key="frame" x="20" y="471" width="374" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <state key="normal" title="Sign Out">
                                     <color key="titleColor" red="1" green="0.3431733776" blue="0.31818271339999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -509,6 +510,11 @@ https://www.flaticon.com/authors/smashicons</string>
                                                 <action selector="cancel:" destination="kaJ-Mg-Dh6" id="unc-a3-QmI"/>
                                             </connections>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Set" id="ltf-jo-Msl">
+                                            <connections>
+                                                <action selector="setReminder:" destination="kaJ-Mg-Dh6" id="aSB-Fm-cqa"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -528,13 +534,6 @@ https://www.flaticon.com/authors/smashicons</string>
                                     <!--2017-11-05 03:53:28 +0000-->
                                 </date>
                             </datePicker>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Li-e2-9Bg">
-                                <rect key="frame" x="192" y="488" width="30" height="30"/>
-                                <state key="normal" title="Set"/>
-                                <connections>
-                                    <action selector="setReminder:" destination="kaJ-Mg-Dh6" eventType="touchUpInside" id="fh6-hL-g2D"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Reminder Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Il-0U-S7m">
                                 <rect key="frame" x="40" y="94" width="334" height="30"/>
                                 <nil key="textColor"/>
@@ -559,16 +558,13 @@ https://www.flaticon.com/authors/smashicons</string>
                             <constraint firstItem="5uv-gM-s3h" firstAttribute="centerX" secondItem="Nye-R4-8bb" secondAttribute="centerX" id="RI9-uT-fDj"/>
                             <constraint firstItem="8Il-0U-S7m" firstAttribute="centerX" secondItem="Nye-R4-8bb" secondAttribute="centerX" id="Tcg-ls-WWu"/>
                             <constraint firstItem="8Il-0U-S7m" firstAttribute="leading" secondItem="Nye-R4-8bb" secondAttribute="leadingMargin" constant="20" id="Tn2-Kt-nrx"/>
-                            <constraint firstItem="3Li-e2-9Bg" firstAttribute="top" secondItem="Zhc-Od-7VS" secondAttribute="bottom" constant="20" id="YgX-tx-t3P"/>
                             <constraint firstItem="9cD-M8-iHK" firstAttribute="leading" secondItem="Nye-R4-8bb" secondAttribute="leading" id="aNG-s6-sWY"/>
                             <constraint firstItem="5uv-gM-s3h" firstAttribute="leading" secondItem="Nye-R4-8bb" secondAttribute="leadingMargin" id="ahR-PP-be3"/>
                             <constraint firstAttribute="trailing" secondItem="9cD-M8-iHK" secondAttribute="trailing" id="dkR-Yc-nR4"/>
                             <constraint firstItem="Zhc-Od-7VS" firstAttribute="leading" secondItem="Nye-R4-8bb" secondAttribute="leading" id="gBm-po-bUQ"/>
                             <constraint firstItem="8Il-0U-S7m" firstAttribute="top" secondItem="9cD-M8-iHK" secondAttribute="bottom" constant="30" id="iJg-hC-00Q"/>
                             <constraint firstItem="jw5-5m-0Dv" firstAttribute="top" secondItem="8Il-0U-S7m" secondAttribute="bottom" constant="20" id="knD-RB-7NM"/>
-                            <constraint firstItem="iRb-Jg-kSj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3Li-e2-9Bg" secondAttribute="bottom" constant="20" id="pIO-aJ-CWq"/>
                             <constraint firstAttribute="trailing" secondItem="Zhc-Od-7VS" secondAttribute="trailing" id="qQT-ku-WEB"/>
-                            <constraint firstItem="3Li-e2-9Bg" firstAttribute="centerX" secondItem="Nye-R4-8bb" secondAttribute="centerX" id="r4T-PV-lXN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jw5-5m-0Dv" secondAttribute="trailing" constant="20" id="wtU-1n-btP"/>
                             <constraint firstItem="jw5-5m-0Dv" firstAttribute="centerX" secondItem="Nye-R4-8bb" secondAttribute="centerX" id="y7n-FN-TLr"/>
                         </constraints>
@@ -871,7 +867,7 @@ FkNsYXNzIE5hbWU
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dMc-qh-UJb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Classes" image="icon_classes" id="fru-A4-SZJ"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="dpr-YE-11o">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dpr-YE-11o">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -890,7 +886,7 @@ FkNsYXNzIE5hbWU
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vZG-fk-QWh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Agenda" image="icon_agenda" id="ygd-ZK-D4H"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="zhJ-bs-RDx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zhJ-bs-RDx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -749,7 +749,7 @@ class DatabaseManager {
     //MARK: - Reminder Methods
     func saveReminder(_ r: Reminder) {
 
-        NotificationsHandler.defaultHandler.setReminder(r)
+        let _ = NotificationsHandler.defaultHandler.setReminder(r)
         
         //Determine save path
         var path : String?
@@ -764,10 +764,10 @@ class DatabaseManager {
             if let taskKey = r.task.databaseKey, let reminderKey = r.databaseKey { //Update a reminder
                 
                 self.ref.updateChildValues([path+"/"+taskKey+"/\(Constants.TaskFields.reminders)/\(reminderKey)" : data])
-                
-                self.reminderDelegate?.addedReminder(r);
             }
         }
+        
+        self.reminderDelegate?.addedReminder(r);
     }
     
     func deleteReminder(_ r: Reminder, atIndex index: Int) -> Bool {

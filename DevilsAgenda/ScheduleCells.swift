@@ -73,7 +73,7 @@ class SlotCell: Cell {
     
     var minutes = 0 {
         didSet {
-            minutesLabel.text = String(format: "%02d", minutes)
+            minutesLabel.text = ""//String(format: "%02d", minutes)
         }
     }
     var title = "" {

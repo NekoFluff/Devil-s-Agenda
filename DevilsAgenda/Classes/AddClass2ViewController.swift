@@ -238,7 +238,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: - Table View Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 5
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -266,7 +266,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldTableViewCell", for: indexPath) as! TextFieldTableViewCell
                 
                 cell.configure(title: section0[indexPath.row],
-                               textFieldText: _class?.name ?? "",
+                               textFieldText: className ?? "",
                                textFieldPlaceholder: "What's the name of your class?")
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self
@@ -294,7 +294,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldTableViewCell", for: indexPath) as! TextFieldTableViewCell
                 
                 cell.configure(title: section1[indexPath.row],
-                               textFieldText: _class?.professor ?? "",
+                               textFieldText: classProfessor ?? "",
                                textFieldPlaceholder: "What's the professor's name?")
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self
@@ -305,7 +305,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                 let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldTableViewCell", for: indexPath) as! TextFieldTableViewCell
                 
                 cell.configure(title: section1[indexPath.row],
-                               textFieldText: _class?.location ?? "",
+                               textFieldText: classLocation ?? "",
                                textFieldPlaceholder: "Where is the class located?")
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self
@@ -319,7 +319,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     cell.configure(title: section1[indexPath.row], date: startTime, formatter: timeFormatter);
                 } else {
-                    cell.configure(title: section1[indexPath.row], date: Date(), formatter: timeFormatter);
+                    cell.configure(title: section1[indexPath.row],  formatter: timeFormatter);
                 }
                 
                 cell.editingDisabled = editingDisabled
@@ -333,7 +333,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     cell.configure(title: section1[indexPath.row], date: endTime, formatter: timeFormatter);
                 } else {
-                    cell.configure(title: section1[indexPath.row], date: Date(), formatter: timeFormatter);
+                    cell.configure(title: section1[indexPath.row],formatter: timeFormatter);
                 }
                 
                 cell.editingDisabled = editingDisabled
@@ -366,7 +366,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             } else { //Class Code
                 let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldTableViewCell", for: indexPath) as! TextFieldTableViewCell
                 
-                let key = _class?.databaseKey ?? ""
+                let key = classCodeText ?? ""
                 classCodeText = key
                 cell.configure(title: "Class Code",
                                textFieldText: key,
@@ -442,7 +442,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     
-    //MARK: TableViewDelegate Methods
+    //MARK: - TableViewDelegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -513,10 +513,16 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 }
 
+//MARK: - Extensions
 extension AddClass2ViewController : SwitchTableViewCellDelegate {
     func switchCell(cell: UITableViewCell, isNowOn isOn: Bool) {
         shareSwitchIsOn = isOn
-        self.tableView.reloadSections(IndexSet([2]), with: UITableViewRowAnimation.automatic)
+        self.tableView.reloadSections(IndexSet([3]), with: UITableViewRowAnimation.automatic)
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+        if let classCodeCell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 3)) as? TextFieldTableViewCell {
+            classCodeCell.becomeFirstResponder()
+        }
     }
 }
 
@@ -560,7 +566,7 @@ extension AddClass2ViewController : TextFieldTableCellDelegate {
             } else if indexPath.section == 1 && indexPath.row == 1 { //Location
                 self.classLocation = text
                 print("New class location: " + text)
-            } else if indexPath.section == 2 && indexPath.row == 1 { //Class Code
+            } else if indexPath.section == 3 && indexPath.row == 1 { //Class Code
                 self.classCodeText = text
                 print("New class code: " + text)
             }
@@ -607,7 +613,7 @@ extension AddClass2ViewController : ButtonTableViewCellDelegate {
 
 extension AddClass2ViewController : DatabaseManagerAddClassDelegate {
     func classCodeExists(_ classCode : String, exists: Bool) {
-        //TODO: Present loading popup w/ cancel button
+        //DONE - TODO: Present loading popup w/ cancel button
         if (exists) {
             //Create an alert saying that the class code is already being used.
             let alert = UIAlertController(title: "Class code already in use", message: "The class code is already being used. Please try modifying it.", preferredStyle: .alert)
@@ -615,7 +621,7 @@ extension AddClass2ViewController : DatabaseManagerAddClassDelegate {
             
             alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "OK action"), style: .default, handler: { (action) in
 
-                if self.shareSwitchIsOn, let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 2)) as? TextFieldTableViewCell {
+                if self.shareSwitchIsOn, let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 3)) as? TextFieldTableViewCell {
                     cell.textField.becomeFirstResponder()
                 }
             }))
