@@ -22,9 +22,10 @@ class Class : Equatable {
     var location : String?
     var startTime : Date?
     var endTime : Date?
+    var daysOfTheWeek : [Bool]?
     
     //MARK: - Initializers
-    init(name: String, color: String, owner: String, professor: String?, location: String?, startTime : Date?, endTime : Date?, shared: Bool? = false) {
+    init(name: String, color: String, owner: String, professor: String?, location: String?, startTime : Date?, endTime : Date?, daysOfTheWeek : [Bool]?, shared: Bool? = false) {
         self.name = name
         self.color = color
         self.owner = owner
@@ -32,6 +33,7 @@ class Class : Equatable {
         self.location = location
         self.startTime = startTime
         self.endTime = endTime
+        self.daysOfTheWeek = daysOfTheWeek
         self.isShared = shared!
     }
     
@@ -40,18 +42,19 @@ class Class : Equatable {
         self.color = data[Constants.ClassFields.color] as? String ?? ""
         self.owner = data[Constants.ClassFields.owner] as? String ?? ""
         self.isShared = data[Constants.ClassFields.shared] as? Bool ?? false
-        self.professor = data[Constants.ClassFields.professor] as? String ?? ""
-        self.location = data[Constants.ClassFields.location] as? String ?? ""
-
+        self.professor = data[Constants.ClassFields.professor] as? String
+        self.location = data[Constants.ClassFields.location] as? String
+        self.daysOfTheWeek = data[Constants.ClassFields.daysOfTheWeek] as? [Bool]
+        
         let df = DateFormatter()
         df.dateFormat = "HH:mm:ss"
         
         if let start = data[Constants.ClassFields.startTime] as? String {
-            self.startTime = df.date(from : start) ?? Date()
+            self.startTime = df.date(from : start)
         }
         
         if let end = data[Constants.ClassFields.endTime] as? String {
-            self.endTime = df.date(from : end) ?? Date()
+            self.endTime = df.date(from : end)
         }
         
         self.databaseKey = databaseKey
@@ -85,6 +88,10 @@ class Class : Equatable {
         
         if let endTime = self.endTime {
             data[Constants.ClassFields.endTime] = convertTimeToString(endTime)
+        }
+        
+        if let daysOfTheWeek = self.daysOfTheWeek {
+            data[Constants.ClassFields.daysOfTheWeek] = daysOfTheWeek
         }
         
         if databaseKey != nil {

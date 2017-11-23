@@ -73,27 +73,27 @@ class LoadingViewController: UIViewController {
     func addAnimation() {
         
         //MIDDLE ANIMATION
-        let animationHeight : CGFloat = 250.0;
+        let animationHeight : CGFloat = self.view.frame.width*4/5;
         
         animationView = LOTAnimationView(name: "animation-w200-h200");
-        animationView.contentMode = .scaleAspectFill;
-        animationView.frame = CGRect(x: 0, y: self.view.frame.size.height/2 - animationHeight/2, width: self.view.frame.size.width, height: animationHeight);
+        animationView.contentMode = .scaleAspectFit;
+        let animationWidth = self.view.frame.width
+        animationView.frame = CGRect(x: 0, y: self.view.frame.size.height/2 - animationHeight/2, width: animationWidth, height: animationHeight);
         animationView.loopAnimation = true;
         self.view.addSubview(animationView);
-        let lab = UILabel()
-        lab.text = "hello there world"
-        animationView.addSubview(lab)
         
         //TOP TEXT
-        topText = UILabel(frame: CGRect(x: 0, y: animationView.frame.minY-35, width: self.view.frame.size.width, height: 30))
+        topText = UILabel(frame: CGRect(x: 0, y: animationView.frame.minY-25, width: self.view.frame.size.width, height: 30))
         topText.textAlignment = NSTextAlignment.center
         topText.text = "Downloading your classes (0/0)"
+        topText.textColor = UIColor(colorLiteralRed: 255/255, green: 197/255, blue: 85/255, alpha: 1)
         self.view.addSubview(topText);
         
         //BOTTOM TEXT
-        bottomText = UILabel(frame: CGRect(x: 0, y: animationView.frame.maxY+35, width: self.view.frame.size.width, height: 30))
+        bottomText = UILabel(frame: CGRect(x: 0, y: animationView.frame.maxY+15, width: self.view.frame.size.width, height: 30))
         bottomText.textAlignment = NSTextAlignment.center
         bottomText.text = "Please wait..."
+        bottomText.textColor = UIColor(colorLiteralRed: 255/255, green: 197/255, blue: 85/255, alpha: 1)
         self.view.addSubview(bottomText);
     }
     /*

@@ -16,21 +16,12 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     let section0 = ["Name", "Color"] //Required
     let section1 = ["Professor", "Location", "Start Time", "End Time"] //Optional
-    let section2 = ["Shared"]
-    let section3 = ["Delete Class"]
+    let section2 = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    let section3 = ["Shared"]
+    let section4 = ["Delete Class"]
     
     let colorOptions = ["Red", "Green", "Blue", "Orange", "Yellow", "Black"]
-    //        let database = DatabaseManager.defaultManager
-    //        var prevIndexPath : IndexPath?
-    
-    //        var classes = [Class]()
-    //        var task : Task? = nil
-    //        var indexPath : IndexPath? = nil
-    //        var selectedClassIndex : Int = 0
-    //        var selectedCategoryIndex : Int = 0
-    //        var descriptionText : String = ""
-    //        var dueDate : Date?
-    //        var whenToDoDate : Date?
+    var selectedDay = [false, false, false, false, false, false, false]
     
     private let timeFormatter : DateFormatter = {
         var formatter = DateFormatter()
@@ -150,7 +141,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     //MARK: - Private Methods
     public func saveAndExit() {
         //Construct the new class
-        let newClass = Class(name: className ?? "", color: classColor, owner: Auth.auth().currentUser!.uid, professor: classProfessor, location: classLocation, startTime : classStartTime, endTime : classEndTime, shared: shareSwitchIsOn)
+        let newClass = Class(name: className ?? "", color: classColor, owner: Auth.auth().currentUser!.uid, professor: classProfessor, location: classLocation, startTime : classStartTime, endTime : classEndTime, daysOfTheWeek: selectedDay, shared: shareSwitchIsOn)
         
         if (shareSwitchIsOn) {
             newClass.databaseKey = classCodeText
@@ -180,6 +171,10 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             self.classStartTime = c.startTime
             self.classEndTime = c.endTime
             self.shareSwitchIsOn = c.isShared
+            
+            if let days = c.daysOfTheWeek {
+                self.selectedDay = days
+            }
             
             if c.isShared {
                 self.classCodeText = c.databaseKey
@@ -252,9 +247,11 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         } else if section == 1 {
             return section1.count //Optional (Professor/Location/Start Time/End Time)
         } else if section == 2 {
-            return section2.count + (shareSwitchIsOn == true ? 1 : 0) //Class Code
+            return section2.count
         } else if section == 3 {
-            return section3.count
+            return section3.count + (shareSwitchIsOn == true ? 1 : 0) //Class Code
+        } else if section == 4 {
+            return section4.count
         }
         
         return 0
@@ -344,12 +341,25 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
             }
 
             
-        } else if indexPath.section == 2 { //Shared
+        } else if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "labelTableViewCell", for: indexPath) as! LabelTableViewCell
+            
+            cell.configure(titleText: section2[indexPath.row], labelText: "")
+            cell.editingDisabled = editingDisabled
+            
+            if selectedDay[indexPath.row] {
+                cell.accessoryType = UITableViewCellAccessoryType.checkmark
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryType.none
+            }
+            
+            return cell
+        } else if indexPath.section == 3 { //Shared
             
             if (indexPath.row == 0) { //Share Switch
                 let cell = tableView.dequeueReusableCell(withIdentifier: "switchTableViewCell", for: indexPath) as! SwitchTableViewCell
                 
-                cell.configure(title: section2[indexPath.row], isOn: shareSwitchIsOn)
+                cell.configure(title: section3[indexPath.row], isOn: shareSwitchIsOn)
                 cell.editingDisabled = editingDisabled
                 cell.delegate = self;
                 return cell
@@ -370,7 +380,7 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonTableViewCell", for: indexPath) as! ButtonTableViewCell
             
-            cell.button.setTitle(section3[indexPath.row], for: UIControlState.normal)
+            cell.button.setTitle(section4[indexPath.row], for: UIControlState.normal)
             cell.button.tintColor = UIColor.red
             cell.delegate = self
             cell.editingDisabled = editingDisabled
@@ -436,7 +446,18 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
+
         guard !editingDisabled else {return}
+        if indexPath.section == 2 { //Days of the week
+            
+            if selectedDay[indexPath.row] {
+                tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.none
+                selectedDay[indexPath.row] = false;
+            } else {
+                tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.checkmark
+                selectedDay[indexPath.row] = true;
+            }
+        }
         
         if let prevI = prevIndexPath {
             if let prevPickerCell = tableView.cellForRow(at: prevI) as? PickerViewTableViewCell {
@@ -483,6 +504,12 @@ class AddClass2ViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.endUpdates()
         
         prevIndexPath = indexPath
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if indexPath.section == 2 {
+
+        }
     }
 }
 
