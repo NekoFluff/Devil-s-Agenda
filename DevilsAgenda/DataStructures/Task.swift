@@ -101,6 +101,7 @@ class Task : Equatable {
     
     deinit {
         print("De-allocating Task \(desc)")
+        NotificationsHandler.defaultHandler.removeTodo(task: self)
     }
     
     func addReminder(_ r: Reminder) {

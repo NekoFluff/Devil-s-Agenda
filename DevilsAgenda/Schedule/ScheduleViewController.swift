@@ -28,10 +28,12 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    
     //MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let today = Date()
         for i in 0...6 {
             days.append(taskOrganizer.getTaskSectionForDate(today.add(components: [.day : i])))
@@ -122,7 +124,7 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
             return c1.minSinceHour(date: c1.startTime!, comparedToHour: hour) < c2.minSinceHour(date: c2.startTime!, comparedToHour: hour)
         }
         
-        for (indx, day) in days.enumerated() {
+        for (indx, _) in days.enumerated() {
             
             var minutes = 0;
             var startMin = 0;

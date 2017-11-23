@@ -748,9 +748,8 @@ class DatabaseManager {
     
     //MARK: - Reminder Methods
     func saveReminder(_ r: Reminder) {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let _ = appDelegate.setReminder(r)
-        }
+
+        NotificationsHandler.defaultHandler.setReminder(r)
         
         //Determine save path
         var path : String?
@@ -773,10 +772,8 @@ class DatabaseManager {
     
     func deleteReminder(_ r: Reminder, atIndex index: Int) -> Bool {
         guard (index < r.task.reminders.count) else {return false;}
-        
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let _ = appDelegate.deleteReminder(r)
-        }
+
+        NotificationsHandler.defaultHandler.deleteReminder(r)
         
         var deletedReminder = false
         if (r.databaseKey == nil) {print("ERROR: No database key for reminder!")}
