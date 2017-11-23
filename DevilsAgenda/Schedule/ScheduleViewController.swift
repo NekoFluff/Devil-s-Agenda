@@ -190,6 +190,7 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
 //
 
 import UIKit
+import FirebaseAuth
 import SpreadsheetView
 
 class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetViewDelegate {
@@ -200,11 +201,11 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
 
     
     let numberOfRows = 24 * 60 + 1
-    var slotInfo = [IndexPath: (Int, Int)]()
+    var slotInfo = [IndexPath : (Int, Int, Class)]()
     
     let hourFormatter = DateFormatter()
     let twelveHourFormatter = DateFormatter()
-    
+    let hour = Date().hour
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -213,8 +214,9 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
         super.viewDidLoad()
         
         for i in 1...10 {
-            channels.append("Person-\(i)")
+            //channels.append("Person-\(i)")
         }
+        channels.append("You")
         
         spreadsheetView.dataSource = self
         spreadsheetView.delegate = self
@@ -229,7 +231,7 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
         let hairline = 1 / UIScreen.main.scale
         spreadsheetView.intercellSpacing = CGSize(width: hairline, height: hairline)
         spreadsheetView.gridStyle = .solid(width: hairline, color: .lightGray)
-        spreadsheetView.circularScrolling = CircularScrolling.Configuration.horizontally.rowHeaderStartsFirstColumn
+        spreadsheetView.circularScrolling = CircularScrolling.Configuration.horizontally.columnHeaderNotRepeated.rowHeaderStartsFirstColumn
         
         hourFormatter.calendar = Calendar(identifier: .gregorian)
         hourFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -256,17 +258,17 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
     }
     
     func spreadsheetView(_ spreadsheetView: SpreadsheetView, widthForColumn column: Int) -> CGFloat {
-        if column == 0 {
+        if column == 0 { //Hours
             return 30
         }
-        return 130
+        return 130 //Slot width
     }
     
     func spreadsheetView(_ spreadsheetView: SpreadsheetView, heightForRow row: Int) -> CGFloat {
-        if row == 0 {
+        if row == 0 { //Hours
             return 44
         }
-        return 2
+        return 2 //Slot height
     }
     
     func frozenColumns(in spreadsheetView: SpreadsheetView) -> Int {
@@ -280,24 +282,58 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
     func mergedCells(in spreadsheetView: SpreadsheetView) -> [CellRange] {
         var mergedCells = [CellRange]()
         
-        for row in 0..<24 {
-            mergedCells.append(CellRange(from: (60 * row + 1, 0), to: (60 * (row + 1), 0))) //column 0.
+        for row in 0..<24 { //24 hours (column 0)
+            mergedCells.append(CellRange(from: (60 * row + 1, 0), to: (60 * (row + 1), 0)))
         }
         
-        let seeds = [5, 10, 20, 20, 30, 30, 30, 30, 40, 40, 50, 50, 60, 60, 60, 60, 90, 90, 90, 90, 120, 120, 120] //seed for random gen
-        for (index, _) in channels.enumerated() {
-            var minutes = 0
-            while minutes < 24 * 60 {
-                let duration = seeds[Int(arc4random_uniform(UInt32(seeds.count)))]
-                guard minutes + duration + 1 < numberOfRows else {
-                    mergedCells.append(CellRange(from: (minutes + 1, index + 1), to: (numberOfRows - 1, index + 1))) //Fill in the rest with a blank cell
-                    break
-                }
-                let cellRange = CellRange(from: (minutes + 1, index + 1), to: (minutes + duration + 1, index + 1))
-                mergedCells.append(cellRange)
-                slotInfo[IndexPath(row: cellRange.from.row, column: cellRange.from.column)] = (minutes, duration) //Slot cell information
-                minutes += duration + 1
+        //todo: for every user... do this:
+        let userIndex = 1;
+        var minutes = 0;
+        var startMin = 0;
+        var endMin = 0;
+        
+        let sortedClasses = database.classes.filter { (c) -> Bool in
+            return c.startTime != nil && c.endTime != nil
+        }.sorted { (c1, c2) -> Bool in
+            return c1.minSinceHour(date: c1.startTime!, comparedToHour: hour) < c2.minSinceHour(date: c2.startTime!, comparedToHour: hour)
+        }
+        
+        for c in sortedClasses {
+
+            startMin = c.minSinceHour(date: c.startTime, comparedToHour: hour)
+            if (startMin < minutes) {startMin = minutes + 1};
+            endMin = c.minSinceHour(date: c.endTime, comparedToHour: hour)
+            if (endMin < minutes) {endMin = minutes + 1}
+                
+            if (endMin < startMin) {
+                endMin = 60*24-1
             }
+            let duration = (endMin - startMin)
+            
+            print("startMin: \(startMin)")
+            print("endMin: \(endMin)")
+            print("duration: \(duration)")
+            print("minutes: \(minutes)")
+            if duration == 0 {continue}
+            
+            print("start: \(c.startTime!) end: \(c.endTime!)" )
+            
+
+            if (minutes < startMin) { //Fill empty slots with a blank cell
+                mergedCells.append(CellRange(from: (minutes + 1, userIndex), to: (startMin, userIndex)))
+            }
+            
+            let cellRange = CellRange(from: (startMin + 1, userIndex), to: (endMin, userIndex))
+            mergedCells.append(cellRange) //Class cell
+            slotInfo[IndexPath(row: cellRange.from.row, column: cellRange.from.column)] = (minutes, duration, c) //Slot cell information (info on the class)
+            
+            minutes = endMin
+            
+        
+        }
+        
+        if (minutes + 1 < 60*24) {
+            mergedCells.append(CellRange(from: (minutes + 1, userIndex), to: (60*24, userIndex))) //Fill empty slots with a blank cell
         }
         return mergedCells
     }
@@ -309,14 +345,15 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
             return nil
         }
         
-        if indexPath.column == 0 && indexPath.row > 0 {
+        if indexPath.column == 0 && indexPath.row > 0 { // Hours
             let cell = spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: HourCell.self), for: indexPath) as! HourCell
-            cell.label.text = hourFormatter.string(from: twelveHourFormatter.date(from: "\((indexPath.row - 1) / 60 % 24)")!)
+            cell.label.text = hourFormatter.string(from: twelveHourFormatter.date(from: "\(((indexPath.row - 1) / 60 + hour) % 24)")!)
+            
             cell.gridlines.top = .solid(width: 1, color: .white)
             cell.gridlines.bottom = .solid(width: 1, color: .white)
             return cell
         }
-        if indexPath.column > 0 && indexPath.row == 0 {
+        if indexPath.column > 0 && indexPath.row == 0 {  // People
             let cell = spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: ChannelCell.self), for: indexPath) as! ChannelCell
             cell.label.text = channels[indexPath.column - 1]
             cell.gridlines.top = .solid(width: 1, color: .black)
@@ -326,11 +363,11 @@ class ScheduleViewController: UIViewController, SpreadsheetViewDataSource, Sprea
             return cell
         }
         
-        if let (minutes, duration) = slotInfo[indexPath] {
+        if let (minutes, cellSize, c) = slotInfo[indexPath] { //Time Slots
             let cell = spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: SlotCell.self), for: indexPath) as! SlotCell
             cell.minutes = minutes % 60
-            cell.title = "Class name goes here"
-            cell.tableHighlight = duration > 20 ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit" : ""
+            cell.title = c.name
+            cell.tableHighlight = cellSize > 20 ? "\(c.professor ?? "")\n\(c.location ?? "")\n\(c.convertTimeToString(c.startTime!, format: "H:mm a")) - \(c.convertTimeToString(c.endTime!, format: "H:mm a"))" : ""
             return cell
         }
         return spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: BlankCell.self), for: indexPath)

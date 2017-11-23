@@ -69,8 +69,7 @@ class Class : Equatable {
                     Constants.ClassFields.owner : owner,
                     Constants.ClassFields.shared : isShared] as [String : Any]
         
-        let df = DateFormatter()
-        df.dateFormat = "HH:mm:ss"
+
         
         if let professor = self.professor {
             data[Constants.ClassFields.professor] = professor
@@ -81,22 +80,30 @@ class Class : Equatable {
         }
         
         if let startTime = self.startTime {
-            data[Constants.ClassFields.startTime] = startTime
+            data[Constants.ClassFields.startTime] = convertTimeToString(startTime)
         }
         
         if let endTime = self.endTime {
-            data[Constants.ClassFields.endTime] = endTime
+            data[Constants.ClassFields.endTime] = convertTimeToString(endTime)
         }
         
         if databaseKey != nil {
             data[Constants.ClassFields.key] = databaseKey
         }
         
+        
         return data
     }
     
     static func ==(left: Class, right: Class) -> Bool {
         return left.name == right.name && left.databaseKey == right.databaseKey && left.color == right.color
+    }
+    
+    func convertTimeToString(_ time: Date, format: String? = "HH:mm:ss") -> String {
+        let df = DateFormatter()
+        df.dateFormat = format!
+        
+        return df.string(from: time)
     }
     
     func addTask(_ t : Task, forKey k: String) {
@@ -116,6 +123,29 @@ class Class : Equatable {
                     self.tasks[t.desc]!.remove(at: i)
                 }
             }
+        }
+    }
+    
+    func minFromMidnight(date : Date) -> Int {
+        let hour = date.hour
+        let min = date.minute
+        
+        return hour * 60 + min
+    }
+    
+    func minSinceHour(date: Date?, comparedToHour hour: Int) -> Int {
+        //assume compare date is the current hour.
+        if let date = date {
+            let targetHour = date.hour
+            let targetMin = date.minute
+            
+            var result = (targetHour-hour) * 60 + targetMin
+            if result < 0 {
+                result = (24*60) + result //total minutes in day (24*60) + negative time
+            }
+            return result
+        } else {
+            return 0;
         }
     }
 }

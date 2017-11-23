@@ -931,7 +931,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.TeamPlanIt.DevilsAgenda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7e7ab4d3-c137-4678-bdc9-a64d093a398c";
+				PROVISIONING_PROFILE = "3d72ec3c-2e1e-46b7-a933-1f4091afbeb2";
 				PROVISIONING_PROFILE_SPECIFIER = "DevilsAgenda Adhoc";
 				SWIFT_VERSION = 3.0;
 			};
